@@ -1,0 +1,14 @@
+{
+  "version": "2026-06-30",
+  "ttl_minutes": 30,
+  "max_sensitivity_by_task": {
+    "code_review": "medium",
+    "iac_security": "high",
+    "incident_triage": "high",
+    "onboarding": "low",
+    "architecture_qa": "medium"
+  },
+  "required_path_match_tasks": ["code_review", "iac_security"],
+  "approval_required_sensitivities": ["restricted"],
+  "max_slice_age_days": 30
+}

@@ -1,0 +1,27 @@
+[project]
+name = "agent-context-gateway-ai"
+version = "0.1.0"
+description = "Secure, token-efficient context gateway for enterprise AI agents and context-aware platform review."
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+authors = [{ name = "Naga Krishna Reddy Muppidi" }]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/krishnamuppidi/agent-context-gateway-ai"
+Repository = "https://github.com/krishnamuppidi/agent-context-gateway-ai"
+
+[project.optional-dependencies]
+api = ["fastapi>=0.110", "uvicorn>=0.27"]
+dev = ["pytest>=8.0", "ruff>=0.5"]
+
+[project.scripts]
+acg = "agent_context_gateway.cli:main"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100

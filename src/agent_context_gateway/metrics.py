@@ -1,0 +1,22 @@
+from __future__ import annotations
+
+from .models import ContextCapsule, ContextSlice, GatewayMetrics
+
+
+def compute_metrics(capsule: ContextCapsule, all_slices: list[ContextSlice]) -> GatewayMetrics:
+    full_context_tokens = sum(item.token_estimate for item in all_slices)
+    capsule_tokens = sum(item.token_estimate for item in capsule.facts)
+    if full_context_tokens:
+        reduction = round((1 - capsule_tokens / full_context_tokens) * 100, 2)
+    else:
+        reduction = 0.0
+    return GatewayMetrics(
+        request_id=capsule.request_id,
+        cache_hit=capsule.cache_hit,
+        full_context_tokens=full_context_tokens,
+        capsule_tokens=capsule_tokens,
+        token_reduction_percent=reduction,
+        released_slice_count=len(capsule.facts),
+        denied_slice_count=len(capsule.denied),
+    )
+

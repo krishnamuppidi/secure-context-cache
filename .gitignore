@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.coverage
+*.pyc
+*.zip
+*.log
+*.tfstate
+*.tfstate.backup
+*.tfvars
+build/
+dist/
+site/
+docs/
+*.pdf
+*.docx
+*.pptx

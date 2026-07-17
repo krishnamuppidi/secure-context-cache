@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent-context-gateway
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: agent-context-gateway
+  template:
+    metadata:
+      labels:
+        app: agent-context-gateway
+    spec:
+      containers:
+        - name: gateway
+          image: agent-context-gateway:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ACG_POLICY_MODE
+              value: "deny-by-default"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agent-context-gateway
+spec:
+  selector:
+    app: agent-context-gateway
+  ports:
+    - port: 80
+      targetPort: 8080
+
