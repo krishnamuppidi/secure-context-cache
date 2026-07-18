@@ -10,6 +10,17 @@ Agent Context Gateway is designed around deny-by-default context release.
 - Audit records capture every release and denial.
 - Production deployments should replace demo credentials with enterprise identity.
 
+## Public AWS Deployment
+
+The automated AWS path uses API Gateway HTTPS with a Cognito JWT authorizer. Source context is
+loaded only from the deployment's private S3 bucket under a validated `sources/<context-id>/`
+prefix. Lambda uses a scoped IAM role; deployer AWS credentials are not copied into the runtime.
+Derived slices, cache entries, and audit events are persisted in KMS-encrypted DynamoDB tables.
+
+The generated Cognito client is intended for an evaluation or pilot. Use a distinct confidential
+client per agent or workload in production, store client secrets in a managed secrets service, and
+map each client to explicit task and sensitivity policy.
+
 ## What the Framework Protects Against
 
 - Unnecessary release of full repository or infrastructure memory.
@@ -24,6 +35,8 @@ Agent Context Gateway is designed around deny-by-default context release.
 - It does not prove that model output is correct.
 - It does not approve privileged changes.
 - It does not provide production-grade encryption in demo mode.
+- It does not inspect every possible repository format or prevent sensitive source material from
+  being uploaded by an authorized deployer.
 
 ## Production Requirements
 
@@ -32,3 +45,5 @@ Agent Context Gateway is designed around deny-by-default context release.
 - Store audit records in immutable storage.
 - Integrate policy with OPA, Cedar, or an internal policy service.
 - Red-team prompt-injection, over-broad context, and cross-agent leakage scenarios.
+- Add WAF/rate limits, budgets, alarms, remote encrypted Terraform state, and organization-specific
+  retention controls.

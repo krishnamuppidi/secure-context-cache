@@ -17,7 +17,12 @@ class ContextSliceCache:
     entries: dict[str, CacheEntry] = field(default_factory=dict)
 
     def key_for(self, task: TaskRequest) -> str:
-        return stable_id("cache", task.task_type, task.path, task.environment, task.agent_id)
+        return stable_id(
+            "cache",
+            task.normalized_request_id(),
+            task.environment,
+            task.approval_state,
+        )
 
     def get(self, task: TaskRequest) -> CacheEntry | None:
         key = self.key_for(task)
@@ -31,4 +36,3 @@ class ContextSliceCache:
         entry = CacheEntry(key=key, slice_ids=[item.id for item in slices])
         self.entries[key] = entry
         return entry
-

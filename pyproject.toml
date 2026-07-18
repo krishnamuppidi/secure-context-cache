@@ -1,7 +1,7 @@
 [project]
 name = "agent-context-gateway-ai"
-version = "0.1.0"
-description = "Secure, token-efficient context gateway for enterprise AI agents and context-aware platform review."
+version = "0.2.0"
+description = "Secure, token-efficient context gateway for enterprise AI agents and governed workflows."
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.11"
@@ -14,7 +14,8 @@ Repository = "https://github.com/krishnamuppidi/agent-context-gateway-ai"
 
 [project.optional-dependencies]
 api = ["fastapi>=0.110", "uvicorn>=0.27"]
-dev = ["pytest>=8.0", "ruff>=0.5"]
+aws = ["boto3>=1.34", "fastapi>=0.110", "mangum>=0.17"]
+dev = ["httpx>=0.27", "pytest>=8.0", "ruff>=0.5"]
 
 [project.scripts]
 acg = "agent_context_gateway.cli:main"

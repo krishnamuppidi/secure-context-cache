@@ -1,232 +1,235 @@
 # Agent Context Gateway AI
 
-**Agent Context Gateway AI (ACG AI)** is a production-oriented framework that turns Secure Context Cache
-into a deployable enterprise AI context and cost-control product pattern:
+Agent Context Gateway AI (ACG AI) is an open-source context-control layer for enterprise AI agents.
+It caches approved context, releases only task-scoped facts, records every release or denial, and
+measures token reduction without giving an agent unrestricted access to the full context store.
 
-> Cache approved enterprise context once, release only task-scoped context capsules to AI agents,
-> and reduce token spend while preserving access control, auditability, and agent usefulness.
+## What You Can Run
 
-The framework is designed for companies that want AI developer agents, internal assistants,
-incident copilots, architecture question-answering tools, and platform APIs without giving every
-agent unrestricted enterprise memory.
+- A local Python CLI and FastAPI demo.
+- A Dockerized local API.
+- A one-command AWS deployment with:
+  - API Gateway HTTPS endpoint.
+  - Cognito machine-to-machine OAuth authentication.
+  - Lambda runtime with an IAM execution role.
+  - Private, KMS-encrypted S3 context storage.
+  - KMS-encrypted DynamoDB slice, cache, and audit tables.
+  - CloudWatch logs.
+  - Automated context upload and authenticated smoke test.
 
-## Why This Exists
-
-AI agents need context to be useful. Enterprise context is sensitive:
-
-- repositories and ownership
-- Infrastructure-as-Code relationships
-- service dependencies
-- IAM and network paths
-- runbooks and escalation workflows
-- deployment history
-- policy and exception records
-
-Naively pasting all of that into every agent prompt wastes tokens and can expose attack paths.
-Agent Context Gateway gives agents enough context to do the task, but not the full memory store.
-
-This is aligned with the industry direction Brian Armstrong described for Coinbase: keep AI usage
-high while reducing cost through caching, lean context, routing, and spend visibility. ACG adds the
-enterprise security layer: least-privilege context, access policy, audit records, and controlled
-context release.
-
-## Core Capabilities
-
-- Canonical context graph from repositories, IaC, docs, and service metadata.
-- Context slices tagged by path, environment, task, sensitivity, and owner.
-- Cache hit tracking for repeated agent tasks.
-- Policy-based release of only the slices required for a task.
-- Temporary task capsules for prompts.
-- Context insight generation for released task capsules.
-- Audit records for selected, denied, cached, and released context.
-- Token/cost visibility for full-context vs gateway-assisted prompts.
-- CLI for local use and CI.
-- Optional FastAPI service for internal platform integration.
-- Reference deployment templates for local, Kubernetes, and AWS-oriented review.
+AWS access keys are used only by the deployment tools. They are never embedded in the application,
+Lambda package, Terraform state, or repository. The running gateway uses an IAM role.
 
 ## Architecture
 
 ```text
-Repo/IaC/Docs/Metadata
-        |
-        v
-Context Ingestor -> Context Graph -> Slice Builder -> Slice Cache
+Local Repo/Docs/IaC --deploy or upload--> Private S3 context prefix
                                                 |
-Agent Request -> Policy Engine -> Capsule Builder -> Agent/API
-                                                |
-                                        Audit + Cost Metrics
+                                                v
+Agent Client -> Cognito token -> API Gateway HTTPS -> Lambda gateway
+                                                      |       |
+                                                      |       +-> DynamoDB audit
+                                                      +-> DynamoDB slices/cache
 ```
 
-SecReviewAgent is one background use case, not the product scope. The product is the gateway:
-secure cached context, task-scoped release, audit, and token/cost visibility for many agents.
+The gateway currently ingests `.tf`, `.tfvars`, `.yaml`, `.yml`, `.json`, `.md`, `.py`, and `.go`
+files. It derives context slices, applies sensitivity and task policy, and returns a time-limited
+context capsule plus token metrics.
 
-## Quick Start
+## Deploy to AWS
+
+Prerequisites: Python 3.11+, AWS CLI, Terraform 1.5+, `curl`, `openssl`, and `zip`.
+
+### 1. Clone
 
 ```bash
-cd agent-context-gateway
+git clone https://github.com/krishnamuppidi/agent-context-gateway-ai.git
+cd agent-context-gateway-ai
+```
+
+### 2. Supply AWS credentials
+
+Use an AWS CLI profile:
+
+```bash
+export AWS_PROFILE=my-profile
+export AWS_REGION=us-east-1
+```
+
+Or temporary environment credentials:
+
+```bash
+export AWS_ACCESS_KEY_ID='...'
+export AWS_SECRET_ACCESS_KEY='...'
+export AWS_SESSION_TOKEN='...'   # when using temporary credentials
+export AWS_REGION=us-east-1
+```
+
+For an evaluation deployment, the credentials must be allowed to manage Lambda, API Gateway,
+Cognito, S3, DynamoDB, KMS, IAM roles/policies, and CloudWatch Logs. Prefer a short-lived role or
+temporary credentials. Do not send keys by email or commit them to a file.
+
+Optional account guard:
+
+```bash
+export EXPECTED_AWS_ACCOUNT_ID=123456789012
+```
+
+### 3. Deploy
+
+The default command uploads the included sample context and performs a live authenticated request:
+
+```bash
+./deploy/aws/deploy.sh --auto-approve
+```
+
+To deploy with a real local repository or documentation directory:
+
+```bash
+export ACG_CONTEXT_DIR=/absolute/path/to/company-repo
+export ACG_CONTEXT_ID=payments-platform
+./deploy/aws/deploy.sh --auto-approve
+```
+
+The script:
+
+1. verifies the active AWS account;
+2. builds an isolated Lambda ZIP;
+3. validates and applies Terraform;
+4. uploads the selected context to encrypted S3;
+5. waits for `/health`;
+6. obtains a Cognito client-credentials token;
+7. calls `/v1/capsules` and verifies the response; and
+8. saves client settings to `deploy/aws/.acg-deployment.env` with mode `600`.
+
+That generated file contains a Cognito client secret. It is ignored by Git and must be handled as a
+secret.
+
+### 4. Use the deployed gateway
+
+Invoke the default task:
+
+```bash
+./deploy/aws/invoke.sh
+```
+
+Pass a task type, context-relative path, prompt, and context ID:
+
+```bash
+./deploy/aws/invoke.sh \
+  iac_security \
+  terraform/prod/payments/lambda.tf \
+  "Review this change for security and blast-radius risk" \
+  payments-platform
+```
+
+Upload or replace another context source without redeploying:
+
+```bash
+./deploy/aws/upload-context.sh /absolute/path/to/another-repo another-context
+```
+
+Get a fresh OAuth access token for integration with another agent:
+
+```bash
+token=$(./deploy/aws/get-token.sh)
+```
+
+See [deploy/aws/README.md](deploy/aws/README.md) for direct API examples, operations, security,
+cost controls, troubleshooting, and teardown.
+
+## Local Quick Start
+
+```bash
 python -m venv .venv
 . .venv/bin/activate
 pip install -e ".[dev]"
-
 acg demo --repo examples/sample_repo --out build/demo
 ```
 
-Expected output:
+Generated outputs include the context graph, slices, capsule, insights, audit record, and metrics in
+`build/demo/`.
 
-```text
-capsule_facts=... denied=... cache_hit=... audit_id=...
-```
-
-Generated files:
-
-- `build/demo/context-graph.json`
-- `build/demo/context-slices.json`
-- `build/demo/context-capsule.json`
-- `build/demo/context-insights.json`
-- `build/demo/audit-record.json`
-- `build/demo/metrics.json`
-
-## CLI Examples
-
-Build a context graph:
+Run tests:
 
 ```bash
-acg ingest examples/sample_repo --out build/context-graph.json
+pytest -q
+python -m compileall src tests
 ```
 
-Build slices:
-
-```bash
-acg slice build/context-graph.json --out build/context-slices.json
-```
-
-Request a task-scoped capsule:
-
-```bash
-acg capsule build/context-slices.json \
-  --task-type iac_security \
-  --path terraform/prod/payments/lambda.tf \
-  --prompt "Review this Terraform change for security and blast-radius risk" \
-  --out build/context-capsule.json \
-  --audit-out build/audit-record.json
-```
-
-Generate context insights:
-
-```bash
-acg insights build/context-capsule.json --out build/context-insights.json
-```
-
-## API Mode
+## Local API and Docker
 
 ```bash
 pip install -e ".[api]"
 uvicorn agent_context_gateway.api:app --reload
 ```
 
-Endpoints:
+Local API mode intentionally uses demo credentials:
 
-- `GET /health`
-- `POST /v1/capsules`
-- `POST /v1/insights`
-
-## Using Amazon Cognito for Authentication
-
-Amazon Cognito can be used as the identity provider in front of Agent Context Gateway when the
-gateway is deployed as an internal API. In this pattern, Cognito authenticates users or service
-clients, issues JWT access tokens, and the gateway uses token claims to decide which context slices
-can be released for a task.
-
-Typical flow:
-
-```text
-User or Agent Client
-        |
-        v
-Amazon Cognito User Pool
-        |
-        v
-JWT Access Token
-        |
-        v
-API Gateway / ALB / Service Middleware
-        |
-        v
-Agent Context Gateway Policy Engine
-        |
-        v
-Task-Scoped Context Capsule
-```
-
-Recommended claim mapping:
-
-- `sub`: stable caller identity for audit records.
-- `client_id` or `aud`: application or agent identity.
-- `cognito:groups`: team, role, or environment access groups.
-- custom claims such as `tenant`, `environment`, or `repo_scope`: policy inputs for context release.
-
-Example policy request shape after JWT validation:
-
-```json
-{
-  "agent": "iac-review-agent",
-  "identity": {
-    "provider": "cognito",
-    "subject": "user-or-client-sub",
-    "client_id": "agent-client-id",
-    "groups": ["platform-engineering"],
+```bash
+curl -sS http://127.0.0.1:8000/v1/capsules \
+  -H 'content-type: application/json' \
+  -H 'x-agent-api-key: demo-secreviewagent-key' \
+  -d '{
+    "task_type": "iac_security",
+    "path": "terraform/prod/payments/lambda.tf",
+    "prompt": "Review this Terraform change",
     "environment": "prod"
-  },
-  "task_type": "iac_security_review",
-  "path": "terraform/prod/payments/lambda.tf"
-}
+  }'
 ```
 
-Deployment options:
+Docker:
 
-- API Gateway with a Cognito authorizer validates the token before traffic reaches the gateway.
-- Application Load Balancer with Cognito authentication handles browser-based sign-in.
-- Service middleware validates Cognito JWTs directly using the user pool JWKS endpoint.
+```bash
+docker build -t agent-context-gateway-ai .
+docker run --rm -p 8080:8080 agent-context-gateway-ai
+```
 
-Policy guidance:
+The public AWS deployment does not use the demo API keys. API Gateway verifies Cognito JWTs before
+invoking Lambda, and the gateway maps verified client claims to policy inputs.
 
-- Treat Cognito authentication as identity proof, not automatic authorization.
-- Map groups and custom claims to allowed repositories, environments, task types, and sensitivity
-  levels.
-- Deny context release by default when claims are missing, expired, or outside the requested scope.
-- Store caller identity, client identity, task type, selected slices, denied slices, and token
-  metadata in audit records.
-- Use short token lifetimes for interactive agents and separate app clients for automated agents.
+## Policy and Audit Behavior
 
-## Production Integration Pattern
+The default policy is in `config/policy.example.json`. AWS packages that file and loads it through
+`ACG_POLICY_FILE`. Policy controls task sensitivity, path matching, capsule lifetime, approval-gated
+restricted context, and freshness limits.
 
-For production, replace local demo pieces with enterprise services:
+For each authenticated AWS request, the gateway persists:
 
-- identity: SSO/OIDC service identity, workload identity, or GitHub App identity
-- secrets: KMS, Vault, or cloud secret manager
-- storage: encrypted object store or database with row-level access policy
-- audit: immutable log sink, SIEM, or record store
-- policy: OPA, Cedar, Rego, or internal policy service
-- model routing: internal LLM gateway with cost and cache telemetry
-- deployment: private Kubernetes service behind internal gateway
+- derived context slices;
+- selected and denied slice IDs;
+- caller/client identity;
+- source hashes and freshness metadata;
+- capsule hash and policy version;
+- cache-hit and token-reduction metrics.
 
-## Product Positioning
+## Production Hardening
 
-Agent Context Gateway is for platform teams that want:
+The automated deployment is suitable for a controlled evaluation or pilot. Before broad production
+use:
 
-- lower token usage without lowering agent usefulness
-- secure shared memory for multiple agents
-- secure context release for internal AI agents
-- audit-ready AI governance
-- reusable internal platform integration
-- visibility into AI context cost and cache hit rate
+- replace the generated shared machine client with one Cognito client per agent/workload;
+- set task and sensitivity policy per client or introduce a dedicated policy service;
+- enable Cognito deletion protection and remote encrypted Terraform state;
+- configure alarms, budgets, WAF/rate limits, and organization log retention;
+- add private networking if enterprise policy requires it;
+- review repository content before upload and exclude unsupported or sensitive raw files; and
+- red-team prompt injection, cross-context access, over-broad release, and approval workflows.
 
-This clean code copy intentionally includes only source, tests, examples, config, and deploy
-templates. Generated artifacts, site files, and private deployment outputs are excluded.
+See [SECURITY.md](SECURITY.md) for trust boundaries.
+
+## Remove the AWS Deployment
+
+```bash
+./deploy/aws/destroy.sh
+```
+
+Terraform will show the resources to remove and request confirmation. The S3 bucket is configured
+for evaluation teardown and its uploaded objects are removed with the stack.
 
 ## License
 
-See `LICENSE`.
+MIT. See [LICENSE](LICENSE).
 
 ## Disclaimer
 

@@ -1,9 +1,21 @@
-output "context_bucket" {
-  value = aws_s3_bucket.context.id
+output "aws_account_id" {
+  value = data.aws_caller_identity.current.account_id
 }
 
-output "kms_key_arn" {
-  value = aws_kms_key.context.arn
+output "aws_region" {
+  value = data.aws_region.current.region
+}
+
+output "api_url" {
+  value = aws_apigatewayv2_stage.default.invoke_url
+}
+
+output "health_url" {
+  value = "${aws_apigatewayv2_stage.default.invoke_url}/health"
+}
+
+output "context_bucket" {
+  value = aws_s3_bucket.context.id
 }
 
 output "context_slices_table" {
@@ -18,22 +30,23 @@ output "audit_events_table" {
   value = aws_dynamodb_table.audit_events.name
 }
 
-output "ecr_repository_url" {
-  value = aws_ecr_repository.gateway.repository_url
+output "cognito_client_id" {
+  value = aws_cognito_user_pool_client.gateway.id
 }
 
-output "ecs_cluster_name" {
-  value = aws_ecs_cluster.gateway.name
+output "cognito_client_secret" {
+  value     = aws_cognito_user_pool_client.gateway.client_secret
+  sensitive = true
 }
 
-output "alb_dns_name" {
-  value = aws_lb.gateway.dns_name
+output "cognito_scope" {
+  value = "${aws_cognito_resource_server.gateway.identifier}/use"
 }
 
-output "app_url" {
-  value = "http://${aws_lb.gateway.dns_name}"
+output "cognito_token_url" {
+  value = "https://${aws_cognito_user_pool_domain.gateway.domain}.auth.${data.aws_region.current.region}.amazoncognito.com/oauth2/token"
 }
 
-output "health_url" {
-  value = "http://${aws_lb.gateway.dns_name}/health"
+output "lambda_function_name" {
+  value = aws_lambda_function.gateway.function_name
 }

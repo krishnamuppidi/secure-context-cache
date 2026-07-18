@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+import json
+import os
+from copy import deepcopy
+from pathlib import Path
+
 from .models import AgentIdentity, ContextSlice, DeniedSlice, TaskRequest
 
 SENSITIVITY_RANK = {"low": 0, "medium": 1, "high": 2, "restricted": 3}
@@ -16,7 +21,24 @@ DEFAULT_POLICY = {
     },
     "required_path_match_tasks": ["code_review", "iac_security"],
     "approval_required_sensitivities": ["restricted"],
+    "max_slice_age_days": 30,
 }
+
+
+def load_policy(path: str | Path | None = None) -> dict:
+    """Load an optional policy file while preserving safe defaults."""
+    configured_path = path or os.getenv("ACG_POLICY_FILE")
+    policy = deepcopy(DEFAULT_POLICY)
+    if not configured_path:
+        return policy
+    policy_path = Path(configured_path)
+    if not policy_path.is_file():
+        raise FileNotFoundError(f"policy file does not exist: {policy_path}")
+    override = json.loads(policy_path.read_text())
+    if not isinstance(override, dict):
+        raise ValueError("policy file must contain a JSON object")
+    policy.update(override)
+    return policy
 
 
 def rank(value: str) -> int:

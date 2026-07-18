@@ -4,6 +4,7 @@ import pytest
 
 from agent_context_gateway.gateway import AgentContextGateway
 from agent_context_gateway.models import ContextSlice, TaskRequest
+from agent_context_gateway.policy import load_policy
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -72,6 +73,20 @@ def test_repeated_task_uses_cache() -> None:
     second, _ = gateway.request_capsule(task, slices, api_key="demo-secreviewagent-key")
     assert first.cache_hit is False
     assert second.cache_hit is True
+    assert first.audit_id != second.audit_id
+    changed_prompt = TaskRequest(
+        task_type="iac_security",
+        path="terraform/prod/payments/lambda.tf",
+        prompt="review a different change",
+        agent_id="secreviewagent",
+        environment="prod",
+    )
+    third, _ = gateway.request_capsule(
+        changed_prompt,
+        slices,
+        api_key="demo-secreviewagent-key",
+    )
+    assert third.cache_hit is False
 
 
 def test_restricted_context_requires_explicit_approval() -> None:
@@ -105,3 +120,12 @@ def test_restricted_context_requires_explicit_approval() -> None:
     )
     assert "restricted-prod-identity-path" in capsule.approval_required_slice_ids
     assert any("approval required" in item.reason for item in capsule.denied)
+
+
+def test_policy_file_overrides_defaults(tmp_path: Path) -> None:
+    policy_path = tmp_path / "policy.json"
+    policy_path.write_text('{"version": "test", "ttl_minutes": 5}')
+    policy = load_policy(policy_path)
+    assert policy["version"] == "test"
+    assert policy["ttl_minutes"] == 5
+    assert policy["max_sensitivity_by_task"]

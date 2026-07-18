@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from datetime import datetime, timezone
+from uuid import uuid4
 
 from .models import (
     AgentIdentity,
@@ -78,7 +79,7 @@ def build_capsule(
             )
         )
     request_id = task.normalized_request_id()
-    audit_id = stable_id("audit", request_id, identity.agent_id)
+    audit_id = stable_id("audit", request_id, identity.agent_id, uuid4().hex)
     raw = json.dumps(
         {
             "request_id": request_id,
