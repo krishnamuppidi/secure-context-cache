@@ -29,7 +29,14 @@ project=${ACG_PROJECT:-agent-context-gateway}
 environment=${ACG_ENVIRONMENT:-dev}
 context_id=${ACG_CONTEXT_ID:-default}
 context_dir=${ACG_CONTEXT_DIR:-$repo_root/examples/sample_repo}
+policy_file=${ACG_POLICY_FILE:-$repo_root/config/policy.example.json}
+allowed_task_types=${ACG_ALLOWED_TASK_TYPES:-code_review,iac_security,incident_triage,onboarding,architecture_qa}
+max_sensitivity=${ACG_MAX_SENSITIVITY:-high}
 smoke_task_type=${ACG_SMOKE_TASK_TYPE:-iac_security}
+if [[ ! -d "$context_dir" ]]; then
+  echo "Context directory does not exist: $context_dir" >&2
+  exit 1
+fi
 if [[ -n "${ACG_SMOKE_PATH:-}" ]]; then
   smoke_path=$ACG_SMOKE_PATH
 elif [[ "$context_dir" == "$repo_root/examples/sample_repo" ]]; then
@@ -46,12 +53,30 @@ else
   smoke_path=${smoke_file#"$context_dir"/}
 fi
 
-if [[ ! -d "$context_dir" ]]; then
-  echo "Context directory does not exist: $context_dir" >&2
+if [[ ! -f "$policy_file" ]]; then
+  echo "Policy file does not exist: $policy_file" >&2
+  exit 1
+fi
+if ! POLICY_FILE="$policy_file" python3 -c \
+  'import json, os; value=json.load(open(os.environ["POLICY_FILE"])); isinstance(value, dict) or (_ for _ in ()).throw(SystemExit(1))' \
+  >/dev/null; then
+  echo "Policy file must contain one valid JSON object: $policy_file" >&2
   exit 1
 fi
 if [[ ! "$context_id" =~ ^[a-zA-Z0-9][a-zA-Z0-9._-]{0,63}$ ]]; then
   echo "ACG_CONTEXT_ID must use letters, numbers, dot, underscore, or hyphen (max 64)." >&2
+  exit 1
+fi
+if [[ ! "$max_sensitivity" =~ ^(low|medium|high)$ ]]; then
+  echo "ACG_MAX_SENSITIVITY must be low, medium, or high." >&2
+  exit 1
+fi
+allowed_task_types_json=$(ALLOWED_TASK_TYPES="$allowed_task_types" python3 -c \
+  'import json, os; values=[v.strip() for v in os.environ["ALLOWED_TASK_TYPES"].split(",") if v.strip()]; values or (_ for _ in ()).throw(SystemExit("ACG_ALLOWED_TASK_TYPES must not be empty")); print(json.dumps(values))')
+if ! ALLOWED_TASK_TYPES="$allowed_task_types" SMOKE_TASK_TYPE="$smoke_task_type" python3 -c \
+  'import os, sys; allowed={v.strip() for v in os.environ["ALLOWED_TASK_TYPES"].split(",")}; sys.exit(0 if os.environ["SMOKE_TASK_TYPE"] in allowed else 1)' \
+  >/dev/null; then
+  echo "ACG_SMOKE_TASK_TYPE must be included in ACG_ALLOWED_TASK_TYPES." >&2
   exit 1
 fi
 
@@ -87,7 +112,7 @@ python3 -m venv "$build_venv"
 "$build_venv/bin/pip" install --quiet --disable-pip-version-check --upgrade pip
 "$build_venv/bin/pip" install --quiet --disable-pip-version-check \
   --target "$package_dir" "$repo_root[aws]"
-cp "$repo_root/config/policy.example.json" "$package_dir/config/policy.json"
+cp "$policy_file" "$package_dir/config/policy.json"
 (cd "$package_dir" && zip -qr "$package_zip" .)
 package_hash=$(openssl dgst -sha256 -binary "$package_zip" | openssl base64 -A)
 
@@ -105,7 +130,9 @@ terraform -chdir="$terraform_dir" apply "${apply_args[@]}" \
   -var="environment=$environment" \
   -var="expected_aws_account_id=$account_id" \
   -var="lambda_package_path=$package_zip" \
-  -var="lambda_package_hash=$package_hash"
+  -var="lambda_package_hash=$package_hash" \
+  -var="allowed_task_types=$allowed_task_types_json" \
+  -var="max_sensitivity=$max_sensitivity"
 
 api_url=$(terraform -chdir="$terraform_dir" output -raw api_url)
 health_url=$(terraform -chdir="$terraform_dir" output -raw health_url)
@@ -115,13 +142,29 @@ client_secret=$(terraform -chdir="$terraform_dir" output -raw cognito_client_sec
 token_url=$(terraform -chdir="$terraform_dir" output -raw cognito_token_url)
 scope=$(terraform -chdir="$terraform_dir" output -raw cognito_scope)
 
+sync_filters=(
+  --exclude '*'
+  --include '*.tf'
+  --include '*.tfvars'
+  --include '*.yaml'
+  --include '*.yml'
+  --include '*.json'
+  --include '*.md'
+  --include '*.py'
+  --include '*.go'
+  --exclude '.git/*'
+  --exclude '*/.git/*'
+  --exclude '.venv/*'
+  --exclude '*/.venv/*'
+  --exclude 'build/*'
+  --exclude '*/build/*'
+  --exclude '__pycache__/*'
+  --exclude '*/__pycache__/*'
+)
 aws "${aws_args[@]}" s3 sync "$context_dir" \
   "s3://$context_bucket/sources/$context_id/" \
   --delete \
-  --exclude '.git/*' \
-  --exclude '.venv/*' \
-  --exclude 'build/*' \
-  --exclude '__pycache__/*'
+  "${sync_filters[@]}"
 
 health_ok=false
 for _attempt in $(seq 1 30); do
@@ -152,12 +195,14 @@ smoke_response=$(curl --fail --silent --show-error \
   -H "content-type: application/json" \
   --data "$smoke_payload")
 SMOKE_RESPONSE="$smoke_response" python3 -c \
-  'import json, os; d=json.loads(os.environ["SMOKE_RESPONSE"]); print(f"Authenticated smoke test passed: audit_id={d[\"capsule\"][\"audit_id\"]}")'
+  'import json, os; d=json.loads(os.environ["SMOKE_RESPONSE"]); facts=d["capsule"]["facts"]; facts or (_ for _ in ()).throw(SystemExit("authenticated smoke test returned no released facts")); print(f"Authenticated smoke test passed: audit_id={d[\"capsule\"][\"audit_id\"]}")'
 
 umask 077
 {
   printf 'ACG_AWS_ACCOUNT_ID=%s\n' "$account_id"
   printf 'ACG_AWS_REGION=%s\n' "$aws_region"
+  printf 'ACG_PROJECT=%s\n' "$project"
+  printf 'ACG_ENVIRONMENT=%s\n' "$environment"
   printf 'ACG_API_URL=%s\n' "$api_url"
   printf 'ACG_HEALTH_URL=%s\n' "$health_url"
   printf 'ACG_CONTEXT_BUCKET=%s\n' "$context_bucket"
@@ -166,6 +211,8 @@ umask 077
   printf 'ACG_CLIENT_SECRET=%s\n' "$client_secret"
   printf 'ACG_TOKEN_URL=%s\n' "$token_url"
   printf 'ACG_SCOPE=%s\n' "$scope"
+  printf 'ACG_ALLOWED_TASK_TYPES=%s\n' "$allowed_task_types"
+  printf 'ACG_MAX_SENSITIVITY=%s\n' "$max_sensitivity"
   printf 'AWS_PROFILE=%s\n' "${AWS_PROFILE:-}"
 } >"$deployment_env"
 chmod 600 "$deployment_env"

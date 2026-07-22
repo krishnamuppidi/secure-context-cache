@@ -17,6 +17,7 @@ from .aws_runtime import (
     S3ContextStore,
 )
 from .gateway import AgentContextGateway
+from .identity import AgentRegistry
 from .models import AgentIdentity, TaskRequest
 from .policy import DEFAULT_POLICY
 
@@ -30,7 +31,7 @@ def _runtime_mode() -> str:
 
 def _build_gateway() -> AgentContextGateway:
     if _runtime_mode() != "aws":
-        return AgentContextGateway()
+        return AgentContextGateway(registry=AgentRegistry.from_env_or_demo())
     return AgentContextGateway(
         cache=DynamoContextSliceCache.from_env(),
         audit_store=DynamoAuditStore.from_env(),
@@ -38,7 +39,7 @@ def _build_gateway() -> AgentContextGateway:
     )
 
 
-app = FastAPI(title="Agent Context Gateway", version="0.2.0")
+app = FastAPI(title="Agent Context Gateway", version="0.3.0")
 gateway = _build_gateway()
 context_store = S3ContextStore.from_env() if _runtime_mode() == "aws" else None
 
@@ -50,7 +51,9 @@ class CapsuleRequest(BaseModel):
     path: str
     prompt: str
     agent_id: str = "secreviewagent"
+    user: str = "developer"
     environment: str = "unknown"
+    request_id: str = ""
 
 
 def _claims_from_request(request: Request) -> dict[str, str]:
@@ -97,6 +100,7 @@ def _task(payload: CapsuleRequest, identity: AgentIdentity, user: str) -> TaskRe
         agent_id=identity.agent_id,
         user=user,
         environment=payload.environment,
+        request_id=payload.request_id,
     )
 
 
@@ -119,7 +123,9 @@ def _response(payload: CapsuleRequest, request: Request, api_key: str | None) ->
                 path=payload.path,
                 prompt=payload.prompt,
                 agent_id=payload.agent_id,
+                user=payload.user,
                 environment=payload.environment,
+                request_id=payload.request_id,
             )
             capsule, metrics = gateway.request_capsule(task, slices, api_key=api_key)
     except HTTPException:

@@ -1,9 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: agent-context-gateway-policy
+data:
+  policy.json: |
+    {
+      "version": "2026-06-30",
+      "ttl_minutes": 30,
+      "max_sensitivity_by_task": {
+        "code_review": "medium",
+        "iac_security": "high",
+        "incident_triage": "high",
+        "onboarding": "low",
+        "architecture_qa": "medium"
+      },
+      "required_path_match_tasks": ["code_review", "iac_security"],
+      "approval_required_sensitivities": ["restricted"],
+      "max_slice_age_days": 30
+    }
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: agent-context-gateway
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: agent-context-gateway
@@ -12,14 +33,65 @@ spec:
       labels:
         app: agent-context-gateway
     spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: gateway
-          image: agent-context-gateway:latest
+          image: agent-context-gateway-ai:0.3.0
+          imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8080
+            - name: http
+              containerPort: 8080
           env:
-            - name: ACG_POLICY_MODE
-              value: "deny-by-default"
+            - name: ACG_ALLOWED_REPO_ROOT
+              value: /app/examples/sample_repo
+            - name: ACG_LOCAL_AGENT_ID
+              value: local-agent
+            - name: ACG_LOCAL_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: agent-context-gateway-credentials
+                  key: api-key
+            - name: ACG_LOCAL_ALLOWED_TASK_TYPES
+              value: code_review,iac_security,incident_triage,onboarding,architecture_qa
+            - name: ACG_LOCAL_MAX_SENSITIVITY
+              value: high
+            - name: ACG_POLICY_FILE
+              value: /etc/acg/policy.json
+          volumeMounts:
+            - name: policy
+              mountPath: /etc/acg
+              readOnly: true
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+      volumes:
+        - name: policy
+          configMap:
+            name: agent-context-gateway-policy
 ---
 apiVersion: v1
 kind: Service
@@ -29,6 +101,6 @@ spec:
   selector:
     app: agent-context-gateway
   ports:
-    - port: 80
-      targetPort: 8080
-
+    - name: http
+      port: 80
+      targetPort: http

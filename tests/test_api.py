@@ -13,7 +13,9 @@ def test_local_api_requires_key_and_returns_capsule() -> None:
         "path": "terraform/prod/payments/lambda.tf",
         "prompt": "review this change",
         "agent_id": "secreviewagent",
+        "user": "api-test-user",
         "environment": "prod",
+        "request_id": "api-test-request",
     }
     assert client.post("/v1/capsules", json=payload).status_code == 401
     response = client.post(
@@ -23,6 +25,8 @@ def test_local_api_requires_key_and_returns_capsule() -> None:
     )
     assert response.status_code == 200
     assert response.json()["capsule"]["facts"]
+    assert response.json()["capsule"]["request_id"] == "api-test-request"
+    assert response.json()["capsule"]["task"]["user"] == "api-test-user"
 
 
 def test_cognito_claims_map_to_agent_identity(monkeypatch) -> None:

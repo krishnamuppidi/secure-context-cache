@@ -22,6 +22,9 @@ Lambda package, Terraform state, or repository. The running gateway uses an IAM 
 
 ## Architecture
 
+See [Architecture](docs/ARCHITECTURE.md) for data objects, trust boundaries, cache behavior, and
+current runtime limits.
+
 ```text
 Local Repo/Docs/IaC --deploy or upload--> Private S3 context prefix
                                                 |
@@ -34,11 +37,13 @@ Agent Client -> Cognito token -> API Gateway HTTPS -> Lambda gateway
 
 The gateway currently ingests `.tf`, `.tfvars`, `.yaml`, `.yml`, `.json`, `.md`, `.py`, and `.go`
 files. It derives context slices, applies sensitivity and task policy, and returns a time-limited
-context capsule plus token metrics.
+context capsule plus token metrics. Read [Context Sources](docs/CONTEXT_SOURCES.md) before uploading
+company material.
 
 ## Deploy to AWS
 
-Prerequisites: Python 3.11+, AWS CLI, Terraform 1.5+, `curl`, `openssl`, and `zip`.
+Prerequisites: Python 3.11+, AWS CLI, Terraform 1.5+, `curl`, `openssl`, `zip`, and Bash on Linux,
+macOS, or WSL.
 
 ### 1. Clone
 
@@ -91,6 +96,14 @@ export ACG_CONTEXT_ID=payments-platform
 ./deploy/aws/deploy.sh --auto-approve
 ```
 
+Optional policy and identity limits:
+
+```bash
+export ACG_POLICY_FILE=/absolute/path/to/policy.json
+export ACG_ALLOWED_TASK_TYPES=code_review,iac_security,architecture_qa
+export ACG_MAX_SENSITIVITY=high
+```
+
 The script:
 
 1. verifies the active AWS account;
@@ -135,8 +148,9 @@ Get a fresh OAuth access token for integration with another agent:
 token=$(./deploy/aws/get-token.sh)
 ```
 
-See [deploy/aws/README.md](deploy/aws/README.md) for direct API examples, operations, security,
-cost controls, troubleshooting, and teardown.
+See [deploy/aws/README.md](deploy/aws/README.md) for direct API examples and deployment details.
+Use the [Operations Runbook](docs/OPERATIONS_RUNBOOK.md) and
+[Troubleshooting Guide](docs/TROUBLESHOOTING.md) for ongoing use.
 
 ## Local Quick Start
 
@@ -159,21 +173,29 @@ python -m compileall src tests
 
 ## Local API and Docker
 
+Configure a non-demo local identity before starting a networked API:
+
 ```bash
 pip install -e ".[api]"
+export ACG_LOCAL_AGENT_ID=local-agent
+export ACG_LOCAL_API_KEY="$(openssl rand -hex 32)"
+export ACG_LOCAL_ALLOWED_TASK_TYPES=code_review,iac_security,architecture_qa
+export ACG_LOCAL_MAX_SENSITIVITY=high
+export ACG_ALLOWED_REPO_ROOT="$(pwd)/examples/sample_repo"
 uvicorn agent_context_gateway.api:app --reload
 ```
 
-Local API mode intentionally uses demo credentials:
+Then call it with the same key and agent ID:
 
 ```bash
 curl -sS http://127.0.0.1:8000/v1/capsules \
   -H 'content-type: application/json' \
-  -H 'x-agent-api-key: demo-secreviewagent-key' \
+  -H "x-agent-api-key: $ACG_LOCAL_API_KEY" \
   -d '{
     "task_type": "iac_security",
     "path": "terraform/prod/payments/lambda.tf",
     "prompt": "Review this Terraform change",
+    "agent_id": "local-agent",
     "environment": "prod"
   }'
 ```
@@ -182,7 +204,11 @@ Docker:
 
 ```bash
 docker build -t agent-context-gateway-ai .
-docker run --rm -p 8080:8080 agent-context-gateway-ai
+docker run --rm -p 8080:8080 \
+  -e ACG_LOCAL_AGENT_ID=local-agent \
+  -e ACG_LOCAL_API_KEY="$ACG_LOCAL_API_KEY" \
+  -e ACG_ALLOWED_REPO_ROOT=/app/examples/sample_repo \
+  agent-context-gateway-ai
 ```
 
 The public AWS deployment does not use the demo API keys. API Gateway verifies Cognito JWTs before
@@ -217,6 +243,23 @@ use:
 - red-team prompt injection, cross-context access, over-broad release, and approval workflows.
 
 See [SECURITY.md](SECURITY.md) for trust boundaries.
+
+## Documentation
+
+- [Getting Started](docs/GETTING_STARTED.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Agent Integration](docs/AGENT_INTEGRATION.md)
+- [API Reference](docs/API_REFERENCE.md)
+- [Policy Guide](docs/POLICY_GUIDE.md)
+- [Context Sources](docs/CONTEXT_SOURCES.md)
+- [AWS Deployment](deploy/aws/README.md)
+- [AWS Deployer IAM](docs/DEPLOYER_IAM.md)
+- [Kubernetes Evaluation](docs/KUBERNETES.md)
+- [Operations Runbook](docs/OPERATIONS_RUNBOOK.md)
+- [Troubleshooting](docs/TROUBLESHOOTING.md)
+- [Production Readiness](docs/PRODUCTION_READINESS.md)
+- [Client Examples](examples/clients/README.md)
+- [Changelog](CHANGELOG.md)
 
 ## Remove the AWS Deployment
 

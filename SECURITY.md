@@ -47,3 +47,7 @@ map each client to explicit task and sensitivity policy.
 - Red-team prompt-injection, over-broad context, and cross-agent leakage scenarios.
 - Add WAF/rate limits, budgets, alarms, remote encrypted Terraform state, and organization-specific
   retention controls.
+
+Operationalize these requirements with the [Policy Guide](docs/POLICY_GUIDE.md),
+[AWS Deployer IAM](docs/DEPLOYER_IAM.md), [Operations Runbook](docs/OPERATIONS_RUNBOOK.md), and
+[Production Readiness Checklist](docs/PRODUCTION_READINESS.md).

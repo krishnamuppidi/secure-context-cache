@@ -28,11 +28,27 @@ aws_args=(--region "$ACG_AWS_REGION")
 if [[ -n "${AWS_PROFILE:-}" ]]; then
   aws_args+=(--profile "$AWS_PROFILE")
 fi
+sync_filters=(
+  --exclude '*'
+  --include '*.tf'
+  --include '*.tfvars'
+  --include '*.yaml'
+  --include '*.yml'
+  --include '*.json'
+  --include '*.md'
+  --include '*.py'
+  --include '*.go'
+  --exclude '.git/*'
+  --exclude '*/.git/*'
+  --exclude '.venv/*'
+  --exclude '*/.venv/*'
+  --exclude 'build/*'
+  --exclude '*/build/*'
+  --exclude '__pycache__/*'
+  --exclude '*/__pycache__/*'
+)
 aws "${aws_args[@]}" s3 sync "$context_dir" \
   "s3://$ACG_CONTEXT_BUCKET/sources/$context_id/" \
   --delete \
-  --exclude '.git/*' \
-  --exclude '.venv/*' \
-  --exclude 'build/*' \
-  --exclude '__pycache__/*'
+  "${sync_filters[@]}"
 echo "Uploaded $context_dir to context_id '$context_id'."
