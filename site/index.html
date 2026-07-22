@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#07110f" />
+    <meta
+      name="description"
+      content="Agent Context Gateway is the open-source context control plane for secure, token-efficient enterprise AI agents."
+    />
+    <meta property="og:title" content="Agent Context Gateway" />
+    <meta
+      property="og:description"
+      content="Give every AI agent the right context—not all the context. Policy-scoped capsules, measurable token reduction, and an audit trail for every release."
+    />
+    <meta property="og:type" content="website" />
+    <title>Agent Context Gateway — The context control plane for enterprise AI</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <nav class="nav" aria-label="Primary navigation">
+      <div class="container nav-inner">
+        <a class="brand" href="#top" aria-label="Agent Context Gateway home">
+          <span class="brand-mark" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </span>
+          <span>Agent Context Gateway</span>
+        </a>
+
+        <button
+          class="menu-button"
+          type="button"
+          aria-expanded="false"
+          aria-controls="nav-links"
+          aria-label="Open navigation"
+        >
+          <span></span><span></span><span></span>
+        </button>
+
+        <div class="nav-links" id="nav-links">
+          <a href="#product">Product</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#use-cases">Use cases</a>
+          <a href="#developers">Developers</a>
+          <a href="#security">Security</a>
+        </div>
+
+        <a
+          class="button button-small nav-cta"
+          href="https://github.com/krishnamuppidi/agent-context-gateway-ai"
+          target="_blank"
+          rel="noreferrer"
+        >
+          View on GitHub <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </nav>
+
+    <main id="main">
+      <header class="hero" id="top">
+        <div class="hero-grid" aria-hidden="true"></div>
+        <div class="hero-glow hero-glow-one" aria-hidden="true"></div>
+        <div class="hero-glow hero-glow-two" aria-hidden="true"></div>
+
+        <div class="container hero-layout">
+          <div class="hero-copy reveal">
+            <a
+              class="release-pill"
+              href="https://github.com/krishnamuppidi/agent-context-gateway-ai"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span class="status-dot"></span>
+              Open source · v0.3.0 · MIT
+              <span aria-hidden="true">→</span>
+            </a>
+            <h1>The context control plane for <span>enterprise AI agents.</span></h1>
+            <p class="hero-lead">
+              Give every agent the right context—not all the context. Cache approved knowledge,
+              release task-scoped capsules under policy, and audit every context decision before
+              the model runs.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#developers">Deploy in your AWS account</a>
+              <a
+                class="button button-ghost"
+                href="https://github.com/krishnamuppidi/agent-context-gateway-ai"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Explore the code <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+            <div class="hero-proof" aria-label="Product capabilities">
+              <span><i aria-hidden="true">✓</i> Policy before prompt</span>
+              <span><i aria-hidden="true">✓</i> AWS deployable</span>
+              <span><i aria-hidden="true">✓</i> Model agnostic</span>
+            </div>
+          </div>
+
+          <div class="gateway-console reveal reveal-delay" aria-label="Gateway request preview">
+            <div class="console-bar">
+              <div class="window-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+              <span>live request · acg-gateway</span>
+              <span class="console-live"><i></i> healthy</span>
+            </div>
+            <div class="console-body">
+              <div class="request-line">
+                <span class="method">POST</span>
+                <code>/v1/capsules</code>
+                <span class="response-code">200</span>
+              </div>
+              <div class="console-section">
+                <span class="console-label">Agent request</span>
+                <div class="json-line"><span>task_type</span><b>"iac_security"</b></div>
+                <div class="json-line"><span>path</span><b>"terraform/prod/payments"</b></div>
+                <div class="json-line"><span>environment</span><b>"prod"</b></div>
+              </div>
+              <div class="pipeline" aria-label="Context decision pipeline">
+                <div class="pipeline-node active">
+                  <span class="node-icon">01</span>
+                  <div><b>Identity verified</b><small>Cognito workload client</small></div>
+                </div>
+                <div class="pipeline-line"><span></span></div>
+                <div class="pipeline-node active">
+                  <span class="node-icon">02</span>
+                  <div><b>Policy evaluated</b><small>task + path + sensitivity</small></div>
+                </div>
+                <div class="pipeline-line"><span></span></div>
+                <div class="pipeline-node active">
+                  <span class="node-icon">03</span>
+                  <div><b>Capsule released</b><small>1 selected · 1 denied</small></div>
+                </div>
+              </div>
+              <div class="console-metrics">
+                <div><span>Full context</span><strong>32</strong><small>tokens</small></div>
+                <div><span>Task capsule</span><strong>16</strong><small>tokens</small></div>
+                <div class="metric-highlight"><span>Demo reduction</span><strong>50%</strong><small>measured</small></div>
+              </div>
+              <p class="demo-note">Fixture-scale repository demo. Not a production benchmark.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="container service-strip reveal">
+          <span>Designed to work with</span>
+          <div class="service-list" aria-label="Supported platform patterns">
+            <b>Amazon Bedrock</b>
+            <b>API Gateway</b>
+            <b>AWS Lambda</b>
+            <b>Amazon Cognito</b>
+            <b>Amazon S3 + KMS</b>
+            <b>DynamoDB</b>
+          </div>
+        </div>
+      </header>
+
+      <section class="section problem-section" id="product">
+        <div class="container">
+          <div class="section-heading reveal">
+            <span class="eyebrow">Why now</span>
+            <h2>Agents do not have a memory problem.<br />They have a <span>context boundary</span> problem.</h2>
+            <p>
+              Enterprise agents need repositories, runbooks, policies, service maps, and cloud
+              metadata to be useful. Sending all of it on every request is expensive, slow, and
+              difficult to govern.
+            </p>
+          </div>
+
+          <div class="bento-grid">
+            <article class="bento bento-large reveal">
+              <div class="bento-copy">
+                <span class="card-index">01 · Cost</span>
+                <h3>Stop paying to resend the same background context.</h3>
+                <p>
+                  Build reusable context slices once. Select only the facts needed for each task,
+                  track cache reuse, and compare capsule tokens with full-context tokens.
+                </p>
+              </div>
+              <div class="token-visual" aria-hidden="true">
+                <div class="token-stack full">
+                  <span>Repository</span><span>Runbooks</span><span>Policies</span><span>Incidents</span><span>Cloud map</span>
+                </div>
+                <div class="compress-arrow">→</div>
+                <div class="token-stack capsule"><span>Task capsule</span><strong>minimum approved facts</strong></div>
+              </div>
+            </article>
+
+            <article class="bento reveal">
+              <span class="card-index">02 · Security</span>
+              <div class="mini-icon lock-icon" aria-hidden="true"><span></span></div>
+              <h3>Relevance is not permission.</h3>
+              <p>Apply identity, task, path, environment, sensitivity, and approval policy before retrieval reaches the model.</p>
+            </article>
+
+            <article class="bento reveal">
+              <span class="card-index">03 · Evidence</span>
+              <div class="audit-preview" aria-hidden="true">
+                <span><i class="green"></i> 1 slice released</span>
+                <span><i class="red"></i> 1 slice denied</span>
+                <span><i class="blue"></i> source hashes recorded</span>
+              </div>
+              <h3>Make every release explainable.</h3>
+              <p>Record caller identity, selected and denied slices, source hashes, freshness, policy version, capsule hash, and token metrics.</p>
+            </article>
+
+            <article class="bento bento-wide reveal">
+              <span class="card-index">04 · Platform</span>
+              <h3>One governed context fabric. Many agents.</h3>
+              <div class="agent-chips" aria-label="Example agent use cases">
+                <span>Security review</span><span>Code review</span><span>Incident response</span><span>Architecture Q&amp;A</span><span>Developer onboarding</span><span>FinOps</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section architecture-section" id="architecture">
+        <div class="container">
+          <div class="section-heading centered reveal">
+            <span class="eyebrow">How it works</span>
+            <h2>A deterministic policy boundary <span>before</span> the model.</h2>
+            <p>
+              The gateway converts approved enterprise sources into reusable slices and releases a
+              short-lived capsule for one authenticated workload and one task.
+            </p>
+          </div>
+
+          <div class="architecture reveal" aria-label="Agent Context Gateway architecture">
+            <div class="arch-column arch-sources">
+              <span class="arch-label">Approved sources</span>
+              <div class="source-card"><i>GH</i><span><b>Repositories</b><small>code · IaC · docs</small></span></div>
+              <div class="source-card"><i>RB</i><span><b>Runbooks</b><small>operations · incidents</small></span></div>
+              <div class="source-card"><i>CM</i><span><b>Cloud metadata</b><small>services · ownership</small></span></div>
+            </div>
+
+            <div class="arch-arrow"><span>ingest</span><i>→</i></div>
+
+            <div class="arch-gateway">
+              <span class="arch-label">Agent Context Gateway</span>
+              <div class="gateway-core">
+                <div class="core-top"><span class="brand-mark small"><span></span><span></span><span></span></span><b>Context control plane</b></div>
+                <div class="core-step"><span>1</span><p><b>Normalize</b><small>graph + provenance</small></p></div>
+                <div class="core-step"><span>2</span><p><b>Slice &amp; cache</b><small>task-ready context</small></p></div>
+                <div class="core-step accent"><span>3</span><p><b>Evaluate policy</b><small>identity + scope + sensitivity</small></p></div>
+                <div class="core-step"><span>4</span><p><b>Build capsule</b><small>facts + refs + expiry</small></p></div>
+              </div>
+            </div>
+
+            <div class="arch-arrow"><span>release</span><i>→</i></div>
+
+            <div class="arch-column arch-output">
+              <span class="arch-label">Governed output</span>
+              <div class="output-card allowed"><span>✓</span><p><b>Task capsule</b><small>approved facts only</small></p></div>
+              <div class="output-card denied"><span>×</span><p><b>Denied context</b><small>kept outside prompt</small></p></div>
+              <div class="output-card audit"><span>≡</span><p><b>Audit record</b><small>decision + metrics</small></p></div>
+            </div>
+          </div>
+
+          <div class="principle-row reveal">
+            <div><span>01</span><p><b>Identity-aware</b>Every agent or workload has a caller identity and policy scope.</p></div>
+            <div><span>02</span><p><b>Deny by default</b>Restricted context stays blocked until deterministic controls allow it.</p></div>
+            <div><span>03</span><p><b>Source-backed</b>Capsules preserve references, hashes, freshness, and expiry.</p></div>
+            <div><span>04</span><p><b>Model agnostic</b>Use the capsule with Bedrock, an internal gateway, or another approved provider.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section economics-section" id="economics">
+        <div class="container economics-layout">
+          <div class="economics-copy reveal">
+            <span class="eyebrow">Token economics</span>
+            <h2>Measure context efficiency on every request.</h2>
+            <p>
+              The gateway reports full-context tokens, capsule tokens, token reduction, selected
+              slices, denied slices, and cache state. Teams can measure context cost by agent,
+              workload, and task family instead of treating prompt growth as invisible overhead.
+            </p>
+            <div class="evidence-card">
+              <span class="evidence-badge">Reproducible demo evidence</span>
+              <div class="evidence-numbers">
+                <div><strong>32</strong><span>full-context tokens</span></div>
+                <div><strong>16</strong><span>capsule tokens</span></div>
+                <div><strong>50%</strong><span>token reduction</span></div>
+              </div>
+              <p>
+                Generated by the repository's included Terraform fixture and recorded in
+                <code>build/demo/metrics.json</code>. This demonstrates measurement behavior; it is
+                not a claim of universal production savings.
+              </p>
+              <a href="https://github.com/krishnamuppidi/agent-context-gateway-ai#local-quick-start" target="_blank" rel="noreferrer">Reproduce the demo <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+
+          <div class="calculator reveal reveal-delay">
+            <div class="calculator-head">
+              <span>Illustrative savings calculator</span>
+              <small>Change the assumptions</small>
+            </div>
+            <div class="calculator-fields">
+              <label>
+                Agent tasks per day
+                <span class="input-shell"><input id="tasks" type="number" min="1" step="100" value="1000" /><b>tasks</b></span>
+              </label>
+              <label>
+                Full context per task
+                <span class="input-shell"><input id="tokens" type="number" min="1" step="1000" value="20000" /><b>tokens</b></span>
+              </label>
+              <label>
+                Context reduction
+                <span class="input-shell"><input id="reduction" type="number" min="0" max="100" step="1" value="50" /><b>%</b></span>
+              </label>
+              <label>
+                Input price per 1M tokens
+                <span class="input-shell"><b>$</b><input id="price" type="number" min="0" step="0.01" value="3" /></span>
+              </label>
+            </div>
+            <div class="calculator-output" aria-live="polite">
+              <div><span>Tokens avoided / month</span><strong id="saved-tokens">300M</strong></div>
+              <div><span>Illustrative input cost avoided</span><strong id="saved-cost">$900</strong></div>
+            </div>
+            <p>Illustrative arithmetic only. Actual savings depend on workload, model pricing, cache design, and policy.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section use-cases-section" id="use-cases">
+        <div class="container">
+          <div class="section-heading reveal">
+            <span class="eyebrow">Reference use cases</span>
+            <h2>From security review to every context-hungry agent.</h2>
+            <p>
+              Start with a bounded workflow, prove quality and context reduction, then reuse the
+              same control plane across the agent portfolio.
+            </p>
+          </div>
+
+          <div class="showcase-grid">
+            <article class="showcase reveal">
+              <div class="showcase-top">
+                <span class="use-number">Use case 01</span>
+                <span class="use-status">Open-source reference</span>
+              </div>
+              <div class="use-icon security-icon" aria-hidden="true"><span></span></div>
+              <h3>SecureReviewAgent</h3>
+              <p class="showcase-lead">
+                Ground Terraform and Kubernetes reviews in governed architecture context without
+                exposing the entire infrastructure memory to every pull-request task.
+              </p>
+              <div class="mini-flow" aria-label="SecureReviewAgent integration flow">
+                <span>GitHub PR</span><i>→</i><span>ACG capsule</span><i>→</i><span>Security agent</span><i>→</i><span>Review</span>
+              </div>
+              <ul class="check-list">
+                <li>Request only relevant IAM, network, environment, policy, and owner slices.</li>
+                <li>Keep unrelated topology and restricted identity paths outside the prompt.</li>
+                <li>Link findings to the capsule hash, source references, and audit decision.</li>
+              </ul>
+              <div class="showcase-actions">
+                <a class="button button-primary" href="https://github.com/krishnamuppidi/secreviewagent-ai" target="_blank" rel="noreferrer">SecureReviewAgent code ↗</a>
+                <a class="text-link" href="https://github.com/krishnamuppidi/agent-context-gateway-ai/blob/main/docs/AGENT_INTEGRATION.md" target="_blank" rel="noreferrer">Integration guide →</a>
+              </div>
+            </article>
+
+            <article class="showcase showcase-blue reveal reveal-delay">
+              <div class="showcase-top">
+                <span class="use-number">Use case 02</span>
+                <span class="use-status">AWS reference path</span>
+              </div>
+              <div class="use-icon bedrock-icon" aria-hidden="true"><span></span><span></span><span></span></div>
+              <h3>Amazon Bedrock enterprise agent</h3>
+              <p class="showcase-lead">
+                Fetch a policy-scoped capsule first, then send only released facts to an approved
+                Bedrock model for architecture Q&amp;A, operations, onboarding, or engineering help.
+              </p>
+              <div class="mini-flow" aria-label="Amazon Bedrock integration flow">
+                <span>Agent</span><i>→</i><span>ACG API</span><i>→</i><span>Capsule</span><i>→</i><span>Bedrock</span>
+              </div>
+              <ul class="check-list">
+                <li>Authenticate workloads through Cognito machine-to-machine OAuth.</li>
+                <li>Preserve provenance and treat released context as data, never instructions.</li>
+                <li>Keep model choice separate from the context authorization boundary.</li>
+              </ul>
+              <div class="showcase-actions">
+                <a class="button button-primary blue" href="https://github.com/krishnamuppidi/agent-context-gateway-ai/blob/main/examples/clients/python/bedrock_converse.py" target="_blank" rel="noreferrer">Bedrock example ↗</a>
+                <a class="text-link" href="https://github.com/krishnamuppidi/agent-context-gateway-ai/tree/main/examples/clients" target="_blank" rel="noreferrer">All client examples →</a>
+              </div>
+            </article>
+          </div>
+
+          <div class="use-grid">
+            <article class="use-card reveal"><span>CR</span><h3>Code review</h3><p>Ground PR feedback in ownership, APIs, dependencies, tests, and deployment rules.</p></article>
+            <article class="use-card reveal"><span>IR</span><h3>Incident response</h3><p>Release runbooks, service maps, dashboards, and recent deployment context for one incident scope.</p></article>
+            <article class="use-card reveal"><span>AQ</span><h3>Architecture Q&amp;A</h3><p>Answer design questions from approved source facts with path, sensitivity, and freshness controls.</p></article>
+            <article class="use-card reveal"><span>DO</span><h3>Developer onboarding</h3><p>Give new engineers sanitized service and platform context without broad production-memory access.</p></article>
+            <article class="use-card reveal"><span>FI</span><h3>FinOps agents</h3><p>Scope cost context to accounts, services, owners, budgets, and approved optimization policies.</p></article>
+            <article class="use-card reveal"><span>CE</span><h3>Compliance evidence</h3><p>Produce source-backed summaries while preserving release policy, audit history, and human approval.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section security-section" id="security">
+        <div class="container security-layout">
+          <div class="security-copy reveal">
+            <span class="eyebrow">Security by architecture</span>
+            <h2>The model never owns the authority boundary.</h2>
+            <p>
+              Models explain and recommend. Deterministic services authenticate callers, evaluate
+              policy, release context, and preserve evidence. The automated AWS stack is designed
+              for controlled evaluation; the repository documents the hardening required before
+              broad production use.
+            </p>
+            <a class="button button-ghost" href="https://github.com/krishnamuppidi/agent-context-gateway-ai/blob/main/SECURITY.md" target="_blank" rel="noreferrer">Read the security model ↗</a>
+          </div>
+
+          <div class="control-list reveal reveal-delay">
+            <div class="control"><span>Identity</span><p><b>Cognito / workload identity</b><small>Authenticate each agent or service before capsule release.</small></p></div>
+            <div class="control"><span>Storage</span><p><b>Private S3 + KMS</b><small>Keep uploaded context encrypted and outside the public application path.</small></p></div>
+            <div class="control"><span>Policy</span><p><b>Task + sensitivity rules</b><small>Enforce path matching, sensitivity ceilings, freshness, TTL, and approval gates.</small></p></div>
+            <div class="control"><span>Runtime</span><p><b>IAM execution role</b><small>Do not embed deployer access keys in the application or Lambda package.</small></p></div>
+            <div class="control"><span>Evidence</span><p><b>DynamoDB audit records</b><small>Persist caller, sources, selection, denial, policy, hashes, and token metrics.</small></p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section aws-section">
+        <div class="container">
+          <div class="section-heading centered reveal">
+            <span class="eyebrow">AWS launch path</span>
+            <h2>A complete evaluation stack in your AWS account.</h2>
+            <p>
+              Deploy a secure reference architecture, upload approved context, run an authenticated
+              request, and keep the generated client settings local with restricted permissions.
+            </p>
+          </div>
+
+          <div class="aws-stack reveal" aria-label="AWS evaluation architecture">
+            <div class="aws-service"><span>Auth</span><b>Amazon Cognito</b><small>OAuth M2M</small></div>
+            <i>→</i>
+            <div class="aws-service"><span>API</span><b>API Gateway</b><small>HTTPS endpoint</small></div>
+            <i>→</i>
+            <div class="aws-service featured"><span>Runtime</span><b>AWS Lambda</b><small>Gateway + IAM role</small></div>
+            <i>→</i>
+            <div class="aws-storage">
+              <div class="aws-service"><span>Context</span><b>Amazon S3</b><small>KMS encrypted</small></div>
+              <div class="aws-service"><span>State</span><b>DynamoDB</b><small>slices · cache · audit</small></div>
+            </div>
+          </div>
+
+          <div class="launch-steps">
+            <article class="launch-step reveal"><span>1</span><h3>Clone</h3><code>git clone …/agent-context-gateway-ai.git</code><p>Review source connectors, policy, and the deployer IAM starting point.</p></article>
+            <article class="launch-step reveal"><span>2</span><h3>Deploy</h3><code>./deploy/aws/deploy.sh --auto-approve</code><p>Build, validate, provision, upload the sample, and run an authenticated smoke test.</p></article>
+            <article class="launch-step reveal"><span>3</span><h3>Integrate</h3><code>./deploy/aws/invoke.sh iac_security …</code><p>Call the gateway from an agent and send only the returned capsule to the model.</p></article>
+          </div>
+
+          <div class="aws-actions reveal">
+            <a class="button button-primary" href="https://github.com/krishnamuppidi/agent-context-gateway-ai/tree/main/deploy/aws" target="_blank" rel="noreferrer">Open the AWS deployment ↗</a>
+            <a class="button button-ghost" href="https://github.com/krishnamuppidi/agent-context-gateway-ai/blob/main/docs/DEPLOYER_IAM.md" target="_blank" rel="noreferrer">Review deployer IAM ↗</a>
+            <a class="button button-ghost" href="https://github.com/krishnamuppidi/agent-context-gateway-ai/blob/main/docs/PRODUCTION_READINESS.md" target="_blank" rel="noreferrer">Production checklist ↗</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section developer-section" id="developers">
+        <div class="container">
+          <div class="section-heading reveal">
+            <span class="eyebrow">Developer experience</span>
+            <h2>From clone to first governed capsule.</h2>
+            <p>Choose a local demo, deploy the AWS evaluation stack, call the API directly, or connect an Amazon Bedrock agent.</p>
+          </div>
+
+          <div class="code-workbench reveal">
+            <div class="code-tabs" role="tablist" aria-label="Getting started examples">
+              <button type="button" role="tab" aria-selected="true" aria-controls="panel-local" id="tab-local" data-tab="local">Local demo</button>
+              <button type="button" role="tab" aria-selected="false" aria-controls="panel-aws" id="tab-aws" data-tab="aws" tabindex="-1">AWS deploy</button>
+              <button type="button" role="tab" aria-selected="false" aria-controls="panel-api" id="tab-api" data-tab="api" tabindex="-1">API request</button>
+              <button type="button" role="tab" aria-selected="false" aria-controls="panel-bedrock" id="tab-bedrock" data-tab="bedrock" tabindex="-1">Bedrock</button>
+            </div>
+
+            <div class="code-panel" id="panel-local" role="tabpanel" aria-labelledby="tab-local" data-panel="local">
+              <div class="code-panel-head"><span>terminal</span><button class="copy-button" type="button" data-copy="local-code">Copy</button></div>
+              <pre id="local-code"><code><span class="code-comment"># Python 3.11+</span>
+git clone https://github.com/krishnamuppidi/agent-context-gateway-ai.git
+cd agent-context-gateway-ai
+python -m venv .venv
+. .venv/bin/activate
+pip install -e <span class="code-string">".[dev]"</span>
+
+acg demo --repo examples/sample_repo --out build/demo
+jq . build/demo/metrics.json</code></pre>
+            </div>
+
+            <div class="code-panel" id="panel-aws" role="tabpanel" aria-labelledby="tab-aws" data-panel="aws" hidden>
+              <div class="code-panel-head"><span>terminal</span><button class="copy-button" type="button" data-copy="aws-code">Copy</button></div>
+              <pre id="aws-code"><code><span class="code-comment"># Use a reviewed short-lived AWS profile or role</span>
+export AWS_PROFILE=my-profile
+export AWS_REGION=us-east-1
+export EXPECTED_AWS_ACCOUNT_ID=123456789012
+
+<span class="code-comment"># Optional: deploy with an approved local context source</span>
+export ACG_CONTEXT_DIR=/absolute/path/to/company-repo
+export ACG_CONTEXT_ID=payments-platform
+
+./deploy/aws/deploy.sh --auto-approve
+./deploy/aws/invoke.sh</code></pre>
+            </div>
+
+            <div class="code-panel" id="panel-api" role="tabpanel" aria-labelledby="tab-api" data-panel="api" hidden>
+              <div class="code-panel-head"><span>request.json</span><button class="copy-button" type="button" data-copy="api-code">Copy</button></div>
+              <pre id="api-code"><code>curl -sS <span class="code-string">"$ACG_API_URL/v1/capsules"</span> \
+  -H <span class="code-string">"authorization: Bearer $ACG_BEARER_TOKEN"</span> \
+  -H <span class="code-string">"content-type: application/json"</span> \
+  -d <span class="code-string">'{
+    "context_id": "payments-platform",
+    "task_type": "iac_security",
+    "path": "terraform/prod/payments/lambda.tf",
+    "prompt": "Review security and blast-radius risk",
+    "environment": "prod"
+  }'</span></code></pre>
+            </div>
+
+            <div class="code-panel" id="panel-bedrock" role="tabpanel" aria-labelledby="tab-bedrock" data-panel="bedrock" hidden>
+              <div class="code-panel-head"><span>bedrock_converse.py</span><button class="copy-button" type="button" data-copy="bedrock-code">Copy</button></div>
+              <pre id="bedrock-code"><code>gateway_response = GatewayClient.from_env().request(
+    task_type=<span class="code-string">"architecture_qa"</span>,
+    path=<span class="code-string">"services/payments"</span>,
+    prompt=user_prompt,
+    context_id=<span class="code-string">"payments-platform"</span>,
+)
+
+<span class="code-comment"># Send only the released, source-backed facts to the model.</span>
+context_block = build_context_block(gateway_response)
+response = bedrock.converse(
+    modelId=os.environ[<span class="code-string">"BEDROCK_MODEL_ID"</span>],
+    messages=[{<span class="code-string">"role"</span>: <span class="code-string">"user"</span>, <span class="code-string">"content"</span>: [{<span class="code-string">"text"</span>: context_block}]}],
+)</code></pre>
+            </div>
+          </div>
+
+          <div class="response-preview reveal">
+            <div class="response-copy">
+              <span class="eyebrow">What comes back</span>
+              <h3>A bounded capsule plus the evidence to trust it.</h3>
+              <p>Every response carries released facts, provenance, expiry, metrics, and an audit identifier. Denied slices remain out of the model prompt.</p>
+            </div>
+            <pre><code>{
+  <span class="code-key">"capsule"</span>: {
+    <span class="code-key">"facts"</span>: [<span class="code-string">"…approved task context…"</span>],
+    <span class="code-key">"expires_at"</span>: <span class="code-string">"…"</span>
+  },
+  <span class="code-key">"metrics"</span>: {
+    <span class="code-key">"full_context_tokens"</span>: <span class="code-number">32</span>,
+    <span class="code-key">"capsule_tokens"</span>: <span class="code-number">16</span>,
+    <span class="code-key">"token_reduction_percent"</span>: <span class="code-number">50.0</span>
+  }
+}</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="section docs-section">
+        <div class="container">
+          <div class="section-heading centered reveal">
+            <span class="eyebrow">Code and documentation</span>
+            <h2>Everything needed to evaluate, integrate, and operate.</h2>
+          </div>
+
+          <div class="repo-grid">
+            <a class="repo-card featured-repo reveal" href="https://github.com/krishnamuppidi/agent-context-gateway-ai" target="_blank" rel="noreferrer">
+              <span class="repo-type">Primary codebase</span>
+              <h3>agent-context-gateway-ai</h3>
+              <p>Gateway runtime, CLI, FastAPI API, AWS stack, policies, audit behavior, tests, and client examples.</p>
+              <div><span>Python</span><span>Terraform</span><span>MIT</span></div>
+              <b>Open repository ↗</b>
+            </a>
+            <a class="repo-card reveal" href="https://github.com/krishnamuppidi/secreviewagent-ai" target="_blank" rel="noreferrer">
+              <span class="repo-type">Reference use case</span>
+              <h3>secreviewagent-ai</h3>
+              <p>Terraform and Kubernetes parsing, review-agent logic, GitHub webhook flow, Lambda handler, and tests.</p>
+              <div><span>Python</span><span>Terraform</span><span>MIT</span></div>
+              <b>Open repository ↗</b>
+            </a>
+          </div>
+
+          <div class="docs-grid">
+            <a href="https://github.com/krishnamuppidi/agent-context-gateway-ai/blob/main/docs/GETTING_STARTED.md" target="_blank" rel="noreferrer"><span>01</span><b>Getting started</b><small>Local, Docker, AWS, and teardown</small><i>↗</i></a>
+            <a href="https://github.com/krishnamuppidi/agent-context-gateway-ai/blob/main/docs/ARCHITECTURE.md" target="_blank" rel="noreferrer"><span>02</span><b>Architecture</b><small>Objects, trust boundaries, and cache flow</small><i>↗</i></a>
+            <a href="https://github.com/krishnamuppidi/agent-context-gateway-ai/blob/main/docs/API_REFERENCE.md" target="_blank" rel="noreferrer"><span>03</span><b>API reference</b><small>Auth, endpoints, payloads, and errors</small><i>↗</i></a>
+            <a href="https://github.com/krishnamuppidi/agent-context-gateway-ai/blob/main/docs/AGENT_INTEGRATION.md" target="_blank" rel="noreferrer"><span>04</span><b>Agent integration</b><small>Python, TypeScript, and Bedrock patterns</small><i>↗</i></a>
+            <a href="https://github.com/krishnamuppidi/agent-context-gateway-ai/blob/main/docs/POLICY_GUIDE.md" target="_blank" rel="noreferrer"><span>05</span><b>Policy guide</b><small>Tasks, sensitivity, paths, TTL, approvals</small><i>↗</i></a>
+            <a href="https://github.com/krishnamuppidi/agent-context-gateway-ai/blob/main/docs/OPERATIONS_RUNBOOK.md" target="_blank" rel="noreferrer"><span>06</span><b>Operations runbook</b><small>Verify, update, rotate, restore, teardown</small><i>↗</i></a>
+            <a href="https://github.com/krishnamuppidi/agent-context-gateway-ai/blob/main/docs/TROUBLESHOOTING.md" target="_blank" rel="noreferrer"><span>07</span><b>Troubleshooting</b><small>Safe diagnosis without weakening controls</small><i>↗</i></a>
+            <a href="https://github.com/krishnamuppidi/agent-context-gateway-ai/tree/main/examples/clients" target="_blank" rel="noreferrer"><span>08</span><b>Client examples</b><small>Python, TypeScript, and Bedrock Converse</small><i>↗</i></a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section path-section">
+        <div class="container">
+          <div class="section-heading centered reveal">
+            <span class="eyebrow">Adoption path</span>
+            <h2>Start narrow. Measure. Harden. Expand.</h2>
+          </div>
+          <div class="path-grid">
+            <article class="path-card reveal"><span>01</span><div><small>Day 1</small><h3>Run the fixture</h3><p>Reproduce graph, slices, capsule, audit, and token metrics locally.</p></div></article>
+            <article class="path-card reveal"><span>02</span><div><small>Pilot</small><h3>One bounded workflow</h3><p>Use one approved source, one agent identity, one task family, and explicit success metrics.</p></div></article>
+            <article class="path-card reveal"><span>03</span><div><small>Harden</small><h3>Enterprise controls</h3><p>Add per-workload identity, reviewed policy, alarms, budgets, retention, private networking, and red-team tests.</p></div></article>
+            <article class="path-card reveal"><span>04</span><div><small>Scale</small><h3>Shared context fabric</h3><p>Onboard more sources and agents while measuring quality, denials, cache reuse, and token efficiency.</p></div></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section faq-section" id="faq">
+        <div class="container faq-layout">
+          <div class="faq-intro reveal">
+            <span class="eyebrow">FAQ</span>
+            <h2>Questions teams ask before a pilot.</h2>
+            <p>For implementation details, use the repository's getting-started, security, deployment, and production-readiness guides.</p>
+          </div>
+          <div class="faq-list reveal reveal-delay">
+            <details open><summary>Is this another RAG framework?<span>+</span></summary><p>No. Retrieval finds relevant content. Agent Context Gateway adds an authorization boundary: who or what is asking, for which task and path, at what sensitivity, under which policy, with what evidence.</p></details>
+            <details><summary>Does it replace a model gateway?<span>+</span></summary><p>No. It sits before the model gateway. ACG governs which enterprise context may be released; the model gateway handles model access, routing, and provider controls.</p></details>
+            <details><summary>Is the AWS deployment production ready?<span>+</span></summary><p>It is a complete controlled-evaluation stack. Broad production use requires the documented hardening steps, including per-workload clients, reviewed policy, alarms, budgets, retention, networking decisions, and adversarial testing.</p></details>
+            <details><summary>How are token savings calculated?<span>+</span></summary><p>The runtime compares estimated full-context tokens with the released capsule tokens for each request. The included fixture currently demonstrates 32 versus 16 tokens, or 50% reduction; production results depend on real sources and tasks.</p></details>
+            <details><summary>Can it work with Amazon Bedrock and other models?<span>+</span></summary><p>Yes. The repository includes a Bedrock Converse client example, while the capsule format remains model agnostic for internal gateways and other approved model providers.</p></details>
+            <details><summary>What should the first use case be?<span>+</span></summary><p>Choose one read-only workflow with clear scope and repeatable context, such as IaC security review, architecture Q&amp;A, incident assistance, or developer onboarding.</p></details>
+          </div>
+        </div>
+      </section>
+
+      <section class="final-cta">
+        <div class="final-grid" aria-hidden="true"></div>
+        <div class="container reveal">
+          <span class="eyebrow">Open-source context infrastructure</span>
+          <h2>Give agents enough context to be useful.<br /><span>Not enough to be over-privileged.</span></h2>
+          <p>Deploy the reference stack, connect one agent, and measure context quality, exposure, audit completeness, and token efficiency.</p>
+          <div class="hero-actions centered-actions">
+            <a class="button button-primary" href="https://github.com/krishnamuppidi/agent-context-gateway-ai" target="_blank" rel="noreferrer">Start on GitHub ↗</a>
+            <a class="button button-ghost" href="https://github.com/krishnamuppidi/agent-context-gateway-ai/blob/main/docs/GETTING_STARTED.md" target="_blank" rel="noreferrer">Read the guide ↗</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-top">
+        <div>
+          <a class="brand" href="#top"><span class="brand-mark small" aria-hidden="true"><span></span><span></span><span></span></span><span>Agent Context Gateway</span></a>
+          <p>Right context. Right agent. Right policy. Complete audit trail.</p>
+        </div>
+        <div class="footer-links">
+          <div><b>Product</b><a href="#architecture">Architecture</a><a href="#economics">Token economics</a><a href="#use-cases">Use cases</a><a href="#security">Security</a></div>
+          <div><b>Developers</b><a href="#developers">Quick start</a><a href="https://github.com/krishnamuppidi/agent-context-gateway-ai/tree/main/deploy/aws" target="_blank" rel="noreferrer">AWS deployment ↗</a><a href="https://github.com/krishnamuppidi/agent-context-gateway-ai/blob/main/docs/API_REFERENCE.md" target="_blank" rel="noreferrer">API reference ↗</a><a href="https://github.com/krishnamuppidi/agent-context-gateway-ai/tree/main/examples/clients" target="_blank" rel="noreferrer">Examples ↗</a></div>
+          <div><b>Code</b><a href="https://github.com/krishnamuppidi/agent-context-gateway-ai" target="_blank" rel="noreferrer">Gateway ↗</a><a href="https://github.com/krishnamuppidi/secreviewagent-ai" target="_blank" rel="noreferrer">SecureReviewAgent ↗</a><a href="https://github.com/krishnamuppidi/agent-context-gateway-ai/blob/main/LICENSE" target="_blank" rel="noreferrer">MIT license ↗</a></div>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <span>© <span id="year">2026</span> Naga Krishna Reddy Muppidi. Open-source under the MIT License.</span>
+        <span>Independent project. Not an AWS service or affiliated with Amazon Web Services.</span>
+      </div>
+    </footer>
+  </body>
+</html>
