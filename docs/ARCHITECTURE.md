@@ -1,24 +1,30 @@
-# Architecture
+# Secure Context Cache - Agent Context Gateway Architecture
 
-Agent Context Gateway is a policy boundary between enterprise source context and an AI agent. Its
-job is to identify task-relevant context, release a bounded derived capsule, and record the decision.
-It is not a model router, vector database, secret manager, or authorization system for cloud actions.
+Secure Context Cache defines the framework: one canonical context graph, protected reusable slices,
+and task-scoped capsules for multiple enterprise agents. Agent Context Gateway is the deployable
+policy boundary in that framework. Its job is to identify task-relevant context, release a bounded
+derived capsule, and record the decision. SecureReviewAgent is the flagship application that uses
+those capsules for Infrastructure-as-Code security review.
+
+The gateway is not a model router, vector database, secret manager, or authorization system for
+cloud actions.
 
 ## Core Flow
 
 ```text
-source files
+approved source files
     |
     v
-scanner -> context graph -> context slices -> identity + task policy
-                                               |            |
-                                               +-----+------+
-                                                     v
-                                            released capsule
-                                                     |
-                                      +--------------+-------------+
-                                      v                            v
-                                  AI agent                    audit + metrics
+scanner -> Secure Context Cache graph -> protected slices -> identity + task policy
+                                                       |            |
+                                                       +-----+------+
+                                                             v
+                                                task-scoped capsule
+                                                             |
+                                              +--------------+-------------+
+                                              v                            v
+                                    SecureReviewAgent or              audit + metrics
+                                      another AI agent
 ```
 
 1. The scanner reads supported files and records path, hash, inferred environment, inferred

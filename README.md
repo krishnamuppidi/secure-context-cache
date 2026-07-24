@@ -1,10 +1,36 @@
-# Agent Context Gateway AI
+# Secure Context Cache Framework
 
 **Product website:** https://krishnamuppidi.github.io/agent-context-gateway-ai/
 
-Agent Context Gateway AI (ACG AI) is an open-source context-control layer for enterprise AI agents.
-It caches approved context, releases only task-scoped facts, records every release or denial, and
-measures token reduction without giving an agent unrestricted access to the full context store.
+**Deployable control plane:** Agent Context Gateway AI
+
+**Flagship application:** [SecureReviewAgent](https://github.com/krishnamuppidi/secreviewagent-ai)
+
+Secure Context Cache is a research-backed framework for token-efficient, least-privilege shared
+memory across enterprise AI agents. This repository contains its deployable control plane,
+**Agent Context Gateway AI (ACG AI)**. The gateway caches approved context, releases only
+task-scoped facts, records every release or denial, and measures token reduction without giving an
+agent unrestricted access to the full context store.
+
+SecureReviewAgent is the first proof point: it uses a governed context capsule to review Terraform
+and Kubernetes changes with relevant IAM, network, policy, ownership, and environment facts while
+unrelated enterprise topology remains outside the prompt.
+
+## One Framework, Three Product Layers
+
+| Layer | Name | Role |
+| --- | --- | --- |
+| Research and architecture | **Secure Context Cache** | Canonical context graph, encrypted or protected slices, least-privilege selection, expiring capsules, and audit evidence |
+| Deployable control plane | **Agent Context Gateway AI** | API, identity, policy enforcement, AWS runtime, storage, metrics, and agent integration |
+| Flagship application | **SecureReviewAgent** | Measurable Infrastructure-as-Code security-review workflow built on governed context |
+
+The paper **“Secure Context Cache: Token-Efficient and Least-Privilege Shared Memory for Enterprise
+Developer Agents”** was accepted for presentation and publication at the 2026 5th International
+Conference on Engineering and Research Application (ICERA). Final proceedings and indexing remain
+separate post-conference evidence.
+
+See [Secure Context Cache Framework](docs/SECURE_CONTEXT_CACHE_FRAMEWORK.md) for the product-family
+architecture and research-to-implementation map.
 
 ## What You Can Run
 
@@ -24,8 +50,8 @@ Lambda package, Terraform state, or repository. The running gateway uses an IAM 
 
 ## Architecture
 
-See [Architecture](docs/ARCHITECTURE.md) for data objects, trust boundaries, cache behavior, and
-current runtime limits.
+See [Architecture](docs/ARCHITECTURE.md) for the deployable control plane's data objects, trust
+boundaries, cache behavior, and current runtime limits.
 
 ```text
 Local Repo/Docs/IaC --deploy or upload--> Private S3 context prefix
@@ -248,6 +274,7 @@ See [SECURITY.md](SECURITY.md) for trust boundaries.
 
 ## Documentation
 
+- [Secure Context Cache Framework](docs/SECURE_CONTEXT_CACHE_FRAMEWORK.md)
 - [Getting Started](docs/GETTING_STARTED.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Agent Integration](docs/AGENT_INTEGRATION.md)

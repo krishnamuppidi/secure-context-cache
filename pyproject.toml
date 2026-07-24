@@ -1,7 +1,7 @@
 [project]
 name = "agent-context-gateway-ai"
-version = "0.3.0"
-description = "Secure, token-efficient context gateway for enterprise AI agents and governed workflows."
+version = "0.4.0"
+description = "Deployable Agent Context Gateway for the Secure Context Cache framework and governed enterprise AI workflows."
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.11"

@@ -29,7 +29,9 @@ def slices_from_json(path: Path) -> list[ContextSlice]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Agent Context Gateway")
+    parser = argparse.ArgumentParser(
+        description="Agent Context Gateway - deployable control plane for Secure Context Cache"
+    )
     sub = parser.add_subparsers(dest="command", required=True)
 
     ingest = sub.add_parser("ingest", help="Build a context graph from a repository")

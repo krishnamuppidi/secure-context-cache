@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0 - 2026-07-24
+
+- Unified the product family under the Secure Context Cache Framework.
+- Positioned Agent Context Gateway AI as the deployable API and AWS control plane.
+- Positioned SecureReviewAgent as the flagship Infrastructure-as-Code security application.
+- Added the research-to-product architecture, accepted-paper status, prototype-result guardrails,
+  and consistent website messaging.
+
 ## 0.3.0 - 2026-07-22
 
 - Added complete onboarding, architecture, API, policy, context-source, AWS IAM, Kubernetes,

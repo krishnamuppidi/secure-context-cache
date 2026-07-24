@@ -1,6 +1,8 @@
 # Security Model
 
-Agent Context Gateway is designed around deny-by-default context release.
+Secure Context Cache is designed around deny-by-default, task-scoped context release. Agent Context
+Gateway implements that boundary for authenticated agent workloads, with SecureReviewAgent as the
+flagship Infrastructure-as-Code security workflow.
 
 ## Trust Boundaries
 
