@@ -1,8 +1,10 @@
 # Secure Context Cache Framework
 
-Secure Context Cache is the research and architecture layer for governed context sharing across
-enterprise AI agents. Agent Context Gateway AI is its deployable control plane. SecureReviewAgent
-is the flagship application used to test the framework on a concrete, reviewable workflow.
+Secure Context Cache is a secure token-optimization product and research-backed architecture for
+enterprise AI agents. It reduces repeated model input by compiling approved knowledge into reusable
+slices and assembling the smallest policy-approved capsule for each task. Agent Context Gateway is
+its deployable runtime control plane. SecureReviewAgent is the flagship application used to prove
+the approach on a concrete, reviewable workflow.
 
 ## Product Family
 
@@ -88,9 +90,10 @@ pricing, and predefined quality gates.
 
 ## Commercial Positioning
 
-Secure Context Cache is marketed as a governed context framework, not only as a cache:
+Lead with one outcome: **cut AI input-token cost without cutting the context required for an
+accepted result**.
 
-- **Efficiency:** reuse approved context and reduce repeated input tokens.
+- **Token optimization:** compile approved context once, reuse slices, and minimize each prompt.
 - **Security:** keep unrelated topology and high-sensitivity facts outside the prompt.
 - **Quality:** release the relationships a task actually needs.
 - **Governance:** bind each capsule to identity, task, source, policy, freshness, and expiry.
@@ -102,9 +105,10 @@ response, architecture Q&A, onboarding, compliance evidence, and FinOps agents.
 
 ## Naming Rules
 
-- Use **Secure Context Cache Framework** for the research-backed architecture and overall product
-  family.
-- Use **Agent Context Gateway AI** for the deployable API, CLI, AWS stack, and integration surface.
+- Use **Secure Context Cache** for the public product, repository, website, token-optimization
+  framework, and overall product family.
+- Use **Agent Context Gateway** for the deployable runtime, API, CLI, AWS stack, and stable
+  integration surface inside Secure Context Cache.
 - Use **SecureReviewAgent** for the flagship Infrastructure-as-Code security application.
 - Do not describe the paper as published until final proceedings evidence is available.
 - Do not convert prototype or fixture metrics into production savings claims.

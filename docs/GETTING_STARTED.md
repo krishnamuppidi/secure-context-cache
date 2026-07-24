@@ -23,8 +23,8 @@ it is not a replacement for the AWS persistence and identity controls.
 ## Clone and Install
 
 ```bash
-git clone https://github.com/krishnamuppidi/agent-context-gateway-ai.git
-cd agent-context-gateway-ai
+git clone https://github.com/krishnamuppidi/secure-context-cache.git
+cd secure-context-cache
 python3 -m venv .venv
 . .venv/bin/activate
 python -m pip install --upgrade pip
@@ -117,7 +117,7 @@ root.
 ## Run with Docker
 
 ```bash
-docker build -t agent-context-gateway-ai:0.3.0 .
+docker build -t secure-context-cache:0.5.0 .
 export ACG_LOCAL_API_KEY="$(openssl rand -hex 32)"
 docker run --rm -p 8080:8080 \
   -e ACG_LOCAL_AGENT_ID=local-agent \
@@ -125,7 +125,7 @@ docker run --rm -p 8080:8080 \
   -e ACG_LOCAL_ALLOWED_TASK_TYPES=code_review,iac_security,architecture_qa \
   -e ACG_ALLOWED_REPO_ROOT=/contexts/repo \
   -v /absolute/path/to/repository:/contexts/repo:ro \
-  agent-context-gateway-ai:0.3.0
+  secure-context-cache:0.5.0
 ```
 
 Call `http://127.0.0.1:8080/v1/capsules` with `agent_id` set to `local-agent`, the API key header,

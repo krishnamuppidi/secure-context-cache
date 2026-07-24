@@ -1,7 +1,7 @@
 [project]
-name = "agent-context-gateway-ai"
-version = "0.4.0"
-description = "Deployable Agent Context Gateway for the Secure Context Cache framework and governed enterprise AI workflows."
+name = "secure-context-cache"
+version = "0.5.0"
+description = "Secure token-optimization framework with a deployable Agent Context Gateway for enterprise AI agents."
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.11"
@@ -9,8 +9,8 @@ authors = [{ name = "Naga Krishna Reddy Muppidi" }]
 dependencies = []
 
 [project.urls]
-Homepage = "https://github.com/krishnamuppidi/agent-context-gateway-ai"
-Repository = "https://github.com/krishnamuppidi/agent-context-gateway-ai"
+Homepage = "https://krishnamuppidi.github.io/secure-context-cache/"
+Repository = "https://github.com/krishnamuppidi/secure-context-cache"
 
 [project.optional-dependencies]
 api = ["fastapi>=0.110", "uvicorn>=0.27"]

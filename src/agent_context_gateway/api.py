@@ -39,7 +39,7 @@ def _build_gateway() -> AgentContextGateway:
     )
 
 
-app = FastAPI(title="Secure Context Cache - Agent Context Gateway", version="0.4.0")
+app = FastAPI(title="Secure Context Cache - Agent Context Gateway", version="0.5.0")
 gateway = _build_gateway()
 context_store = S3ContextStore.from_env() if _runtime_mode() == "aws" else None
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.0 - 2026-07-24
+
+- Renamed the public product and repository to Secure Context Cache.
+- Made secure token optimization the primary value proposition.
+- Preserved Agent Context Gateway as the stable API and runtime control plane.
+- Connected SecureReviewAgent as the flagship measurable token-optimization workflow.
+- Updated website, clone, package, container, documentation, and deployment references.
+
 ## 0.4.0 - 2026-07-24
 
 - Unified the product family under the Secure Context Cache Framework.

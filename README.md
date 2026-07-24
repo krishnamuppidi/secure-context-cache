@@ -1,27 +1,49 @@
-# Secure Context Cache Framework
+# Secure Context Cache
 
-**Product website:** https://krishnamuppidi.github.io/agent-context-gateway-ai/
+**Secure token optimization for enterprise AI agents**
 
-**Deployable control plane:** Agent Context Gateway AI
+**Product website:** https://krishnamuppidi.github.io/secure-context-cache/
 
 **Flagship application:** [SecureReviewAgent](https://github.com/krishnamuppidi/secreviewagent-ai)
 
-Secure Context Cache is a research-backed framework for token-efficient, least-privilege shared
-memory across enterprise AI agents. This repository contains its deployable control plane,
-**Agent Context Gateway AI (ACG AI)**. The gateway caches approved context, releases only
-task-scoped facts, records every release or denial, and measures token reduction without giving an
-agent unrestricted access to the full context store.
+Secure Context Cache is a research-backed framework that reduces recurring AI input tokens without
+removing the facts an agent needs to succeed. It converts approved enterprise knowledge into
+reusable context slices, then assembles the smallest policy-approved capsule for each task before
+the model is called.
+
+The result is one optimization layer for both economics and control: fewer tokens sent to the
+model, less sensitive context exposed, preserved provenance, and an audit record for every release
+or denial. The repository includes the deployable **Agent Context Gateway (ACG)** API and AWS
+control plane while preserving the stable `acg` CLI, API, and environment-variable integration
+surface.
 
 SecureReviewAgent is the first proof point: it uses a governed context capsule to review Terraform
 and Kubernetes changes with relevant IAM, network, policy, ownership, and environment facts while
 unrelated enterprise topology remains outside the prompt.
 
-## One Framework, Three Product Layers
+## The Selling Point
+
+**Optimize context before paying a model to process it.**
+
+- **Lower token cost:** reuse approved context slices and send only task-relevant facts.
+- **Preserve outcome quality:** count savings only when required facts, task success, and reviewer
+  acceptance meet a defined threshold.
+- **Reduce exposure:** keep unrelated or disallowed enterprise context outside the model prompt.
+- **Prove the decision:** retain source references, hashes, policy version, expiry, selection,
+  denial, and token metrics.
+
+In the deterministic research prototype, Secure Context Cache produced **75.3% lower average
+context tokens**, **95.8% task success**, **98.6% required-fact coverage**, and **92.3% lower
+high-sensitivity slice exposure** across 24 tasks and 32 reusable slices. These are prototype
+measurements—not provider-billed production results or universal savings claims. The included
+repository fixture separately demonstrates a reproducible 32-to-16-token deterministic estimate.
+
+## One Product, Three Layers
 
 | Layer | Name | Role |
 | --- | --- | --- |
-| Research and architecture | **Secure Context Cache** | Canonical context graph, encrypted or protected slices, least-privilege selection, expiring capsules, and audit evidence |
-| Deployable control plane | **Agent Context Gateway AI** | API, identity, policy enforcement, AWS runtime, storage, metrics, and agent integration |
+| Product and framework | **Secure Context Cache** | Canonical context graph, reusable slices, secure token optimization, expiring capsules, and audit evidence |
+| Runtime control plane | **Agent Context Gateway** | API, identity, policy enforcement, AWS runtime, storage, metrics, and agent integration |
 | Flagship application | **SecureReviewAgent** | Measurable Infrastructure-as-Code security-review workflow built on governed context |
 
 The paper **“Secure Context Cache: Token-Efficient and Least-Privilege Shared Memory for Enterprise
@@ -76,8 +98,8 @@ macOS, or WSL.
 ### 1. Clone
 
 ```bash
-git clone https://github.com/krishnamuppidi/agent-context-gateway-ai.git
-cd agent-context-gateway-ai
+git clone https://github.com/krishnamuppidi/secure-context-cache.git
+cd secure-context-cache
 ```
 
 ### 2. Supply AWS credentials
@@ -231,12 +253,12 @@ curl -sS http://127.0.0.1:8000/v1/capsules \
 Docker:
 
 ```bash
-docker build -t agent-context-gateway-ai .
+docker build -t secure-context-cache .
 docker run --rm -p 8080:8080 \
   -e ACG_LOCAL_AGENT_ID=local-agent \
   -e ACG_LOCAL_API_KEY="$ACG_LOCAL_API_KEY" \
   -e ACG_ALLOWED_REPO_ROOT=/app/examples/sample_repo \
-  agent-context-gateway-ai
+  secure-context-cache
 ```
 
 The public AWS deployment does not use the demo API keys. API Gateway verifies Cognito JWTs before
