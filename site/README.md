@@ -16,5 +16,11 @@ The `deploy-website.yml` GitHub Actions workflow publishes this directory to Git
 changes to `site/**` reach `main`. The site uses only relative asset paths, so it works from the
 repository's Pages subpath.
 
-The product metrics shown on the page are explicitly labeled as reproducible fixture evidence or
-illustrative arithmetic. Do not convert them into universal production-savings claims.
+The commercial message leads with lower context-token cost per successful agent task, with
+SecureReviewAgent as the first practical benchmark. Governance, authorization, and audit evidence
+remain the enterprise trust layer.
+
+The 32-to-16-token result is explicitly labeled as a deterministic fixture estimate. The calculator
+is illustrative arithmetic. Do not convert either into a provider-billed production benchmark or a
+universal savings claim. Company pilots should use provider-reported usage and count savings only
+when the optimized run meets an agreed quality threshold.

@@ -552,6 +552,11 @@ pre {
 
 .economics-section { background: linear-gradient(145deg, #091b16, #07120f 60%); }
 .economics-layout { display: grid; grid-template-columns: 1fr .9fr; align-items: center; gap: 80px; }
+.quality-gate { margin-top: 26px; padding: 19px 21px; border-left: 3px solid var(--green); border-radius: 0 12px 12px 0; background: rgba(88,230,169,.055); }
+.quality-gate span, .quality-gate strong { display: block; }
+.quality-gate span { margin-bottom: 6px; color: var(--green); font-family: monospace; font-size: 8px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.quality-gate strong { color: #dcebe5; font-size: 14px; line-height: 1.35; }
+.quality-gate p { margin: 6px 0 0; color: #7f978e; font-size: 10px; }
 .evidence-card { margin-top: 36px; padding: 24px; border: 1px solid rgba(88,230,169,.18); border-radius: 17px; background: rgba(88,230,169,.045); }
 .evidence-badge { display: inline-flex; padding: 5px 8px; border-radius: 6px; color: var(--green); background: var(--green-soft); font-family: monospace; font-size: 8px; font-weight: 800; text-transform: uppercase; }
 .evidence-numbers { display: grid; margin: 20px 0; grid-template-columns: repeat(3, 1fr); gap: 15px; }.evidence-numbers div { padding-right: 10px; border-right: 1px solid var(--line); }.evidence-numbers div:last-child { border-right: 0; }.evidence-numbers strong, .evidence-numbers span { display: block; }.evidence-numbers strong { font-size: 29px; letter-spacing: -0.04em; }.evidence-numbers div:last-child strong { color: var(--green); }.evidence-numbers span { color: #788f86; font-size: 9px; }
@@ -560,6 +565,19 @@ pre {
 .calculator-head { display: flex; padding-bottom: 19px; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }.calculator-head span { font-size: 13px; font-weight: 750; }.calculator-head small { color: #688077; font-size: 9px; }
 .calculator-fields { display: grid; padding: 22px 0; grid-template-columns: repeat(2, 1fr); gap: 16px; }.calculator label { color: #849b92; font-size: 9px; font-weight: 700; letter-spacing: .03em; }.input-shell { display: flex; height: 42px; margin-top: 7px; padding: 0 11px; align-items: center; gap: 5px; border: 1px solid var(--line); border-radius: 9px; background: rgba(0,0,0,.18); }.input-shell:focus-within { border-color: rgba(88,230,169,.5); box-shadow: 0 0 0 3px rgba(88,230,169,.08); }.input-shell input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 13px; font-weight: 700; }.input-shell b { color: #60776e; font-size: 8px; font-weight: 600; }
 .calculator-output { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }.calculator-output div { padding: 17px; border: 1px solid rgba(88,230,169,.2); border-radius: 12px; background: var(--green-soft); }.calculator-output span, .calculator-output strong { display: block; }.calculator-output span { color: #7f9a90; font-size: 8px; }.calculator-output strong { margin-top: 5px; color: var(--green); font-size: 24px; letter-spacing: -.04em; }.calculator > p { margin: 12px 0 0; color: #5e756c; font-size: 8px; }
+.benchmark-strip { display: grid; margin-top: 30px; padding: 19px; grid-template-columns: 1.3fr repeat(3, .8fr) 1.25fr; align-items: stretch; gap: 9px; border: 1px solid var(--line); border-radius: 18px; background: rgba(0,0,0,.13); }
+.benchmark-intro { padding: 10px 13px; }
+.benchmark-intro .eyebrow { margin-bottom: 7px; font-size: 8px; }
+.benchmark-intro h3 { margin: 0; font-size: 17px; line-height: 1.25; letter-spacing: -.025em; }
+.benchmark-strip article { display: flex; min-height: 103px; padding: 15px; flex-direction: column; justify-content: center; border: 1px solid var(--line); border-radius: 11px; background: rgba(255,255,255,.018); }
+.benchmark-strip article > span { color: #657c73; font-family: monospace; font-size: 8px; }
+.benchmark-strip article b { margin: 9px 0 3px; font-size: 11px; }
+.benchmark-strip article small { color: #6f877e; font-size: 8px; }
+.benchmark-strip .benchmark-accent { border-color: rgba(88,230,169,.3); background: var(--green-soft); }
+.benchmark-strip .benchmark-accent > span, .benchmark-strip .benchmark-accent b { color: var(--green); }
+.benchmark-metrics { display: flex; padding: 13px 16px; flex-wrap: wrap; align-content: center; gap: 6px; }
+.benchmark-metrics b { width: 100%; margin-bottom: 3px; color: #d7e7e1; font-size: 10px; }
+.benchmark-metrics span { padding: 5px 7px; border: 1px solid var(--line); border-radius: 99px; color: #7d958c; font-size: 7px; white-space: nowrap; }
 
 .use-cases-section { background: #07120f; }
 .showcase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
@@ -619,6 +637,8 @@ pre {
   .arch-arrow { flex-direction: row; justify-content: center; }.arch-arrow i { transform: rotate(90deg); }
   .arch-column, .arch-gateway { width: min(500px, 100%); margin-inline: auto; }
   .economics-layout, .security-layout { grid-template-columns: 1fr; gap: 55px; }
+  .benchmark-strip { grid-template-columns: repeat(3, 1fr); }
+  .benchmark-intro, .benchmark-metrics { grid-column: 1 / -1; }
   .calculator { width: min(650px, 100%); }
   .aws-stack { flex-wrap: wrap; }.aws-storage { grid-template-columns: 1fr 1fr; }
   .docs-grid { grid-template-columns: repeat(2, 1fr); }
@@ -652,6 +672,7 @@ pre {
   .bento { padding: 23px; }.bento-large { gap: 20px; }.token-visual { align-items: stretch; }.compress-arrow { align-self: center; }.token-stack.capsule { width: 135px; }
   .architecture { padding: 20px 14px; }.principle-row { grid-template-columns: 1fr; }.principle-row > div { min-height: 110px; }
   .evidence-numbers { gap: 8px; }.evidence-numbers strong { font-size: 24px; }.calculator { padding: 20px; }.calculator-fields,.calculator-output { grid-template-columns: 1fr; }
+  .benchmark-strip { grid-template-columns: 1fr; }.benchmark-intro,.benchmark-metrics { grid-column: auto; }.benchmark-strip article { min-height: 88px; }
   .showcase { padding: 24px; }.showcase h3 { font-size: 26px; }.showcase-top { align-items: flex-start; gap: 12px; }.mini-flow { flex-wrap: wrap; }.showcase-actions { align-items: flex-start; flex-direction: column; }
   .use-grid,.docs-grid,.path-grid { grid-template-columns: 1fr; }.use-card { min-height: 160px; }
   .control { grid-template-columns: 1fr; gap: 7px; }.control > span { padding-top: 4px; }

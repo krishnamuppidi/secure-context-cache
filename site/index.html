@@ -6,15 +6,15 @@
     <meta name="theme-color" content="#07110f" />
     <meta
       name="description"
-      content="Agent Context Gateway is the open-source context control plane for secure, token-efficient enterprise AI agents."
+      content="Agent Context Gateway reduces the context tokens enterprise AI agents consume while preserving task quality, policy boundaries, and audit evidence."
     />
-    <meta property="og:title" content="Agent Context Gateway" />
+    <meta property="og:title" content="Agent Context Gateway — Cut agent context tokens" />
     <meta
       property="og:description"
-      content="Give every AI agent the right context—not all the context. Policy-scoped capsules, measurable token reduction, and an audit trail for every release."
+      content="Stop paying to resend every document on every agent request. Release the minimum approved context, measure provider tokens and quality, and prove savings with SecureReviewAgent."
     />
     <meta property="og:type" content="website" />
-    <title>Agent Context Gateway — The context control plane for enterprise AI</title>
+    <title>Agent Context Gateway — Reduce AI agent context tokens</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="styles.css" />
     <script defer src="app.js"></script>
@@ -42,20 +42,18 @@
         </button>
 
         <div class="nav-links" id="nav-links">
-          <a href="#product">Product</a>
-          <a href="#architecture">Architecture</a>
-          <a href="#use-cases">Use cases</a>
-          <a href="#developers">Developers</a>
+          <a href="#economics">Token savings</a>
+          <a href="#use-cases">SecureReviewAgent</a>
+          <a href="#architecture">How it works</a>
+          <a href="#developers">Deploy</a>
           <a href="#security">Security</a>
         </div>
 
         <a
           class="button button-small nav-cta"
-          href="https://github.com/krishnamuppidi/agent-context-gateway-ai"
-          target="_blank"
-          rel="noreferrer"
+          href="mailto:nagamuppidi1015@gmail.com?subject=30-Day%20Agent%20Token%20Optimization%20Pilot"
         >
-          View on GitHub <span aria-hidden="true">↗</span>
+          Request a pilot <span aria-hidden="true">→</span>
         </a>
       </div>
     </nav>
@@ -75,30 +73,28 @@
               rel="noreferrer"
             >
               <span class="status-dot"></span>
-              Open source · v0.3.0 · MIT
+              Open source · measurable token optimization · MIT
               <span aria-hidden="true">→</span>
             </a>
-            <h1>The context control plane for <span>enterprise AI agents.</span></h1>
+            <h1>Cut the context tokens your <span>AI agents consume.</span></h1>
             <p class="hero-lead">
-              Give every agent the right context—not all the context. Cache approved knowledge,
-              release task-scoped capsules under policy, and audit every context decision before
-              the model runs.
+              Stop paying to resend every repository, runbook, and policy on every request.
+              Agent Context Gateway caches approved knowledge and releases only the minimum
+              task-relevant context—then measures savings without treating lower quality as a win.
             </p>
             <div class="hero-actions">
-              <a class="button button-primary" href="#developers">Deploy in your AWS account</a>
+              <a class="button button-primary" href="#economics">Calculate your token savings</a>
               <a
                 class="button button-ghost"
-                href="https://github.com/krishnamuppidi/agent-context-gateway-ai"
-                target="_blank"
-                rel="noreferrer"
+                href="mailto:nagamuppidi1015@gmail.com?subject=30-Day%20Agent%20Token%20Optimization%20Pilot"
               >
-                Explore the code <span aria-hidden="true">↗</span>
+                Request a 30-day pilot <span aria-hidden="true">→</span>
               </a>
             </div>
             <div class="hero-proof" aria-label="Product capabilities">
-              <span><i aria-hidden="true">✓</i> Policy before prompt</span>
-              <span><i aria-hidden="true">✓</i> AWS deployable</span>
-              <span><i aria-hidden="true">✓</i> Model agnostic</span>
+              <span><i aria-hidden="true">✓</i> Per-request token metrics</span>
+              <span><i aria-hidden="true">✓</i> Quality-gated savings</span>
+              <span><i aria-hidden="true">✓</i> Deploys in your AWS</span>
             </div>
           </div>
 
@@ -139,9 +135,9 @@
               <div class="console-metrics">
                 <div><span>Full context</span><strong>32</strong><small>tokens</small></div>
                 <div><span>Task capsule</span><strong>16</strong><small>tokens</small></div>
-                <div class="metric-highlight"><span>Demo reduction</span><strong>50%</strong><small>measured</small></div>
+                <div class="metric-highlight"><span>Fixture reduction</span><strong>50%</strong><small>estimated</small></div>
               </div>
-              <p class="demo-note">Fixture-scale repository demo. Not a production benchmark.</p>
+              <p class="demo-note">Deterministic fixture estimate. Not a production benchmark.</p>
             </div>
           </div>
         </div>
@@ -162,23 +158,24 @@
       <section class="section problem-section" id="product">
         <div class="container">
           <div class="section-heading reveal">
-            <span class="eyebrow">Why now</span>
-            <h2>Agents do not have a memory problem.<br />They have a <span>context boundary</span> problem.</h2>
+            <span class="eyebrow">The hidden agent tax</span>
+            <h2>Most agent stacks optimize the model.<br />Few optimize <span>what enters it.</span></h2>
             <p>
-              Enterprise agents need repositories, runbooks, policies, service maps, and cloud
-              metadata to be useful. Sending all of it on every request is expensive, slow, and
-              difficult to govern.
+              Enterprise agents repeatedly ingest the same repositories, runbooks, policies,
+              service maps, and cloud metadata. That duplicate context inflates input-token cost
+              and latency long before the model produces an answer.
             </p>
           </div>
 
           <div class="bento-grid">
             <article class="bento bento-large reveal">
               <div class="bento-copy">
-                <span class="card-index">01 · Cost</span>
-                <h3>Stop paying to resend the same background context.</h3>
+                <span class="card-index">01 · Token waste</span>
+                <h3>Pay for the facts a task needs—not the corpus it came from.</h3>
                 <p>
                   Build reusable context slices once. Select only the facts needed for each task,
-                  track cache reuse, and compare capsule tokens with full-context tokens.
+                  track cache reuse, and compare the task capsule with the full-context baseline.
+                  Add provider usage during a company pilot.
                 </p>
               </div>
               <div class="token-visual" aria-hidden="true">
@@ -191,26 +188,26 @@
             </article>
 
             <article class="bento reveal">
-              <span class="card-index">02 · Security</span>
+              <span class="card-index">02 · Quality</span>
               <div class="mini-icon lock-icon" aria-hidden="true"><span></span></div>
-              <h3>Relevance is not permission.</h3>
-              <p>Apply identity, task, path, environment, sensitivity, and approval policy before retrieval reaches the model.</p>
+              <h3>Smaller prompts only count when the answer still works.</h3>
+              <p>Gate savings against must-find recall, precision, reviewer acceptance, and task completion—not token reduction alone.</p>
             </article>
 
             <article class="bento reveal">
-              <span class="card-index">03 · Evidence</span>
+              <span class="card-index">03 · Control</span>
               <div class="audit-preview" aria-hidden="true">
                 <span><i class="green"></i> 1 slice released</span>
                 <span><i class="red"></i> 1 slice denied</span>
                 <span><i class="blue"></i> source hashes recorded</span>
               </div>
-              <h3>Make every release explainable.</h3>
+              <h3>Optimize context without weakening the boundary.</h3>
               <p>Record caller identity, selected and denied slices, source hashes, freshness, policy version, capsule hash, and token metrics.</p>
             </article>
 
             <article class="bento bento-wide reveal">
-              <span class="card-index">04 · Platform</span>
-              <h3>One governed context fabric. Many agents.</h3>
+              <span class="card-index">04 · Scale</span>
+              <h3>Prove savings on one workflow. Reuse the control plane across many agents.</h3>
               <div class="agent-chips" aria-label="Example agent use cases">
                 <span>Security review</span><span>Code review</span><span>Incident response</span><span>Architecture Q&amp;A</span><span>Developer onboarding</span><span>FinOps</span>
               </div>
@@ -273,15 +270,21 @@
       <section class="section economics-section" id="economics">
         <div class="container economics-layout">
           <div class="economics-copy reveal">
-            <span class="eyebrow">Token economics</span>
-            <h2>Measure context efficiency on every request.</h2>
+            <span class="eyebrow">The commercial outcome</span>
+            <h2>Lower input-token spend per successful agent task.</h2>
             <p>
-              The gateway reports full-context tokens, capsule tokens, token reduction, selected
-              slices, denied slices, and cache state. Teams can measure context cost by agent,
-              workload, and task family instead of treating prompt growth as invisible overhead.
+              The gateway reports full-context tokens, capsule tokens, reduction, selected and
+              denied slices, and cache state. A pilot adds provider-reported usage, quality scores,
+              and reviewer acceptance so teams can compare cost per accepted result—not just
+              prompt size.
             </p>
+            <div class="quality-gate">
+              <span>North-star metric</span>
+              <strong>Cost per accepted, correct, policy-compliant result</strong>
+              <p>Token reduction is counted as savings only when the optimized run meets the agreed quality threshold.</p>
+            </div>
             <div class="evidence-card">
-              <span class="evidence-badge">Reproducible demo evidence</span>
+              <span class="evidence-badge">Included fixture estimate</span>
               <div class="evidence-numbers">
                 <div><strong>32</strong><span>full-context tokens</span></div>
                 <div><strong>16</strong><span>capsule tokens</span></div>
@@ -290,7 +293,8 @@
               <p>
                 Generated by the repository's included Terraform fixture and recorded in
                 <code>build/demo/metrics.json</code>. This demonstrates measurement behavior; it is
-                not a claim of universal production savings.
+                a deterministic word-based estimate, not a provider-billed production benchmark
+                or a universal savings claim.
               </p>
               <a href="https://github.com/krishnamuppidi/agent-context-gateway-ai#local-quick-start" target="_blank" rel="noreferrer">Reproduce the demo <span aria-hidden="true">↗</span></a>
             </div>
@@ -298,8 +302,8 @@
 
           <div class="calculator reveal reveal-delay">
             <div class="calculator-head">
-              <span>Illustrative savings calculator</span>
-              <small>Change the assumptions</small>
+              <span>Token-cost opportunity calculator</span>
+              <small>Model your current workload</small>
             </div>
             <div class="calculator-fields">
               <label>
@@ -323,7 +327,24 @@
               <div><span>Tokens avoided / month</span><strong id="saved-tokens">300M</strong></div>
               <div><span>Illustrative input cost avoided</span><strong id="saved-cost">$900</strong></div>
             </div>
-            <p>Illustrative arithmetic only. Actual savings depend on workload, model pricing, cache design, and policy.</p>
+            <p>Illustrative arithmetic only. A pilot replaces these assumptions with provider-reported usage and quality-gated results.</p>
+          </div>
+        </div>
+        <div class="container benchmark-strip reveal" aria-label="Pilot comparison design">
+          <div class="benchmark-intro">
+            <span class="eyebrow">A defensible benchmark</span>
+            <h3>Compare three review paths on the same work.</h3>
+          </div>
+          <article><span>01</span><b>Changed files only</b><small>Low-context baseline</small></article>
+          <article><span>02</span><b>Full context</b><small>Quality and cost baseline</small></article>
+          <article class="benchmark-accent"><span>03</span><b>ACG capsule</b><small>Optimized, governed path</small></article>
+          <div class="benchmark-metrics">
+            <b>Measure</b>
+            <span>provider input tokens</span>
+            <span>cost and latency</span>
+            <span>must-find recall</span>
+            <span>precision</span>
+            <span>reviewer acceptance</span>
           </div>
         </div>
       </section>
@@ -331,11 +352,12 @@
       <section class="section use-cases-section" id="use-cases">
         <div class="container">
           <div class="section-heading reveal">
-            <span class="eyebrow">Reference use cases</span>
-            <h2>From security review to every context-hungry agent.</h2>
+            <span class="eyebrow">Practical proof point</span>
+            <h2>SecureReviewAgent turns token optimization into a measurable workflow.</h2>
             <p>
-              Start with a bounded workflow, prove quality and context reduction, then reuse the
-              same control plane across the agent portfolio.
+              Infrastructure-as-Code review has repeatable inputs, reviewable findings, and clear
+              quality criteria. That makes it a strong first pilot for proving whether smaller,
+              governed context lowers token use without missing security issues.
             </p>
           </div>
 
@@ -343,13 +365,14 @@
             <article class="showcase reveal">
               <div class="showcase-top">
                 <span class="use-number">Use case 01</span>
-                <span class="use-status">Open-source reference</span>
+                <span class="use-status">Reference benchmark</span>
               </div>
               <div class="use-icon security-icon" aria-hidden="true"><span></span></div>
               <h3>SecureReviewAgent</h3>
               <p class="showcase-lead">
-                Ground Terraform and Kubernetes reviews in governed architecture context without
-                exposing the entire infrastructure memory to every pull-request task.
+                Compare the same Terraform and Kubernetes changes using changed files only, full
+                repository context, and an ACG task capsule. Capture provider tokens, cost,
+                latency, must-find recall, precision, and reviewer acceptance.
               </p>
               <div class="mini-flow" aria-label="SecureReviewAgent integration flow">
                 <span>GitHub PR</span><i>→</i><span>ACG capsule</span><i>→</i><span>Security agent</span><i>→</i><span>Review</span>
@@ -357,11 +380,11 @@
               <ul class="check-list">
                 <li>Request only relevant IAM, network, environment, policy, and owner slices.</li>
                 <li>Keep unrelated topology and restricted identity paths outside the prompt.</li>
-                <li>Link findings to the capsule hash, source references, and audit decision.</li>
+                <li>Accept savings only when findings meet the agreed quality threshold.</li>
               </ul>
               <div class="showcase-actions">
-                <a class="button button-primary" href="https://github.com/krishnamuppidi/secreviewagent-ai" target="_blank" rel="noreferrer">SecureReviewAgent code ↗</a>
-                <a class="text-link" href="https://github.com/krishnamuppidi/agent-context-gateway-ai/blob/main/docs/AGENT_INTEGRATION.md" target="_blank" rel="noreferrer">Integration guide →</a>
+                <a class="button button-primary" href="mailto:nagamuppidi1015@gmail.com?subject=SecureReviewAgent%20Token%20Optimization%20Pilot">Pilot this workflow →</a>
+                <a class="text-link" href="https://github.com/krishnamuppidi/secreviewagent-ai" target="_blank" rel="noreferrer">View SecureReviewAgent ↗</a>
               </div>
             </article>
 
@@ -601,14 +624,14 @@ response = bedrock.converse(
       <section class="section path-section">
         <div class="container">
           <div class="section-heading centered reveal">
-            <span class="eyebrow">Adoption path</span>
-            <h2>Start narrow. Measure. Harden. Expand.</h2>
+            <span class="eyebrow">30-day pilot</span>
+            <h2>Prove the savings before expanding the platform.</h2>
           </div>
           <div class="path-grid">
-            <article class="path-card reveal"><span>01</span><div><small>Day 1</small><h3>Run the fixture</h3><p>Reproduce graph, slices, capsule, audit, and token metrics locally.</p></div></article>
-            <article class="path-card reveal"><span>02</span><div><small>Pilot</small><h3>One bounded workflow</h3><p>Use one approved source, one agent identity, one task family, and explicit success metrics.</p></div></article>
-            <article class="path-card reveal"><span>03</span><div><small>Harden</small><h3>Enterprise controls</h3><p>Add per-workload identity, reviewed policy, alarms, budgets, retention, private networking, and red-team tests.</p></div></article>
-            <article class="path-card reveal"><span>04</span><div><small>Scale</small><h3>Shared context fabric</h3><p>Onboard more sources and agents while measuring quality, denials, cache reuse, and token efficiency.</p></div></article>
+            <article class="path-card reveal"><span>01</span><div><small>Week 1</small><h3>Baseline</h3><p>Capture provider tokens, cost, latency, and quality for the current workflow.</p></div></article>
+            <article class="path-card reveal"><span>02</span><div><small>Week 2</small><h3>Optimize</h3><p>Connect one approved source and release task-scoped context through ACG.</p></div></article>
+            <article class="path-card reveal"><span>03</span><div><small>Week 3</small><h3>Quality gate</h3><p>Run paired reviews and reject token savings that reduce recall, precision, or acceptance.</p></div></article>
+            <article class="path-card reveal"><span>04</span><div><small>Week 4</small><h3>Decision</h3><p>Report savings by task, quality deltas, control evidence, and the next rollout candidate.</p></div></article>
           </div>
         </div>
       </section>
@@ -624,7 +647,8 @@ response = bedrock.converse(
             <details open><summary>Is this another RAG framework?<span>+</span></summary><p>No. Retrieval finds relevant content. Agent Context Gateway adds an authorization boundary: who or what is asking, for which task and path, at what sensitivity, under which policy, with what evidence.</p></details>
             <details><summary>Does it replace a model gateway?<span>+</span></summary><p>No. It sits before the model gateway. ACG governs which enterprise context may be released; the model gateway handles model access, routing, and provider controls.</p></details>
             <details><summary>Is the AWS deployment production ready?<span>+</span></summary><p>It is a complete controlled-evaluation stack. Broad production use requires the documented hardening steps, including per-workload clients, reviewed policy, alarms, budgets, retention, networking decisions, and adversarial testing.</p></details>
-            <details><summary>How are token savings calculated?<span>+</span></summary><p>The runtime compares estimated full-context tokens with the released capsule tokens for each request. The included fixture currently demonstrates 32 versus 16 tokens, or 50% reduction; production results depend on real sources and tasks.</p></details>
+            <details><summary>How are token savings calculated?<span>+</span></summary><p>The included fixture compares deterministic estimates for full context and the released capsule: 32 versus 16 tokens, or 50%. A company pilot should use the model provider's reported input and cached-token usage, actual pricing, and the same task set across all benchmark paths.</p></details>
+            <details><summary>How do you keep token reduction from hurting quality?<span>+</span></summary><p>Define must-find cases and an acceptance threshold before the pilot. Compare changed-files-only, full-context, and ACG-capsule runs. Count savings only when the optimized path preserves the agreed recall, precision, and reviewer acceptance.</p></details>
             <details><summary>Can it work with Amazon Bedrock and other models?<span>+</span></summary><p>Yes. The repository includes a Bedrock Converse client example, while the capsule format remains model agnostic for internal gateways and other approved model providers.</p></details>
             <details><summary>What should the first use case be?<span>+</span></summary><p>Choose one read-only workflow with clear scope and repeatable context, such as IaC security review, architecture Q&amp;A, incident assistance, or developer onboarding.</p></details>
           </div>
@@ -634,12 +658,12 @@ response = bedrock.converse(
       <section class="final-cta">
         <div class="final-grid" aria-hidden="true"></div>
         <div class="container reveal">
-          <span class="eyebrow">Open-source context infrastructure</span>
-          <h2>Give agents enough context to be useful.<br /><span>Not enough to be over-privileged.</span></h2>
-          <p>Deploy the reference stack, connect one agent, and measure context quality, exposure, audit completeness, and token efficiency.</p>
+          <span class="eyebrow">Start with one measurable workflow</span>
+          <h2>Find and remove wasted context tokens.<br /><span>Keep the quality that earns trust.</span></h2>
+          <p>Baseline one agent workflow, optimize it with task-scoped context, and make the rollout decision from provider usage, quality, and policy evidence.</p>
           <div class="hero-actions centered-actions">
-            <a class="button button-primary" href="https://github.com/krishnamuppidi/agent-context-gateway-ai" target="_blank" rel="noreferrer">Start on GitHub ↗</a>
-            <a class="button button-ghost" href="https://github.com/krishnamuppidi/agent-context-gateway-ai/blob/main/docs/GETTING_STARTED.md" target="_blank" rel="noreferrer">Read the guide ↗</a>
+            <a class="button button-primary" href="mailto:nagamuppidi1015@gmail.com?subject=30-Day%20Agent%20Token%20Optimization%20Pilot">Request a 30-day pilot →</a>
+            <a class="button button-ghost" href="https://github.com/krishnamuppidi/agent-context-gateway-ai" target="_blank" rel="noreferrer">Run the open-source demo ↗</a>
           </div>
         </div>
       </section>
@@ -649,10 +673,10 @@ response = bedrock.converse(
       <div class="container footer-top">
         <div>
           <a class="brand" href="#top"><span class="brand-mark small" aria-hidden="true"><span></span><span></span><span></span></span><span>Agent Context Gateway</span></a>
-          <p>Right context. Right agent. Right policy. Complete audit trail.</p>
+          <p>Fewer context tokens. Preserved quality. Policy-backed evidence.</p>
         </div>
         <div class="footer-links">
-          <div><b>Product</b><a href="#architecture">Architecture</a><a href="#economics">Token economics</a><a href="#use-cases">Use cases</a><a href="#security">Security</a></div>
+          <div><b>Product</b><a href="#economics">Token savings</a><a href="#use-cases">SecureReviewAgent</a><a href="#architecture">How it works</a><a href="#security">Security</a></div>
           <div><b>Developers</b><a href="#developers">Quick start</a><a href="https://github.com/krishnamuppidi/agent-context-gateway-ai/tree/main/deploy/aws" target="_blank" rel="noreferrer">AWS deployment ↗</a><a href="https://github.com/krishnamuppidi/agent-context-gateway-ai/blob/main/docs/API_REFERENCE.md" target="_blank" rel="noreferrer">API reference ↗</a><a href="https://github.com/krishnamuppidi/agent-context-gateway-ai/tree/main/examples/clients" target="_blank" rel="noreferrer">Examples ↗</a></div>
           <div><b>Code</b><a href="https://github.com/krishnamuppidi/agent-context-gateway-ai" target="_blank" rel="noreferrer">Gateway ↗</a><a href="https://github.com/krishnamuppidi/secreviewagent-ai" target="_blank" rel="noreferrer">SecureReviewAgent ↗</a><a href="https://github.com/krishnamuppidi/agent-context-gateway-ai/blob/main/LICENSE" target="_blank" rel="noreferrer">MIT license ↗</a></div>
         </div>
