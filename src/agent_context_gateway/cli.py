@@ -7,9 +7,9 @@ from .capsule import build_capsule
 from .gateway import AgentContextGateway
 from .identity import AgentRegistry
 from .ingest import scan_repo
+from .insights import generate_context_insights
 from .io import read_json, write_json
 from .metrics import compute_metrics
-from .insights import generate_context_insights
 from .models import ContextGraph, ContextNode, ContextSlice, DeniedSlice, ReleasedFact, TaskRequest
 from .slices import build_slices
 

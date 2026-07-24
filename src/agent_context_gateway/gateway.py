@@ -6,8 +6,8 @@ from pathlib import Path
 from .cache import ContextSliceCache
 from .capsule import build_capsule
 from .identity import AgentRegistry
-from .insights import generate_context_insights
 from .ingest import scan_repo
+from .insights import generate_context_insights
 from .io import write_json
 from .metrics import compute_metrics
 from .models import (

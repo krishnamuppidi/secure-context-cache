@@ -3,15 +3,14 @@ from __future__ import annotations
 import os
 import re
 import tempfile
+from collections.abc import Iterator
 from contextlib import contextmanager
 from dataclasses import asdict
 from decimal import Decimal
 from pathlib import Path, PurePosixPath
-from typing import Iterator
 
 from .cache import CacheEntry
 from .models import ContextSlice, TaskRequest, utc_now
-
 
 CONTEXT_ID_PATTERN = re.compile(r"^[a-zA-Z0-9][a-zA-Z0-9._-]{0,63}$")
 
@@ -50,7 +49,7 @@ class S3ContextStore:
         self.client = client or _boto3().client("s3")
 
     @classmethod
-    def from_env(cls) -> "S3ContextStore":
+    def from_env(cls) -> S3ContextStore:
         bucket = os.environ.get("ACG_CONTEXT_BUCKET")
         if not bucket:
             raise RuntimeError("ACG_CONTEXT_BUCKET is required in AWS mode")
@@ -99,7 +98,7 @@ class DynamoContextSliceCache:
         self.table = table or _boto3().resource("dynamodb").Table(table_name)
 
     @classmethod
-    def from_env(cls) -> "DynamoContextSliceCache":
+    def from_env(cls) -> DynamoContextSliceCache:
         table = os.environ.get("ACG_CONTEXT_CACHE_TABLE")
         if not table:
             raise RuntimeError("ACG_CONTEXT_CACHE_TABLE is required in AWS mode")
@@ -152,7 +151,7 @@ class DynamoAuditStore:
         self.table = table or _boto3().resource("dynamodb").Table(table_name)
 
     @classmethod
-    def from_env(cls) -> "DynamoAuditStore":
+    def from_env(cls) -> DynamoAuditStore:
         table = os.environ.get("ACG_AUDIT_EVENTS_TABLE")
         if not table:
             raise RuntimeError("ACG_AUDIT_EVENTS_TABLE is required in AWS mode")
@@ -167,7 +166,7 @@ class DynamoSliceStore:
         self.table = table or _boto3().resource("dynamodb").Table(table_name)
 
     @classmethod
-    def from_env(cls) -> "DynamoSliceStore":
+    def from_env(cls) -> DynamoSliceStore:
         table = os.environ.get("ACG_CONTEXT_SLICES_TABLE")
         if not table:
             raise RuntimeError("ACG_CONTEXT_SLICES_TABLE is required in AWS mode")

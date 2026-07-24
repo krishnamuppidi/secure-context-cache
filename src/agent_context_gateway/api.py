@@ -6,7 +6,7 @@ from pathlib import Path
 try:
     from fastapi import FastAPI, Header, HTTPException, Request
     from pydantic import BaseModel
-except Exception:  # pragma: no cover
+except ImportError:  # pragma: no cover
     FastAPI = None
     BaseModel = object
 

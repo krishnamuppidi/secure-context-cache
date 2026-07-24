@@ -36,7 +36,7 @@ def load_policy(path: str | Path | None = None) -> dict:
         raise FileNotFoundError(f"policy file does not exist: {policy_path}")
     override = json.loads(policy_path.read_text())
     if not isinstance(override, dict):
-        raise ValueError("policy file must contain a JSON object")
+        raise TypeError("policy file must contain a JSON object")
     policy.update(override)
     return policy
 

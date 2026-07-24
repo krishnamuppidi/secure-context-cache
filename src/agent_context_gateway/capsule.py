@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import uuid4
 
 from .models import (
@@ -12,8 +12,8 @@ from .models import (
     TaskRequest,
     stable_hash,
     stable_id,
-    utc_now,
     utc_in,
+    utc_now,
 )
 from .policy import DEFAULT_POLICY, decide_slice
 
@@ -22,10 +22,10 @@ def _freshness_warning(slice_: ContextSlice, *, max_age_days: int = 30) -> str:
     if not slice_.freshness_timestamp:
         return f"slice {slice_.id} has no freshness timestamp"
     try:
-        timestamp = datetime.fromisoformat(slice_.freshness_timestamp.replace("Z", "+00:00"))
+        timestamp = datetime.fromisoformat(slice_.freshness_timestamp)
     except ValueError:
         return f"slice {slice_.id} has an unreadable freshness timestamp"
-    age_days = (datetime.now(timezone.utc) - timestamp).days
+    age_days = (datetime.now(UTC) - timestamp).days
     if age_days > max_age_days:
         return f"slice {slice_.id} is {age_days} days old"
     return ""

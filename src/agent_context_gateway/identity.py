@@ -17,7 +17,7 @@ class AgentRegistry:
         self.credentials = credentials
 
     @classmethod
-    def demo(cls) -> "AgentRegistry":
+    def demo(cls) -> AgentRegistry:
         return cls(
             {
                 "secreviewagent": AgentCredential(
@@ -40,7 +40,7 @@ class AgentRegistry:
         )
 
     @classmethod
-    def from_env_or_demo(cls) -> "AgentRegistry":
+    def from_env_or_demo(cls) -> AgentRegistry:
         """Build one local-runtime credential from environment, or use demo identities.
 
         AWS mode does not use this registry; API Gateway verifies Cognito JWTs and

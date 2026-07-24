@@ -6,7 +6,6 @@ from agent_context_gateway.gateway import AgentContextGateway
 from agent_context_gateway.models import ContextSlice, TaskRequest
 from agent_context_gateway.policy import load_policy
 
-
 ROOT = Path(__file__).resolve().parents[1]
 SAMPLE_REPO = ROOT / "examples" / "sample_repo"
 
