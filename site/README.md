@@ -37,3 +37,18 @@ Signals are disabled.
 Meaningful aggregate events include GitHub resource clicks, pilot-email clicks, token-calculator
 use, developer-example tabs, and code-example copies. Treat these as website awareness or
 evaluation signals, not verified product adoption.
+
+## Search visibility
+
+The homepage and five topic guides are crawlable static pages with unique titles, descriptions,
+canonical URLs, Open Graph/Twitter metadata, and Schema.org JSON-LD:
+
+- `llm-token-optimization/`
+- `secure-context-caching/`
+- `least-privilege-ai-context/`
+- `ai-agent-context-gateway/`
+- `iac-ai-security-review/`
+
+`robots.txt` permits crawling and points to `sitemap.xml`. The sitemap lists every public page.
+When a page is added or renamed, update the sitemap, homepage learning cards, related-page links,
+and `tests/test_website_seo.py` together.

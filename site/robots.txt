@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://krishnamuppidi.github.io/secure-context-cache/sitemap.xml

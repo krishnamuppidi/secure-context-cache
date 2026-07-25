@@ -6,17 +6,55 @@
     <meta name="theme-color" content="#07110f" />
     <meta
       name="description"
-      content="Secure Context Cache reduces AI input tokens by assembling the smallest policy-approved context capsule for every agent task. Open-source, research-backed, and proven with SecureReviewAgent."
+      content="Secure Context Cache reduces AI input tokens with policy-approved task capsules that preserve required facts, provenance, and access controls."
     />
+    <meta
+      name="keywords"
+      content="LLM token optimization, secure context cache, AI agent context gateway, least privilege AI, IaC AI security review, enterprise AI context management"
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://krishnamuppidi.github.io/secure-context-cache/" />
     <meta property="og:title" content="Secure Context Cache — Secure token optimization for AI agents" />
     <meta
       property="og:description"
       content="Cut recurring prompt tokens without cutting required facts. Optimize context before model invocation, enforce least privilege, and measure every result."
     />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://krishnamuppidi.github.io/secure-context-cache/" />
+    <meta property="og:site_name" content="Secure Context Cache" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Secure Context Cache — Secure token optimization for AI agents" />
+    <meta
+      name="twitter:description"
+      content="Cut recurring AI input tokens while preserving required facts, provenance, and least-privilege controls."
+    />
     <title>Secure Context Cache — Secure Token Optimization for AI Agents</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="seo-pages.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Secure Context Cache",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Cross-platform",
+        "description": "An open-source secure token-optimization framework that assembles policy-approved context capsules for enterprise AI agents.",
+        "url": "https://krishnamuppidi.github.io/secure-context-cache/",
+        "codeRepository": "https://github.com/krishnamuppidi/secure-context-cache",
+        "license": "https://opensource.org/license/mit",
+        "author": {
+          "@type": "Person",
+          "name": "Naga Krishna Reddy Muppidi",
+          "url": "https://github.com/krishnamuppidi"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
+    </script>
     <script defer src="analytics.js"></script>
     <script defer src="app.js"></script>
   </head>
@@ -47,6 +85,7 @@
           <a href="#research">Research</a>
           <a href="#economics">Token savings</a>
           <a href="#use-cases">SecureReviewAgent</a>
+          <a href="#learn">Learn</a>
           <a href="#developers">Deploy</a>
         </div>
 
@@ -716,6 +755,51 @@ response = bedrock.converse(
         </div>
       </section>
 
+      <section class="section learn-section" id="learn">
+        <div class="container">
+          <div class="section-heading centered reveal">
+            <span class="eyebrow">Enterprise AI context guides</span>
+            <h2>Explore the engineering problems Secure Context Cache addresses.</h2>
+            <p>
+              Practical guides explain token optimization, context caching, least-privilege
+              release, the Agent Context Gateway, and measurable Infrastructure-as-Code review.
+            </p>
+          </div>
+          <div class="learn-grid">
+            <a class="learn-card reveal" href="llm-token-optimization/">
+              <span>01 · Economics</span>
+              <h3>LLM token optimization</h3>
+              <p>Reduce recurring input-token cost while preserving accepted-result quality.</p>
+              <b>Read the guide →</b>
+            </a>
+            <a class="learn-card reveal" href="secure-context-caching/">
+              <span>02 · Architecture</span>
+              <h3>Secure context caching</h3>
+              <p>Compile approved knowledge once and reuse source-backed, governed slices.</p>
+              <b>Read the guide →</b>
+            </a>
+            <a class="learn-card reveal" href="least-privilege-ai-context/">
+              <span>03 · Security</span>
+              <h3>Least-privilege AI context</h3>
+              <p>Release only the minimum context allowed for one identity, task, and path.</p>
+              <b>Read the guide →</b>
+            </a>
+            <a class="learn-card reveal" href="ai-agent-context-gateway/">
+              <span>04 · Control plane</span>
+              <h3>AI agent context gateway</h3>
+              <p>Put authentication, policy, capsule assembly, and audit evidence before the model.</p>
+              <b>Read the guide →</b>
+            </a>
+            <a class="learn-card reveal" href="iac-ai-security-review/">
+              <span>05 · Application</span>
+              <h3>IaC AI security review</h3>
+              <p>Measure token, cost, recall, precision, and acceptance on repeatable reviews.</p>
+              <b>Read the guide →</b>
+            </a>
+          </div>
+        </div>
+      </section>
+
       <section class="final-cta">
         <div class="final-grid" aria-hidden="true"></div>
         <div class="container reveal">
@@ -739,7 +823,7 @@ response = bedrock.converse(
         <div class="footer-links">
           <div><b>Framework</b><a href="#framework">Secure Context Cache</a><a href="#research">Research</a><a href="#use-cases">SecureReviewAgent</a><a href="#security">Security</a></div>
           <div><b>Developers</b><a href="#developers">Quick start</a><a href="https://github.com/krishnamuppidi/secure-context-cache/tree/main/deploy/aws" target="_blank" rel="noreferrer">AWS deployment ↗</a><a href="https://github.com/krishnamuppidi/secure-context-cache/blob/main/docs/API_REFERENCE.md" target="_blank" rel="noreferrer">API reference ↗</a><a href="https://github.com/krishnamuppidi/secure-context-cache/tree/main/examples/clients" target="_blank" rel="noreferrer">Examples ↗</a></div>
-          <div><b>Code</b><a href="https://github.com/krishnamuppidi/secure-context-cache/blob/main/docs/SECURE_CONTEXT_CACHE_FRAMEWORK.md" target="_blank" rel="noreferrer">Framework ↗</a><a href="https://github.com/krishnamuppidi/secure-context-cache" target="_blank" rel="noreferrer">Gateway ↗</a><a href="https://github.com/krishnamuppidi/secreviewagent-ai" target="_blank" rel="noreferrer">SecureReviewAgent ↗</a><a href="https://github.com/krishnamuppidi/secure-context-cache/blob/main/LICENSE" target="_blank" rel="noreferrer">MIT license ↗</a></div>
+          <div><b>Learn</b><a href="llm-token-optimization/">Token optimization</a><a href="secure-context-caching/">Context caching</a><a href="least-privilege-ai-context/">Least privilege</a><a href="iac-ai-security-review/">IaC review</a></div>
         </div>
       </div>
       <div class="container footer-bottom">

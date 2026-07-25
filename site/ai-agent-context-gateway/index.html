@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#07110f" />
+    <meta
+      name="description"
+      content="An AI agent context gateway authenticates workloads, evaluates context policy, assembles task-scoped capsules, and records evidence before enterprise knowledge reaches an LLM."
+    />
+    <meta
+      name="keywords"
+      content="AI agent context gateway, LLM gateway context control, enterprise AI control plane, agentic AI security, context authorization API"
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link
+      rel="canonical"
+      href="https://krishnamuppidi.github.io/secure-context-cache/ai-agent-context-gateway/"
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Secure Context Cache" />
+    <meta property="og:title" content="AI Agent Context Gateway for Enterprise LLM Workloads" />
+    <meta
+      property="og:description"
+      content="Put identity, policy, context assembly, and audit evidence before model invocation."
+    />
+    <meta
+      property="og:url"
+      content="https://krishnamuppidi.github.io/secure-context-cache/ai-agent-context-gateway/"
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="AI Agent Context Gateway for Enterprise LLM Workloads" />
+    <meta
+      name="twitter:description"
+      content="A deployable control plane for governed context capsules and token metrics."
+    />
+    <title>AI Agent Context Gateway for Enterprise LLM Workloads | Secure Context Cache</title>
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="../seo-pages.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "AI Agent Context Gateway for Enterprise LLM Workloads",
+        "description": "A deployable control plane that authenticates AI workloads, evaluates context policy, builds task-scoped capsules, and records audit evidence.",
+        "datePublished": "2026-07-24",
+        "dateModified": "2026-07-24",
+        "mainEntityOfPage": "https://krishnamuppidi.github.io/secure-context-cache/ai-agent-context-gateway/",
+        "author": {"@type": "Person", "name": "Naga Krishna Reddy Muppidi", "url": "https://github.com/krishnamuppidi"},
+        "publisher": {"@type": "Person", "name": "Naga Krishna Reddy Muppidi"},
+        "about": ["AI agent context gateway", "enterprise LLM security", "context control plane"]
+      }
+    </script>
+    <script defer src="../analytics.js"></script>
+    <script defer src="../app.js"></script>
+  </head>
+  <body class="article-page">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <nav class="nav article-nav scrolled" aria-label="Primary navigation">
+      <div class="container nav-inner">
+        <a class="brand" href="../" aria-label="Secure Context Cache home"><span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span><span>Secure Context Cache</span></a>
+        <button class="menu-button" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open navigation"><span></span><span></span><span></span></button>
+        <div class="nav-links" id="nav-links">
+          <a href="../llm-token-optimization/">Token optimization</a>
+          <a href="../secure-context-caching/">Context caching</a>
+          <a href="../least-privilege-ai-context/">Least privilege</a>
+          <a href="../iac-ai-security-review/">IaC review</a>
+        </div>
+        <a class="button button-small nav-cta" href="mailto:nagamuppidi1015@gmail.com?subject=Agent%20Context%20Gateway%20Pilot">Request a pilot →</a>
+      </div>
+    </nav>
+
+    <main id="main">
+      <header class="article-hero">
+        <div class="container article-hero-layout">
+          <div>
+            <nav class="article-breadcrumb" aria-label="Breadcrumb"><a href="../">Home</a><span>/</span><span>AI agent context gateway</span></nav>
+            <span class="article-kicker">Deployable AI control plane</span>
+            <h1>An AI agent <span>context gateway</span> before the model</h1>
+            <p class="article-summary">
+              The <strong>Agent Context Gateway</strong> is the deployable runtime for Secure
+              Context Cache. It authenticates workloads, evaluates deterministic policy, assembles
+              a bounded capsule, and records the release decision before model invocation.
+            </p>
+            <div class="article-actions">
+              <a class="button button-primary" href="../#developers">Open the quick start</a>
+              <a class="button button-ghost" href="https://github.com/krishnamuppidi/secure-context-cache/blob/main/docs/API_REFERENCE.md" target="_blank" rel="noreferrer">Read the API reference ↗</a>
+            </div>
+          </div>
+          <aside class="article-fact-card">
+            <span class="article-label">Gateway request</span>
+            <h2>Identity + task + path + environment → governed capsule</h2>
+            <p>The gateway returns released facts, provenance, expiry, token metrics, and an audit identifier.</p>
+            <div class="article-fact-list">
+              <div><span>Input</span><b>authenticated task request</b></div>
+              <div><span>Decision</span><b>deterministic context policy</b></div>
+              <div><span>Output</span><b>minimum approved capsule</b></div>
+              <div><span>Record</span><b>release + denial evidence</b></div>
+            </div>
+          </aside>
+        </div>
+      </header>
+
+      <section class="article-section">
+        <div class="container article-layout">
+          <aside class="article-aside">
+            <span class="article-label">Where it fits</span>
+            <h2>Model gateways govern model access. Context gateways govern model-visible knowledge.</h2>
+            <p>The two controls are complementary and can be deployed in the same enterprise AI request path.</p>
+          </aside>
+          <article class="article-content">
+            <h2>A control point between agents and enterprise knowledge</h2>
+            <p>
+              An agent often gathers context before calling the model provider. If that assembly
+              happens inside each agent, authorization logic becomes duplicated, inconsistent, and
+              hard to audit. The Agent Context Gateway centralizes this step without forcing every
+              agent to understand the full enterprise context graph.
+            </p>
+            <p>
+              A workload sends its task type, target path, environment, and requested scope. The
+              gateway verifies identity, evaluates policy, selects fresh approved slices, builds an
+              expiring capsule, and records which candidates were released or denied. The agent
+              then sends that capsule through its normal model-access path.
+            </p>
+            <div class="article-points">
+              <div class="article-point"><span>01</span><h3>Authenticate</h3><p>Verify the calling workload through an approved service identity.</p></div>
+              <div class="article-point"><span>02</span><h3>Authorize</h3><p>Evaluate task, path, environment, sensitivity, source age, and policy.</p></div>
+              <div class="article-point"><span>03</span><h3>Assemble</h3><p>Return only approved facts, references, freshness, and expiry in the capsule.</p></div>
+              <div class="article-point"><span>04</span><h3>Audit</h3><p>Record caller, policy version, selected and denied slices, hashes, and token metrics.</p></div>
+            </div>
+            <div class="article-callout">
+              <strong>The gateway should not log restricted content merely to prove it was denied.</strong>
+              <p>Record identifiers, classifications, decision reasons, and hashes while keeping the denied payload outside prompts and general logs.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="article-section alt">
+        <div class="container article-layout">
+          <aside class="article-aside">
+            <span class="article-label">Evaluation deployment</span>
+            <h2>Start with a read-only workflow and explicit production hardening.</h2>
+            <p>The repository includes local, Docker, and AWS paths for controlled evaluation.</p>
+          </aside>
+          <article class="article-content">
+            <h2>Gateway capabilities and operational evidence</h2>
+            <table class="article-table">
+              <thead><tr><th>Capability</th><th>Runtime responsibility</th><th>Useful evidence</th></tr></thead>
+              <tbody>
+                <tr><td>Identity</td><td>Validate workload credentials</td><td>Principal, authentication result, client policy</td></tr>
+                <tr><td>Policy</td><td>Evaluate release rules</td><td>Policy version, decision reason, denied slice IDs</td></tr>
+                <tr><td>Capsule assembly</td><td>Select and package approved facts</td><td>Source refs, hashes, freshness, expiry</td></tr>
+                <tr><td>Token metrics</td><td>Compare full context and capsule</td><td>Provider input usage, reduction, cache state</td></tr>
+                <tr><td>Audit</td><td>Persist request and decision metadata</td><td>Audit ID, timestamps, caller, result status</td></tr>
+              </tbody>
+            </table>
+            <h3>Production readiness is organization-specific</h3>
+            <p>
+              A controlled stack is not a universal production certification. Before broad use,
+              teams should review per-workload identities, network boundaries, secrets, encryption,
+              key rotation, alarms, budgets, retention, data classification, incident response,
+              adversarial testing, and model-provider controls.
+            </p>
+            <p>
+              Begin with the repository's
+              <a href="https://github.com/krishnamuppidi/secure-context-cache/blob/main/docs/GETTING_STARTED.md" target="_blank" rel="noreferrer">getting-started guide</a>,
+              then apply the gateway to the
+              <a href="../iac-ai-security-review/">IaC AI security-review workflow</a>.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="related-section">
+        <div class="container">
+          <div class="related-head"><div><span class="article-label">Continue exploring</span><h2>Related Secure Context Cache guides</h2></div></div>
+          <div class="related-grid">
+            <a class="related-card" href="../secure-context-caching/"><span>Architecture</span><h3>Secure context caching</h3><p>Build the governed context graph and reusable source-backed slices.</p></a>
+            <a class="related-card" href="../least-privilege-ai-context/"><span>Security</span><h3>Least-privilege AI context</h3><p>Define the deterministic policy evaluated by the gateway.</p></a>
+            <a class="related-card" href="../llm-token-optimization/"><span>Economics</span><h3>LLM token optimization</h3><p>Measure the cost and quality outcome of capsule-based context.</p></a>
+          </div>
+          <p class="article-disclaimer">The open-source deployment is intended for controlled evaluation. Review the documented hardening requirements before production use.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-top">
+        <div><a class="brand" href="../"><span class="brand-mark small" aria-hidden="true"><span></span><span></span><span></span></span><span>Secure Context Cache</span></a><p>Secure token optimization. Deployable context gateway. Measurable flagship agent.</p></div>
+        <div class="footer-links">
+          <div><b>Product</b><a href="../#framework">Framework</a><a href="../#architecture">Architecture</a><a href="../#developers">Quick start</a><a href="../#faq">FAQ</a></div>
+          <div><b>Learn</b><a href="../llm-token-optimization/">Token optimization</a><a href="../secure-context-caching/">Context caching</a><a href="../least-privilege-ai-context/">Least privilege</a><a href="../iac-ai-security-review/">IaC review</a></div>
+          <div><b>Code</b><a href="https://github.com/krishnamuppidi/secure-context-cache" target="_blank" rel="noreferrer">Secure Context Cache ↗</a><a href="https://github.com/krishnamuppidi/secreviewagent-ai" target="_blank" rel="noreferrer">SecureReviewAgent ↗</a></div>
+        </div>
+      </div>
+      <div class="container footer-bottom"><span>© <span id="year">2026</span> Naga Krishna Reddy Muppidi. Open-source under the MIT License.</span><span>Independent project. <button class="privacy-link" id="analytics-preferences" type="button">Analytics preferences</button></span></div>
+    </footer>
+
+    <aside class="analytics-consent" id="analytics-consent" role="dialog" aria-labelledby="analytics-consent-title" aria-describedby="analytics-consent-description" hidden>
+      <div><strong id="analytics-consent-title">Optional, privacy-conscious analytics</strong><p id="analytics-consent-description">Google Analytics helps measure aggregate site traffic and resource engagement. It stays off until allowed. No names, email addresses, form contents, or full link URLs are sent. See <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer">Google's privacy policy</a>.</p></div>
+      <div class="analytics-consent-actions"><button type="button" class="button button-ghost" data-analytics-choice="denied">No thanks</button><button type="button" class="button button-primary" data-analytics-choice="granted">Allow analytics</button></div>
+    </aside>
+  </body>
+</html>
