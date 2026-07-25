@@ -24,10 +24,22 @@
   };
 
   const deleteAnalyticsCookies = () => {
+    const cookiePaths = new Set([
+      "/",
+      window.location.pathname,
+      window.location.pathname.replace(/[^/]*$/, ""),
+    ]);
+    const cookieDomains = [null, window.location.hostname, `.${window.location.hostname}`];
+
     document.cookie.split(";").forEach((cookie) => {
       const name = cookie.split("=")[0].trim();
       if (name === "_ga" || name.startsWith("_ga_")) {
-        document.cookie = `${name}=; Max-Age=0; Path=/; SameSite=Lax`;
+        cookiePaths.forEach((path) => {
+          cookieDomains.forEach((domain) => {
+            const domainAttribute = domain ? `; Domain=${domain}` : "";
+            document.cookie = `${name}=; Max-Age=0; Path=${path}${domainAttribute}; SameSite=Lax`;
+          });
+        });
       }
     });
   };

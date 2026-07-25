@@ -18,6 +18,8 @@ def test_website_loads_consent_gated_analytics() -> None:
     assert 'ad_storage: "denied"' in analytics
     assert "allow_google_signals: false" in analytics
     assert 'page_location: `${window.location.origin}${window.location.pathname}`' in analytics
+    assert "window.location.hostname" in analytics
+    assert "cookieDomains" in analytics
 
 
 def test_analytics_notice_and_preferences_are_accessible() -> None:
