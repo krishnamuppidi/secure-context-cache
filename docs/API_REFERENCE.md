@@ -1,6 +1,7 @@
 # API Reference
 
-The API exposes health, capsule release, and capsule-plus-insight endpoints. JSON uses UTF-8.
+The API exposes health, token optimization, secure retrieval authorization, capsule release, and
+capsule-plus-insight endpoints. JSON uses UTF-8.
 
 ## Base URLs and Authentication
 
@@ -61,6 +62,69 @@ It returns the same governed capsule as `/v1/capsules`, plus tokenizer-labeled m
 
 The stable context deliberately excludes `request_id`, expiry, and audit IDs. Send it before
 request-specific task text to make exact provider prompt caching possible.
+
+## `POST /v1/authorize-retrieval`
+
+Secure-RAG integration endpoint. The caller retrieves candidate chunks, then sends those candidates
+to the gateway before constructing a model prompt. Secure Context Cache applies identity, task,
+path, environment, sensitivity, freshness, and policy controls. Unlike the backward-compatible
+capsule endpoint's freshness warning, this endpoint denies stale or invalidly dated candidates.
+
+```bash
+curl -sS http://127.0.0.1:8000/v1/authorize-retrieval \
+  -H "x-agent-api-key: $ACG_LOCAL_API_KEY" \
+  -H 'content-type: application/json' \
+  -d '{
+    "task_type": "iac_security",
+    "path": "terraform/prod/payments/lambda.tf",
+    "prompt": "Review the production Lambda",
+    "environment": "prod",
+    "agent_id": "secreviewagent",
+    "candidates": [
+      {
+        "candidate_id": "rag-1",
+        "content": "The Lambda must use a customer-managed KMS key.",
+        "refs": ["terraform/prod/payments/lambda.tf"],
+        "sensitivity": "high",
+        "environment": "prod",
+        "score": 0.94
+      },
+      {
+        "candidate_id": "rag-2",
+        "content": "Restricted incident material.",
+        "refs": ["incidents/restricted.md"],
+        "sensitivity": "restricted",
+        "score": 0.91
+      }
+    ]
+  }'
+```
+
+The response names authorized and denied candidate IDs, but never repeats denied content:
+
+```json
+{
+  "retrieval": {
+    "candidates_received": 2,
+    "authorized_candidate_ids": ["rag-1"],
+    "denied_candidates": [
+      {
+        "candidate_id": "rag-2",
+        "sensitivity": "restricted",
+        "reason": "sensitivity restricted exceeds agent maximum high"
+      }
+    ],
+    "empty_authorized_result": false,
+    "fail_closed": false,
+    "unrestricted_fallback_allowed": false
+  }
+}
+```
+
+If no candidate passes authorization, `capsule.facts` and `optimization.stable_context` are empty,
+`retrieval.fail_closed` is `true`, and unrestricted fallback remains prohibited. The application
+must stop or use a separately authorized recovery path; it must not send the original retrieval
+set to the model.
 
 ### Request
 
@@ -185,6 +249,6 @@ not transport errors.
 
 ## OpenAPI
 
-Local FastAPI serves `/docs` and `/openapi.json`. The AWS HTTP API provisions only `/health`,
-`/v1/capsules`, and `/v1/insights`, so the interactive documentation is not publicly routed in the
-evaluation stack.
+Local FastAPI serves `/docs` and `/openapi.json`. The AWS HTTP API provisions `/health`,
+`/v1/capsules`, `/v1/optimize`, `/v1/authorize-retrieval`, and `/v1/insights`; interactive
+documentation is not publicly routed in the evaluation stack.

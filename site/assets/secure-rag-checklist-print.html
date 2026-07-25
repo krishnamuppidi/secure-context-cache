@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Secure RAG Architecture Review Checklist</title>
+  <style>
+    @page { size: Letter; margin: 0.42in; }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: #10231f; font: 10px/1.32 Arial, sans-serif; }
+    header { padding-bottom: 11px; border-bottom: 3px solid #17885e; }
+    h1 { margin: 0 0 5px; font-size: 23px; letter-spacing: -0.5px; }
+    header p, footer p { margin: 0; color: #526b62; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 10px; }
+    section { padding: 9px 10px; border: 1px solid #b9d1c8; border-radius: 7px; }
+    h2 { margin: 0 0 6px; color: #08784d; font-size: 12px; }
+    ul { margin: 0; padding: 0; list-style: none; }
+    li { position: relative; margin: 4px 0; padding-left: 16px; }
+    li::before { position: absolute; left: 0; content: "□"; font-size: 13px; line-height: 10px; }
+    .wide { grid-column: 1 / -1; }
+    .gates { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
+    .gate { padding: 6px; background: #edf8f3; border-radius: 5px; }
+    footer { margin-top: 9px; padding-top: 7px; border-top: 1px solid #b9d1c8; }
+    strong { color: #10231f; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Secure RAG Architecture Review Checklist</h1>
+    <p>Review authorization before model access—then evaluate token efficiency with answer quality.</p>
+  </header>
+  <div class="grid">
+    <section>
+      <h2>1. Identity and tenant isolation</h2>
+      <ul>
+        <li>Verified end-user and workload identities are propagated.</li>
+        <li>Tenant boundaries exist in storage, retrieval, and authorization.</li>
+        <li>Cache scope includes identity, tenant, policy, and source state.</li>
+        <li>Cross-user, agent, and tenant attempts are tested.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>2. Retrieval authorization</h2>
+      <ul>
+        <li>Retrieved chunks are candidates, not authorization grants.</li>
+        <li>Identity, task, path, environment, sensitivity, and freshness are checked.</li>
+        <li>Policy runs outside the model before prompt construction.</li>
+        <li>Denied content is never echoed in model-visible responses.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>3. Fail-closed behavior</h2>
+      <ul>
+        <li>An empty authorized result produces empty model context.</li>
+        <li>No unrestricted retrieval fallback exists.</li>
+        <li>Model output cannot override a denial.</li>
+        <li>Recovery uses a separate authorized workflow.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>4. Injection and credentials</h2>
+      <ul>
+        <li>Retrieved text is treated as untrusted data.</li>
+        <li>Direct and indirect prompt injection are tested.</li>
+        <li>Source, index, and gateway credentials stay outside prompts.</li>
+        <li>Tool-action authorization is a separate control.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>5. Provenance and freshness</h2>
+      <ul>
+        <li>References, hashes, versions, and parser versions are retained.</li>
+        <li>Capsules expire and freshness thresholds are explicit.</li>
+        <li>Source or policy changes invalidate affected cache entries.</li>
+        <li>Release and denial records can be replayed.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>6. Evaluation evidence</h2>
+      <ul>
+        <li>Full-approved, retrieval-only, and secure-RAG paths use identical tasks.</li>
+        <li>Provider usage—not word estimates—supports production cost claims.</li>
+        <li>Failures, exclusions, model, policy, source, and task versions are retained.</li>
+        <li>Independent and project-controlled results are labeled separately.</li>
+      </ul>
+    </section>
+    <section class="wide">
+      <h2>Predefine acceptance gates before testing</h2>
+      <div class="gates">
+        <div class="gate"><strong>Required-fact recall</strong><br>Target: ________</div>
+        <div class="gate"><strong>Reviewer acceptance</strong><br>Target: ________</div>
+        <div class="gate"><strong>False positives</strong><br>Maximum: ______</div>
+        <div class="gate"><strong>Prohibited releases</strong><br>Maximum: 0</div>
+      </div>
+    </section>
+  </div>
+  <footer>
+    <p><strong>Secure Context Cache</strong> · https://krishnamuppidi.github.io/secure-context-cache/secure-rag-architecture-checklist/ · MIT License</p>
+  </footer>
+</body>
+</html>

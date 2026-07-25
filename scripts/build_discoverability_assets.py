@@ -28,6 +28,8 @@ class Section:
     paragraphs: tuple[str, ...]
     bullets: tuple[str, ...] = ()
     code: str = ""
+    table: tuple[tuple[str, ...], ...] = ()
+    citations: tuple[tuple[str, str], ...] = ()
 
 
 @dataclass(frozen=True)
@@ -219,41 +221,186 @@ PAGES = (
     ),
     Page(
         slug="rag-vs-secure-context-cache",
-        title="RAG vs. Secure Context Cache for Enterprise AI Agents",
-        kicker="Retrieval and authorization",
-        description="Understand how retrieval-augmented generation differs from Secure Context Cache and why enterprise agents often need both relevance and authorization.",
-        keywords=("RAG vs context cache", "secure RAG", "enterprise AI context authorization"),
-        summary="Retrieval finds potentially relevant content. Secure Context Cache adds a release boundary that decides whether the requesting workload may receive it.",
-        intent="Combine relevance with least privilege",
+        title="Secure RAG Architecture: Authorization vs. Retrieval",
+        kicker="Secure RAG architecture",
+        description="Build secure RAG with identity, task, path, sensitivity, freshness, and policy authorization before retrieved content reaches an AI model.",
+        keywords=(
+            "secure RAG architecture",
+            "RAG authorization",
+            "RAG access control",
+            "enterprise RAG security",
+            "least privilege RAG",
+        ),
+        summary="Secure RAG treats retrieved chunks as candidates, then applies deterministic authorization before any candidate content crosses the model boundary.",
+        intent="Authorize retrieval before model access",
         sections=(
             Section(
-                "Relevance is necessary but not sufficient",
+                "What is secure RAG?",
                 (
-                    "RAG systems search an index for chunks related to a query. That improves grounding, but similarity does not establish that an agent is authorized to see a document, environment, tenant, incident, or secret-adjacent runbook.",
-                    "Secure Context Cache treats retrieval output as candidates. Identity, task type, repository path, environment, sensitivity, freshness, and approval state determine which candidates become capsule facts. Denied items remain visible to the audit layer without crossing the model boundary.",
+                    "Secure RAG is a retrieval-augmented generation architecture in which retrieved content is only a candidate set. A deterministic authorization layer evaluates the requesting identity, task, resource path, environment, sensitivity, freshness, source approval, and policy before releasing content to the model.",
+                    "Semantic similarity answers whether a chunk may be relevant. It does not prove that an agent may see a document, tenant, incident, production environment, or secret-adjacent runbook. Secure Context Cache adds that missing release decision while retaining provenance and token measurements.",
                 ),
                 (
-                    "Use retrieval to improve recall across large approved corpora.",
-                    "Use policy to constrain release across identities and tasks.",
-                    "Preserve source hashes, references, and policy decisions.",
-                    "Test prompt injection and cross-context access independently of relevance.",
+                    "Retrieval supplies candidates; it does not grant access.",
+                    "Authorization runs outside the model and before prompt construction.",
+                    "Denied content stays out of model-visible context and response payloads.",
+                    "Fail-closed behavior prevents unrestricted fallback from an empty authorized result.",
                 ),
             ),
             Section(
-                "A practical combined pipeline",
+                "Traditional RAG, secure RAG, and SCC",
                 (
-                    "Ingest approved sources and attach ownership, sensitivity, environment, and version metadata. Retrieve candidates for the task, run deterministic policy checks, derive or redact facts, and create an expiring capsule. The model receives the capsule and citations, not direct index credentials.",
-                    "Evaluate changed-files-only, relevance-only RAG, full approved context, and policy-scoped capsules against the same labeled tasks. This exposes the tradeoff among recall, input tokens, false positives, and prohibited-context release.",
+                    "Secure RAG strengthens retrieval with an authorization layer. Secure Context Cache implements that boundary and also provides token measurement, compiled-context reuse, provider-cacheable prefixes, optional compression, routing adapters, expiring capsules, and audit evidence.",
+                ),
+                table=(
+                    ("Capability", "Traditional RAG", "Secure RAG", "Secure Context Cache"),
+                    ("Semantic retrieval", "Yes", "Yes", "Optional input stage"),
+                    ("User or agent identity", "Sometimes", "Required", "Required"),
+                    ("Task authorization", "Rare", "Yes", "Built in"),
+                    ("Path and environment policy", "Rare", "Possible", "Built in"),
+                    ("Sensitivity enforcement", "Metadata dependent", "Required", "Policy evaluated"),
+                    ("Denied-item audit", "Rare", "Recommended", "Built in"),
+                    ("Expiring model context", "Rare", "Possible", "Capsule TTL"),
+                    ("Token optimization", "Incidental", "Possible", "Primary measurement"),
+                    ("Provenance and hashes", "Varies", "Recommended", "Preserved"),
+                ),
+            ),
+            Section(
+                "Authorize candidates with one API call",
+                (
+                    "The application performs retrieval, then sends candidate content and security metadata to `/v1/authorize-retrieval`. The response returns an approved capsule plus candidate IDs and reasons for denials. Denied content is never echoed.",
+                    "If no candidate passes, `fail_closed` is true, the stable context is empty, and unrestricted fallback is explicitly prohibited. The caller must stop or use a separately authorized recovery path.",
+                ),
+                code='''POST /v1/authorize-retrieval
+{
+  "task_type": "iac_security",
+  "path": "terraform/prod/payments/lambda.tf",
+  "environment": "prod",
+  "candidates": [
+    {"candidate_id": "rag-1", "content": "KMS control...", "refs": ["terraform/prod/payments/lambda.tf"], "sensitivity": "high"},
+    {"candidate_id": "rag-2", "content": "Incident detail...", "refs": ["incidents/restricted.md"], "sensitivity": "restricted"}
+  ]
+}
+
+retrieval.authorized_candidate_ids = ["rag-1"]
+retrieval.denied_candidates = [{"candidate_id": "rag-2", "sensitivity": "restricted", "reason": "..."}]
+retrieval.unrestricted_fallback_allowed = false''',
+            ),
+            Section(
+                "When to use each architecture",
+                (
+                    "Use traditional RAG for public or uniformly authorized corpora where relevance is the main risk. Add secure RAG when users, agents, tenants, tasks, paths, or environments have different access boundaries. Use Secure Context Cache when the workload also needs measurable token optimization, reusable compiled context, provenance, expiry, and release audits.",
+                    "Keep action authorization separate from context authorization. Even an authorized fact does not grant permission to execute a tool, modify infrastructure, or access another system.",
                 ),
                 (
-                    "Never fall back from an empty authorized result to unrestricted retrieval.",
-                    "Do not let model output override a deny decision.",
-                    "Keep action authorization separate from context authorization.",
-                    "Treat retrieval indexes as sensitive enterprise data stores.",
+                    "Public knowledge base: relevance-first RAG may be enough.",
+                    "Enterprise multi-tenant assistant: secure RAG is the minimum boundary.",
+                    "Repeated governed agent workflow: SCC adds reusable token optimization.",
+                    "High-risk actions: require a separate action-policy decision.",
+                ),
+            ),
+            Section(
+                "Independent security guidance",
+                (
+                    "The design aligns with independent guidance that treats authorization, tenant isolation, prompt injection, and agent identity as separate controls. These sources support the architecture; they do not endorse Secure Context Cache.",
+                ),
+                citations=(
+                    (
+                        "AWS Security: authorization mechanisms for data used in generative AI",
+                        "https://aws.amazon.com/blogs/security/implement-effective-data-authorization-mechanisms-to-secure-your-data-used-in-generative-ai-applications/",
+                    ),
+                    (
+                        "AWS Architecture: secure multi-tenant RAG with Verified Permissions",
+                        "https://aws.amazon.com/blogs/architecture/secure-multi-tenant-rag-with-amazon-bedrock-and-verified-permissions/",
+                    ),
+                    (
+                        "OWASP GenAI: prompt injection risk",
+                        "https://genai.owasp.org/llmrisk/llm01-prompt-injection/",
+                    ),
+                    (
+                        "NIST NCCoE: software and AI agent identity and authorization concept paper",
+                        "https://www.nccoe.nist.gov/sites/default/files/2026-02/accelerating-the-adoption-of-software-and-ai-agent-identity-and-authorization-concept-paper.pdf",
+                    ),
                 ),
             ),
         ),
-        related=("least-privilege-ai-context", "enterprise-ai-agent-memory-security", "ai-context-engineering"),
+        related=(
+            "secure-rag-architecture-checklist",
+            "least-privilege-ai-context",
+            "enterprise-ai-agent-memory-security",
+        ),
+    ),
+    Page(
+        slug="secure-rag-architecture-checklist",
+        title="Secure RAG Architecture Review Checklist",
+        kicker="Practical review artifact",
+        description="Review secure RAG identity, tenant isolation, retrieval authorization, prompt injection, fail-closed behavior, provenance, audit, and token quality.",
+        keywords=(
+            "secure RAG checklist",
+            "RAG security review",
+            "RAG authorization checklist",
+            "enterprise AI security checklist",
+        ),
+        summary="Use this implementation-neutral checklist to review whether a RAG system enforces authorization before model access and measures security with answer quality.",
+        intent="Review a secure RAG design",
+        sections=(
+            Section(
+                "Identity and isolation",
+                (
+                    "Record the actor that initiated the task and the workload identity that calls retrieval and authorization services. Preserve the mapping in audit records without exposing bearer tokens or credentials to the model.",
+                ),
+                (
+                    "Propagate verified end-user and workload identities.",
+                    "Enforce tenant boundaries in storage, retrieval, and authorization.",
+                    "Bind cache namespaces to identity, tenant, policy, and source state.",
+                    "Test cross-user, cross-agent, and cross-tenant access attempts.",
+                ),
+            ),
+            Section(
+                "Authorization before prompt construction",
+                (
+                    "Treat every retrieved chunk as a candidate. Evaluate identity, task, path, environment, sensitivity, freshness, approval state, and source governance before serializing any candidate into a model message.",
+                ),
+                (
+                    "Run deterministic policy outside the model.",
+                    "Return denied IDs and reasons without returning denied content.",
+                    "Fail closed when the authorized candidate set is empty.",
+                    "Never let model output or prompt text override a deny decision.",
+                ),
+            ),
+            Section(
+                "Injection, provenance, and freshness",
+                (
+                    "Retrieved text is untrusted data even when the source is approved. Separate instructions from data, retain source references and hashes, and expire or invalidate context when policy or source state changes.",
+                ),
+                (
+                    "Test direct and indirect prompt injection in retrieved content.",
+                    "Preserve source references, versions, hashes, and parser versions.",
+                    "Set capsule TTLs and explicit freshness thresholds.",
+                    "Keep source and index credentials outside model-visible context.",
+                ),
+            ),
+            Section(
+                "Measure accepted results",
+                (
+                    "A secure system can still be unusable, and a token-efficient system can still be insecure. Compare against the same approved baseline and count savings only when the result meets the agreed task-quality threshold.",
+                ),
+                (
+                    "Capture provider-reported input, cached-input, and output usage.",
+                    "Measure must-find recall, reviewer acceptance, and false positives.",
+                    "Set a zero-tolerance threshold for prohibited-context release.",
+                    "Retain task, policy, source, model, and evaluator versions.",
+                ),
+                citations=(
+                    (
+                        "Download the one-page Secure RAG review checklist (PDF)",
+                        f"{BASE_URL}assets/secure-rag-architecture-review-checklist.pdf",
+                    ),
+                    ("Open the secure RAG architecture guide", f"{BASE_URL}rag-vs-secure-context-cache/"),
+                ),
+            ),
+        ),
+        related=("rag-vs-secure-context-cache", "secure-context-cache-benchmark", "docs"),
     ),
     Page(
         slug="ai-context-engineering",
@@ -644,6 +791,15 @@ def render_markdown(page: Page) -> str:
             lines.append("")
         if section.code:
             lines.extend(("```text", section.code, "```", ""))
+        if section.table:
+            header, *rows = section.table
+            lines.append("| " + " | ".join(header) + " |")
+            lines.append("| " + " | ".join("---" for _ in header) + " |")
+            lines.extend("| " + " | ".join(row) + " |" for row in rows)
+            lines.append("")
+        if section.citations:
+            lines.extend(f"- [{label}]({url})" for label, url in section.citations)
+            lines.append("")
     lines.extend(("## Related resources", ""))
     for slug in page.related:
         related = PAGE_BY_SLUG.get(slug)
@@ -809,12 +965,35 @@ def render_page(page: Page) -> str:
             if section.code
             else ""
         )
+        table = ""
+        if section.table:
+            header, *rows = section.table
+            table = (
+                '<div class="article-table-wrap"><table class="article-table"><thead><tr>'
+                + "".join(f"<th>{html.escape(cell)}</th>" for cell in header)
+                + "</tr></thead><tbody>"
+                + "".join(
+                    "<tr>"
+                    + "".join(f"<td>{html.escape(cell)}</td>" for cell in row)
+                    + "</tr>"
+                    for row in rows
+                )
+                + "</tbody></table></div>"
+            )
+        citations = ""
+        if section.citations:
+            citations = '<ul class="article-citations">' + "".join(
+                f'<li><a href="{html.escape(url)}" target="_blank" rel="noreferrer">'
+                f"{html.escape(label)} ↗</a></li>"
+                for label, url in section.citations
+            ) + "</ul>"
         paragraphs = "".join(f"<p>{html.escape(p)}</p>" for p in section.paragraphs)
         body_sections.append(
             f'<section class="article-section{" alt" if index % 2 else ""}"><div class="container article-layout">'
             f'<aside class="article-aside"><span class="article-label">{html.escape(page.kicker)}</span>'
             f"<h2>{html.escape(section.title)}</h2><p>{html.escape(page.intent)}</p></aside>"
-            f'<article class="article-content"><h2>{html.escape(section.title)}</h2>{paragraphs}{bullets}{code}</article>'
+            f'<article class="article-content"><h2>{html.escape(section.title)}</h2>'
+            f"{paragraphs}{bullets}{code}{table}{citations}</article>"
             "</div></section>"
         )
 

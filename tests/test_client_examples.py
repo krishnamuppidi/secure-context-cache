@@ -67,6 +67,35 @@ def test_python_client_sends_auth_and_request_fields(monkeypatch) -> None:
     assert captured["payload"]["request_id"] == "trace-1"
 
 
+def test_python_client_authorizes_retrieval_candidates(monkeypatch) -> None:
+    module = _load_client_module()
+    captured = {}
+
+    def fake_request(url, *, method, headers, payload):
+        captured.update(url=url, method=method, headers=headers, payload=payload)
+        return {"retrieval": {"fail_closed": False}, "capsule": {"facts": []}}
+
+    monkeypatch.setattr(module, "_request_json", fake_request)
+    client = module.GatewayClient("https://gateway.example", api_key="local-key")
+
+    client.authorize_retrieval(
+        candidates=[
+            {
+                "candidate_id": "candidate-1",
+                "content": "source-backed fact",
+                "refs": ["README.md"],
+            }
+        ],
+        task_type="architecture_qa",
+        path="README.md",
+        prompt="Explain the system",
+    )
+
+    assert captured["url"] == "https://gateway.example/v1/authorize-retrieval"
+    assert captured["headers"]["x-agent-api-key"] == "local-key"
+    assert captured["payload"]["candidates"][0]["candidate_id"] == "candidate-1"
+
+
 def test_python_client_prefers_complete_oauth_config_over_stray_local_key(monkeypatch) -> None:
     module = _load_client_module()
     monkeypatch.setenv("ACG_API_URL", "https://gateway.example")

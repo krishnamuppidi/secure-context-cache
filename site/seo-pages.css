@@ -378,6 +378,18 @@
   font-size: 11px;
 }
 
+.article-table-wrap {
+  max-width: 100%;
+  margin: 26px 0;
+  overflow-x: auto;
+  border-radius: 13px;
+}
+
+.article-table-wrap .article-table {
+  min-width: 720px;
+  margin: 0;
+}
+
 .article-table th,
 .article-table td {
   padding: 14px 16px;
@@ -397,6 +409,25 @@
 
 .article-table tr:last-child td {
   border-bottom: 0;
+}
+
+.article-citations {
+  display: grid;
+  margin: 26px 0 0;
+  padding: 0;
+  gap: 10px;
+  list-style: none;
+}
+
+.article-citations li {
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.article-citations a {
+  display: block;
 }
 
 .related-section {

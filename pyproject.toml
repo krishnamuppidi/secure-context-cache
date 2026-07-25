@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "secure-context-cache"
-version = "0.7.0"
+version = "0.7.1"
 description = "Open-source token-optimization framework with secure context selection, reuse, compression adapters, provider caching, and quality gates."
 readme = "README.md"
 license = "MIT"

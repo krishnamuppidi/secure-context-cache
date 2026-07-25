@@ -1,0 +1,53 @@
+name: External evaluation
+description: Share a reproducible evaluation, integration, or pilot without exposing private data.
+title: "[Evaluation]: "
+labels:
+  - needs-triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for evaluating Secure Context Cache. Do not post credentials, customer data,
+        private source material, or identities you do not have permission to publish.
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: v0.7.1 or a full commit SHA
+    validations:
+      required: true
+  - type: textarea
+    id: workload
+    attributes:
+      label: Workload and comparison
+      description: Describe the task, baseline, model, and relevant configuration.
+    validations:
+      required: true
+  - type: textarea
+    id: gates
+    attributes:
+      label: Predefined acceptance gates
+      description: Include answer-quality and prohibited-context-release thresholds.
+    validations:
+      required: true
+  - type: textarea
+    id: results
+    attributes:
+      label: Results and limitations
+      description: Report tokens, quality, isolation, latency, failures, and important limitations.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction artifacts
+      description: Link only to artifacts that are safe and authorized to share.
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: I removed credentials, private data, and unauthorized names.
+          required: true
+        - label: I did not purchase or exchange traffic, stars, downloads, citations, or testimony.
+          required: true

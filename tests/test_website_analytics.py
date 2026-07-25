@@ -35,6 +35,7 @@ def test_analytics_notice_and_preferences_are_accessible() -> None:
 
 def test_engagement_events_avoid_full_urls_and_personal_data() -> None:
     app = (SITE / "app.js").read_text()
+    analytics = (SITE / "analytics.js").read_text()
 
     for event_name in (
         "pilot_request_click",
@@ -49,3 +50,6 @@ def test_engagement_events_avoid_full_urls_and_personal_data() -> None:
     assert "link.href" not in app
     assert "link.search" not in app
     assert "nagamuppidi1015@gmail.com" not in app
+    assert 'record("resource_download", { resource: "secure_rag_checklist_pdf" })' in analytics
+    assert 'record("github_engagement"' in analytics
+    assert "url.search" not in analytics

@@ -318,6 +318,17 @@ resource "aws_apigatewayv2_route" "optimize" {
   ]
 }
 
+resource "aws_apigatewayv2_route" "authorize_retrieval" {
+  api_id             = aws_apigatewayv2_api.gateway.id
+  route_key          = "POST /v1/authorize-retrieval"
+  target             = "integrations/${aws_apigatewayv2_integration.lambda.id}"
+  authorization_type = "JWT"
+  authorizer_id      = aws_apigatewayv2_authorizer.cognito.id
+  authorization_scopes = [
+    "${aws_cognito_resource_server.gateway.identifier}/use"
+  ]
+}
+
 resource "aws_apigatewayv2_route" "insights" {
   api_id             = aws_apigatewayv2_api.gateway.id
   route_key          = "POST /v1/insights"

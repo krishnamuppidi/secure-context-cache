@@ -85,6 +85,8 @@ class AgentContextGateway:
         task: TaskRequest,
         slices: list[ContextSlice],
         identity: AgentIdentity,
+        *,
+        enforce_freshness: bool = False,
     ) -> tuple[ContextCapsule, GatewayMetrics]:
         policy_version = str(self.policy.get("version", "unknown"))
         policy_fingerprint = stable_hash(json.dumps(self.policy, sort_keys=True))
@@ -104,10 +106,14 @@ class AgentContextGateway:
                 sort_keys=True,
             )
         )
+        cache_policy_version = (
+            f"{policy_version}:{policy_fingerprint}:freshness="
+            f"{'enforced' if enforce_freshness else 'warn'}"
+        )
         cache_entry = self.cache.get(
             task,
             identity=identity,
-            policy_version=f"{policy_version}:{policy_fingerprint}",
+            policy_version=cache_policy_version,
             source_manifest_hash=source_manifest_hash,
         )
         cache_hit = cache_entry is not None
@@ -124,6 +130,7 @@ class AgentContextGateway:
             candidate_slices,
             cache_hit=cache_hit,
             policy=self.policy,
+            enforce_freshness=enforce_freshness,
         )
         if cache_entry is not None:
             # Preserve an explicit audit reason for slices excluded by the cached plan.
@@ -152,7 +159,7 @@ class AgentContextGateway:
                 task,
                 [item for item in slices if item.id in released_ids],
                 identity=identity,
-                policy_version=f"{policy_version}:{policy_fingerprint}",
+                policy_version=cache_policy_version,
                 source_manifest_hash=source_manifest_hash,
             )
         metrics = compute_metrics(

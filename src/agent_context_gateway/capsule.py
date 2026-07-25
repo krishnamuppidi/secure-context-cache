@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 import json
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from uuid import uuid4
 
 from .models import (
     AgentIdentity,
     ContextCapsule,
     ContextSlice,
+    DeniedSlice,
     ReleasedFact,
     TaskRequest,
     stable_hash,
@@ -43,7 +44,12 @@ def _freshness_warning(slice_: ContextSlice, *, max_age_days: int = 30) -> str:
         timestamp = datetime.fromisoformat(slice_.freshness_timestamp)
     except ValueError:
         return f"slice {slice_.id} has an unreadable freshness timestamp"
-    age_days = (datetime.now(UTC) - timestamp).days
+    if timestamp.tzinfo is None:
+        return f"slice {slice_.id} freshness timestamp has no timezone"
+    now = datetime.now(UTC)
+    if timestamp > now + timedelta(minutes=5):
+        return f"slice {slice_.id} freshness timestamp is in the future"
+    age_days = (now - timestamp).days
     if age_days > max_age_days:
         return f"slice {slice_.id} is {age_days} days old"
     return ""
@@ -56,6 +62,7 @@ def build_capsule(
     *,
     cache_hit: bool = False,
     policy: dict | None = None,
+    enforce_freshness: bool = False,
 ) -> ContextCapsule:
     active_policy = policy or DEFAULT_POLICY
     released: list[ReleasedFact] = []
@@ -71,6 +78,9 @@ def build_capsule(
         warning = _freshness_warning(slice_, max_age_days=active_policy.get("max_slice_age_days", 30))
         if warning:
             freshness_warnings.append(warning)
+            if enforce_freshness:
+                denied.append(DeniedSlice(slice_.id, slice_.sensitivity, warning))
+                continue
         redaction_notes.extend(f"{slice_.id}: {rule}" for rule in slice_.redaction_rules)
         source_manifest.append(
             {

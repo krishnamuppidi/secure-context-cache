@@ -120,6 +120,21 @@
       button.addEventListener("click", () => setChoice(button.dataset.analyticsChoice));
     });
     document.getElementById("analytics-preferences")?.addEventListener("click", showPreferences);
+    document.addEventListener("click", (event) => {
+      const link = event.target.closest?.("a");
+      if (!link) return;
+      const url = new URL(link.href, window.location.href);
+      if (url.pathname.endsWith("/secure-rag-architecture-review-checklist.pdf")) {
+        record("resource_download", { resource: "secure_rag_checklist_pdf" });
+      } else if (
+        url.hostname === "github.com" &&
+        url.pathname.startsWith("/krishnamuppidi/secure-context-cache")
+      ) {
+        record("github_engagement", {
+          destination: url.pathname.includes("/issues") ? "evaluation_issue" : "repository",
+        });
+      }
+    });
 
     if (storedChoice() === "granted") {
       loadAnalytics();

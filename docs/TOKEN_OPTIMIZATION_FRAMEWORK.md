@@ -35,6 +35,12 @@ SCC compiles approved sources into source-backed slices and applies identity, ta
 environment, sensitivity, freshness, and approval policy before model invocation. Only released
 facts enter the stable model context. Denied data never becomes compressor input.
 
+For RAG systems, `POST /v1/authorize-retrieval` accepts retrieved chunks as candidates and applies
+the same release boundary before prompt construction. It rejects stale candidates, never echoes
+denied content, and returns `fail_closed: true` with empty model context when nothing is authorized.
+SCC does not replace the vector or keyword retriever; it governs and optimizes what retrieval may
+release.
+
 ### 3. Reuse
 
 SCC uses two independent reuse layers:
@@ -104,7 +110,8 @@ Use `--tokenizer word` without optional dependencies. With tokenizer support ins
 ## API
 
 `POST /v1/optimize` is the primary optimization endpoint. `POST /v1/capsules` remains backward
-compatible and returns the same optimization plan.
+compatible and returns the same optimization plan. RAG callers use
+`POST /v1/authorize-retrieval` after retrieval and before constructing a model prompt.
 
 ```json
 {

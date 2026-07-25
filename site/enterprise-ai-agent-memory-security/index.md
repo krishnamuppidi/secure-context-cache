@@ -30,7 +30,7 @@ Red-team the context layer for prompt injection in source documents, stale evide
 ## Related resources
 
 - [Least-Privilege Context for AI Agents](https://krishnamuppidi.github.io/secure-context-cache/least-privilege-ai-context/)
-- [RAG vs. Secure Context Cache for Enterprise AI Agents](https://krishnamuppidi.github.io/secure-context-cache/rag-vs-secure-context-cache/)
+- [Secure RAG Architecture: Authorization vs. Retrieval](https://krishnamuppidi.github.io/secure-context-cache/rag-vs-secure-context-cache/)
 - [SecureReviewAgent: A Governed IaC AI Security Case Study](https://krishnamuppidi.github.io/secure-context-cache/securereviewagent-case-study/)
 
 ## Evidence boundary

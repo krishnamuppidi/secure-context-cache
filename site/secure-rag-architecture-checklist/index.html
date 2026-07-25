@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#07110f" />
+    <meta name="description" content="Review secure RAG identity, tenant isolation, retrieval authorization, prompt injection, fail-closed behavior, provenance, audit, and token quality." />
+    <meta name="keywords" content="secure RAG checklist, RAG security review, RAG authorization checklist, enterprise AI security checklist" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://krishnamuppidi.github.io/secure-context-cache/secure-rag-architecture-checklist/" />
+    <link rel="alternate" type="text/markdown" href="https://krishnamuppidi.github.io/secure-context-cache/secure-rag-architecture-checklist/index.md" />
+    <link rel="alternate" type="application/rss+xml" href="https://krishnamuppidi.github.io/secure-context-cache/feed.xml" title="Secure Context Cache updates" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Secure Context Cache" />
+    <meta property="og:title" content="Secure RAG Architecture Review Checklist" />
+    <meta property="og:description" content="Use this implementation-neutral checklist to review whether a RAG system enforces authorization before model access and measures security with answer quality." />
+    <meta property="og:url" content="https://krishnamuppidi.github.io/secure-context-cache/secure-rag-architecture-checklist/" />
+    <meta property="og:image" content="https://krishnamuppidi.github.io/secure-context-cache/assets/secure-context-cache-social-preview.png" />
+    <meta property="og:image:alt" content="Secure Context Cache secure token optimization architecture" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Secure RAG Architecture Review Checklist" />
+    <meta name="twitter:description" content="Use this implementation-neutral checklist to review whether a RAG system enforces authorization before model access and measures security with answer quality." />
+    <meta name="twitter:image" content="https://krishnamuppidi.github.io/secure-context-cache/assets/secure-context-cache-social-preview.png" />
+    <title>Secure RAG Architecture Review Checklist | Secure Context Cache</title>
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="../seo-pages.css" />
+    <script type="application/ld+json">
+{
+        "@context": "https://schema.org",
+        "@graph": [
+                {
+                        "@type": "TechArticle",
+                        "headline": "Secure RAG Architecture Review Checklist",
+                        "name": "Secure RAG Architecture Review Checklist",
+                        "description": "Review secure RAG identity, tenant isolation, retrieval authorization, prompt injection, fail-closed behavior, provenance, audit, and token quality.",
+                        "datePublished": "2026-07-25",
+                        "dateModified": "2026-07-25",
+                        "mainEntityOfPage": "https://krishnamuppidi.github.io/secure-context-cache/secure-rag-architecture-checklist/",
+                        "url": "https://krishnamuppidi.github.io/secure-context-cache/secure-rag-architecture-checklist/",
+                        "author": {
+                                "@type": "Person",
+                                "name": "Naga Krishna Reddy Muppidi",
+                                "url": "https://krishnamuppidi.github.io/secure-context-cache/about/",
+                                "sameAs": [
+                                        "https://github.com/krishnamuppidi",
+                                        "https://www.linkedin.com/in/krishna-reddy-4b11ab133"
+                                ]
+                        },
+                        "isPartOf": {
+                                "@type": "WebSite",
+                                "name": "Secure Context Cache",
+                                "url": "https://krishnamuppidi.github.io/secure-context-cache/"
+                        },
+                        "about": [
+                                "secure RAG checklist",
+                                "RAG security review",
+                                "RAG authorization checklist",
+                                "enterprise AI security checklist"
+                        ]
+                },
+                {
+                        "@type": "BreadcrumbList",
+                        "itemListElement": [
+                                {
+                                        "@type": "ListItem",
+                                        "position": 1,
+                                        "name": "Secure Context Cache",
+                                        "item": "https://krishnamuppidi.github.io/secure-context-cache/"
+                                },
+                                {
+                                        "@type": "ListItem",
+                                        "position": 2,
+                                        "name": "Secure RAG Architecture Review Checklist",
+                                        "item": "https://krishnamuppidi.github.io/secure-context-cache/secure-rag-architecture-checklist/"
+                                }
+                        ]
+                }
+        ]
+}
+    </script>
+    <script defer src="../analytics.js"></script>
+    <script defer src="../app.js"></script>
+  </head>
+  <body class="article-page">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <nav class="nav article-nav scrolled" aria-label="Primary navigation">
+      <div class="container nav-inner">
+        <a class="brand" href="../" aria-label="Secure Context Cache home"><span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span><span>Secure Context Cache</span></a>
+        <button class="menu-button" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open navigation"><span></span><span></span><span></span></button>
+        <div class="nav-links" id="nav-links"><a href="../docs/">Docs</a><a href="../secure-context-cache-benchmark/">Benchmark</a><a href="../prompt-caching-vs-context-caching/">Compare</a><a href="../mcp-context-optimization/">MCP</a></div>
+        <a class="button button-small nav-cta" href="https://github.com/krishnamuppidi/secure-context-cache" target="_blank" rel="noreferrer">View GitHub →</a>
+      </div>
+    </nav>
+    <main id="main">
+      <header class="article-hero">
+        <div class="container article-hero-layout">
+          <div>
+            <nav class="article-breadcrumb" aria-label="Breadcrumb"><a href="../">Home</a><span>/</span><span>Secure RAG Architecture Review Checklist</span></nav>
+            <span class="article-kicker">Practical review artifact</span>
+            <h1>Secure RAG Architecture Review Checklist</h1>
+            <p class="article-summary">Use this implementation-neutral checklist to review whether a RAG system enforces authorization before model access and measures security with answer quality.</p>
+            <div class="article-actions"><a class="button button-primary" href="https://github.com/krishnamuppidi/secure-context-cache" target="_blank" rel="noreferrer">Run the open-source demo ↗</a><a class="button button-ghost" href="../docs/">Read the docs</a></div>
+          </div>
+          <aside class="article-fact-card visual-card">
+            <img src="../assets/context-capsule-flow.svg" width="560" height="360" alt="Secure Context Cache flow for Secure RAG Architecture Review Checklist" />
+            <span class="article-label">Review a secure RAG design</span>
+            <h2>One canonical context graph. Many policy-scoped capsules.</h2>
+            <p>Optimize context before model invocation and preserve the evidence behind every release.</p>
+          </aside>
+        </div>
+      </header>
+      <section class="article-section"><div class="container article-layout"><aside class="article-aside"><span class="article-label">Practical review artifact</span><h2>Identity and isolation</h2><p>Review a secure RAG design</p></aside><article class="article-content"><h2>Identity and isolation</h2><p>Record the actor that initiated the task and the workload identity that calls retrieval and authorization services. Preserve the mapping in audit records without exposing bearer tokens or credentials to the model.</p><div class="article-points"><div class="article-point"><span>01</span><h3>Propagate</h3><p>Propagate verified end-user and workload identities.</p></div><div class="article-point"><span>02</span><h3>Enforce</h3><p>Enforce tenant boundaries in storage, retrieval, and authorization.</p></div><div class="article-point"><span>03</span><h3>Bind</h3><p>Bind cache namespaces to identity, tenant, policy, and source state.</p></div><div class="article-point"><span>04</span><h3>Test</h3><p>Test cross-user, cross-agent, and cross-tenant access attempts.</p></div></div></article></div></section><section class="article-section alt"><div class="container article-layout"><aside class="article-aside"><span class="article-label">Practical review artifact</span><h2>Authorization before prompt construction</h2><p>Review a secure RAG design</p></aside><article class="article-content"><h2>Authorization before prompt construction</h2><p>Treat every retrieved chunk as a candidate. Evaluate identity, task, path, environment, sensitivity, freshness, approval state, and source governance before serializing any candidate into a model message.</p><div class="article-points"><div class="article-point"><span>01</span><h3>Run</h3><p>Run deterministic policy outside the model.</p></div><div class="article-point"><span>02</span><h3>Return</h3><p>Return denied IDs and reasons without returning denied content.</p></div><div class="article-point"><span>03</span><h3>Fail</h3><p>Fail closed when the authorized candidate set is empty.</p></div><div class="article-point"><span>04</span><h3>Never</h3><p>Never let model output or prompt text override a deny decision.</p></div></div></article></div></section><section class="article-section"><div class="container article-layout"><aside class="article-aside"><span class="article-label">Practical review artifact</span><h2>Injection, provenance, and freshness</h2><p>Review a secure RAG design</p></aside><article class="article-content"><h2>Injection, provenance, and freshness</h2><p>Retrieved text is untrusted data even when the source is approved. Separate instructions from data, retain source references and hashes, and expire or invalidate context when policy or source state changes.</p><div class="article-points"><div class="article-point"><span>01</span><h3>Test</h3><p>Test direct and indirect prompt injection in retrieved content.</p></div><div class="article-point"><span>02</span><h3>Preserve</h3><p>Preserve source references, versions, hashes, and parser versions.</p></div><div class="article-point"><span>03</span><h3>Set</h3><p>Set capsule TTLs and explicit freshness thresholds.</p></div><div class="article-point"><span>04</span><h3>Keep</h3><p>Keep source and index credentials outside model-visible context.</p></div></div></article></div></section><section class="article-section alt"><div class="container article-layout"><aside class="article-aside"><span class="article-label">Practical review artifact</span><h2>Measure accepted results</h2><p>Review a secure RAG design</p></aside><article class="article-content"><h2>Measure accepted results</h2><p>A secure system can still be unusable, and a token-efficient system can still be insecure. Compare against the same approved baseline and count savings only when the result meets the agreed task-quality threshold.</p><div class="article-points"><div class="article-point"><span>01</span><h3>Capture</h3><p>Capture provider-reported input, cached-input, and output usage.</p></div><div class="article-point"><span>02</span><h3>Measure</h3><p>Measure must-find recall, reviewer acceptance, and false positives.</p></div><div class="article-point"><span>03</span><h3>Set</h3><p>Set a zero-tolerance threshold for prohibited-context release.</p></div><div class="article-point"><span>04</span><h3>Retain</h3><p>Retain task, policy, source, model, and evaluator versions.</p></div></div><ul class="article-citations"><li><a href="https://krishnamuppidi.github.io/secure-context-cache/assets/secure-rag-architecture-review-checklist.pdf" target="_blank" rel="noreferrer">Download the one-page Secure RAG review checklist (PDF) ↗</a></li><li><a href="https://krishnamuppidi.github.io/secure-context-cache/rag-vs-secure-context-cache/" target="_blank" rel="noreferrer">Open the secure RAG architecture guide ↗</a></li></ul></article></div></section>
+      <section class="related-section"><div class="container"><div class="related-head"><div><span class="article-label">Continue exploring</span><h2>Related Secure Context Cache resources</h2></div></div><div class="related-grid"><a class="related-card" href="../rag-vs-secure-context-cache/"><span>Related</span><h3>Secure RAG Architecture: Authorization vs. Retrieval</h3><p>Secure RAG treats retrieved chunks as candidates, then applies deterministic authorization before any candidate content crosses the model boundary.</p></a><a class="related-card" href="../secure-context-cache-benchmark/"><span>Related</span><h3>Secure Context Cache Benchmark and Evaluation Method</h3><p>The public fixture proves the release and measurement path. It does not prove universal production savings; a production pilot must join provider usage with accepted-result quality.</p></a><a class="related-card" href="../docs/"><span>Related</span><h3>Secure Context Cache Documentation</h3><p>Start with the architecture, run the local demo, integrate an agent, and evaluate secure token optimization with explicit quality and authorization gates.</p></a></div><p class="article-disclaimer">Prototype and fixture results are not universal production claims. Production evaluation requires provider-reported usage and an agreed quality threshold.</p></div></section>
+    </main>
+    <footer class="footer"><div class="container footer-top"><div><a class="brand" href="../"><span class="brand-mark small" aria-hidden="true"><span></span><span></span><span></span></span><span>Secure Context Cache</span></a><p>Secure token optimization. Deployable context gateway. Measurable flagship agent.</p></div><div class="footer-links"><div><b>Explore</b><a href="../docs/">Documentation</a><a href="../secure-context-cache-benchmark/">Benchmark</a><a href="../about/">About</a></div><div><b>Compare</b><a href="../prompt-caching-vs-context-caching/">Prompt vs context cache</a><a href="../rag-vs-secure-context-cache/">RAG vs SCC</a><a href="../enterprise-ai-agent-memory-security/">Agent memory security</a></div><div><b>Code</b><a href="https://github.com/krishnamuppidi/secure-context-cache" target="_blank" rel="noreferrer">Secure Context Cache ↗</a><a href="https://github.com/krishnamuppidi/secreviewagent-ai" target="_blank" rel="noreferrer">SecureReviewAgent ↗</a></div></div></div><div class="container footer-bottom"><span>© <span id="year">2026</span> Naga Krishna Reddy Muppidi. MIT License.</span><span>Independent project. <button class="privacy-link" id="analytics-preferences" type="button">Analytics preferences</button></span></div></footer>
+    <aside class="analytics-consent" id="analytics-consent" role="dialog" aria-labelledby="analytics-consent-title" aria-describedby="analytics-consent-description" hidden><div><strong id="analytics-consent-title">Optional, privacy-conscious analytics</strong><p id="analytics-consent-description">Google Analytics helps measure aggregate site traffic and resource engagement. It stays off until allowed. No names, email addresses, form contents, or full link URLs are sent. See <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer">Google's privacy policy</a>.</p></div><div class="analytics-consent-actions"><button type="button" class="button button-ghost" data-analytics-choice="denied">No thanks</button><button type="button" class="button button-primary" data-analytics-choice="granted">Allow analytics</button></div></aside>
+  </body>
+</html>

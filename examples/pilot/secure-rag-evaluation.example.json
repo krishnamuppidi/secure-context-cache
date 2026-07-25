@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "project": {
+    "name": "Secure Context Cache",
+    "version": "0.7.1",
+    "commit": "replace-with-tested-commit"
+  },
+  "evaluation": {
+    "evaluator": "replace-with-name-or-approved-anonymous-label",
+    "affiliation": "replace-with-affiliation",
+    "relationship": "independent, collaborator, or project-controlled",
+    "started_at": "2026-07-25",
+    "completed_at": "2026-07-25",
+    "workload": "secure RAG authorization",
+    "task_manifest": "replace-with-versioned-path-or-hash"
+  },
+  "quality_gates": {
+    "required_fact_recall_minimum": 0.95,
+    "reviewer_acceptance_minimum": 0.9,
+    "false_positive_maximum": 0.1,
+    "prohibited_context_releases_maximum": 0
+  },
+  "variants": [
+    "full_approved_context",
+    "retrieval_only",
+    "secure_context_cache"
+  ],
+  "results": {
+    "raw_provider_usage": "replace-with-artifact-path",
+    "reviewer_records": "replace-with-artifact-path",
+    "audit_records": "replace-with-artifact-path",
+    "failures_and_exclusions": []
+  },
+  "publication_permissions": {
+    "name_evaluator": false,
+    "name_organization": false,
+    "quote_conclusion": false
+  }
+}

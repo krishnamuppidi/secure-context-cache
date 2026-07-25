@@ -137,6 +137,53 @@ class GatewayClient:
             payload=payload,
         )
 
+    def authorize_retrieval(
+        self,
+        *,
+        candidates: list[dict[str, Any]],
+        task_type: str,
+        path: str,
+        prompt: str,
+        context_id: str = "default",
+        environment: str = "unknown",
+        agent_id: str = "secreviewagent",
+        user: str = "developer",
+        request_id: str = "",
+        provider: str = "generic",
+        model: str = "",
+        tokenizer: str = "word",
+        token_budget: int | None = None,
+    ) -> dict[str, Any]:
+        """Authorize retrieval candidates before constructing a model prompt."""
+        headers = {"content-type": "application/json"}
+        if self.bearer_token:
+            headers["authorization"] = f"Bearer {self.bearer_token}"
+        elif self.api_key:
+            headers["x-agent-api-key"] = self.api_key
+        else:
+            raise RuntimeError("GatewayClient requires a bearer token or local API key")
+        payload = {
+            "context_id": context_id,
+            "task_type": task_type,
+            "path": path,
+            "prompt": prompt,
+            "agent_id": agent_id,
+            "user": user,
+            "environment": environment,
+            "request_id": request_id,
+            "provider": provider,
+            "model": model,
+            "tokenizer": tokenizer,
+            "token_budget": token_budget,
+            "candidates": candidates,
+        }
+        return _request_json(
+            f"{self.api_url.rstrip('/')}/v1/authorize-retrieval",
+            method="POST",
+            headers=headers,
+            payload=payload,
+        )
+
 
 def build_context_block(response: dict[str, Any]) -> str:
     """Convert released facts into a bounded, provenance-preserving model context block."""

@@ -86,12 +86,18 @@ The result contains a governed context capsule, tokenizer-labeled metrics, token
 stable provider-cacheable context, a security-scoped cache namespace, and an explicit optimization
 plan. `POST /v1/optimize` exposes the same workflow over the API; `/v1/capsules` remains compatible.
 
+For RAG, call `POST /v1/authorize-retrieval` after retrieving candidates and before building the
+model prompt. SCC enforces identity, task, path, environment, sensitivity, freshness, and policy;
+denied content is not echoed, and an empty authorized result fails closed. See the runnable
+[secure RAG client](examples/clients/python/secure_rag.py).
+
 ## Documentation and machine-readable discovery
 
 - **Documentation hub:** https://krishnamuppidi.github.io/secure-context-cache/docs/
 - **Benchmark method:** https://krishnamuppidi.github.io/secure-context-cache/secure-context-cache-benchmark/
 - **Prompt caching vs. context caching:** https://krishnamuppidi.github.io/secure-context-cache/prompt-caching-vs-context-caching/
 - **RAG vs. Secure Context Cache:** https://krishnamuppidi.github.io/secure-context-cache/rag-vs-secure-context-cache/
+- **Secure RAG review checklist:** https://krishnamuppidi.github.io/secure-context-cache/secure-rag-architecture-checklist/
 - **MCP context optimization:** https://krishnamuppidi.github.io/secure-context-cache/mcp-context-optimization/
 - **LLM discovery index:** https://krishnamuppidi.github.io/secure-context-cache/llms.txt
 - **Full machine-readable context:** https://krishnamuppidi.github.io/secure-context-cache/llms-full.txt
@@ -357,6 +363,8 @@ See [SECURITY.md](SECURITY.md) for trust boundaries.
 - [Troubleshooting](docs/TROUBLESHOOTING.md)
 - [Production Readiness](docs/PRODUCTION_READINESS.md)
 - [Client Examples](examples/clients/README.md)
+- [Pilot Evaluation Template](docs/PILOT_EVALUATION_TEMPLATE.md)
+- [Impact Evidence Guide](docs/IMPACT_EVIDENCE_GUIDE.md)
 - [Roadmap](ROADMAP.md)
 - [Contributing](CONTRIBUTING.md)
 - [Support](SUPPORT.md)

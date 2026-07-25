@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.7.1 - 2026-07-25
+
+- Added `/v1/authorize-retrieval` to authorize RAG candidates before their content crosses the
+  model boundary.
+- Added fail-closed empty-result behavior, duplicate candidate rejection, and response shaping
+  that never echoes denied candidate content.
+- Added a secure RAG architecture comparison, concrete API example, independent security
+  references, and a downloadable review checklist.
+- Added external pilot and impact-evidence templates so adoption can be evaluated with tokens,
+  quality, isolation, and independent confirmation rather than raw traffic alone.
+
 ## 0.7.0 - 2026-07-25
 
 - Repositioned Secure Context Cache as a complete token-optimization framework while preserving

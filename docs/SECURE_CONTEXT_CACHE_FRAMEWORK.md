@@ -48,7 +48,8 @@ The gateway implements the online control boundary. The public repository provid
 - AWS Lambda execution with IAM roles;
 - private KMS-encrypted S3 context storage;
 - KMS-encrypted DynamoDB slice, cache, and audit stores;
-- deterministic task, path, sensitivity, freshness, and approval policy;
+- deterministic task, path, sensitivity, approval, and configurable freshness enforcement;
+- secure-RAG candidate authorization with fail-closed empty-result behavior;
 - provider-ready capsule APIs and client examples; and
 - token-reduction, cache, release, and denial telemetry.
 

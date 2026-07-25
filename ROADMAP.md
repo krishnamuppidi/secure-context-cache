@@ -11,6 +11,7 @@ The roadmap is evidence-driven. Dates are targets, not commitments.
 - [x] OpenAI, Anthropic, and Bedrock prompt-caching examples.
 - [x] Optional LLMLingua-2 compression adapter.
 - [x] Provider usage normalization and token budgets.
+- [x] Secure-RAG candidate authorization with enforced freshness and fail-closed empty results.
 - [ ] Publish a long-context labeled benchmark with quality and cost-per-accepted-result results.
 - [ ] Add optional LiteLLM, Portkey, vLLM, and RouteLLM reference deployments.
 - [ ] Add policy-scoped exact response caching for deterministic read-only workloads.
