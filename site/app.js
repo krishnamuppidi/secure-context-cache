@@ -4,6 +4,7 @@
   const nav = document.querySelector(".nav");
   const menuButton = document.querySelector(".menu-button");
   const navLinks = document.querySelector(".nav-links");
+  const analytics = (eventName, parameters) => window.sccAnalytics?.event(eventName, parameters);
 
   const updateNav = () => nav?.classList.toggle("scrolled", window.scrollY > 12);
   updateNav();
@@ -57,6 +58,7 @@
     panels.forEach((panel) => {
       panel.hidden = panel.dataset.panel !== target;
     });
+    analytics("developer_example_tab", { example: target });
   };
 
   tabs.forEach((tab, index) => {
@@ -82,6 +84,7 @@
       try {
         await navigator.clipboard.writeText(source.innerText);
         button.textContent = "Copied";
+        analytics("code_example_copy", { example: button.dataset.copy || "unknown" });
       } catch (_error) {
         button.textContent = "Select text";
       }
@@ -121,8 +124,42 @@
 
   ["tasks", "tokens", "reduction", "price"].forEach((id) => {
     document.getElementById(id)?.addEventListener("input", calculate);
+    document.getElementById(id)?.addEventListener("change", () => {
+      analytics("token_calculator_use", { field: id });
+    });
   });
   calculate();
+
+  document.addEventListener("click", (event) => {
+    if (!(event.target instanceof Element)) return;
+    const link = event.target.closest("a");
+    if (!(link instanceof HTMLAnchorElement)) return;
+
+    if (link.protocol === "mailto:") {
+      analytics("pilot_request_click", { placement: link.closest("nav") ? "navigation" : "page" });
+      return;
+    }
+
+    if (link.hostname === "github.com") {
+      const pathParts = link.pathname.split("/").filter(Boolean);
+      const repository = pathParts.length >= 2 ? pathParts.slice(0, 2).join("/") : "github";
+      const resourceType =
+        link.pathname.includes("/docs/") || link.pathname.includes("/blob/")
+          ? "documentation"
+          : link.pathname.includes("/deploy/") || link.pathname.includes("/tree/")
+            ? "implementation"
+            : "repository";
+      analytics("github_resource_click", {
+        repository,
+        resource_type: resourceType,
+      });
+      return;
+    }
+
+    if (link.hash === "#economics") {
+      analytics("token_savings_cta_click");
+    }
+  });
 
   const year = document.getElementById("year");
   if (year) year.textContent = String(new Date().getFullYear());

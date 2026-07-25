@@ -26,3 +26,14 @@ The 32-to-16-token result is explicitly labeled as a deterministic fixture estim
 is illustrative arithmetic. Do not convert either into a provider-billed production benchmark or a
 universal savings claim. Company pilots should use provider-reported usage and count savings only
 when the optimized run meets an agreed quality threshold.
+
+## Website analytics
+
+The site uses the public GA4 measurement ID `G-9C5B48SR3B`. Analytics is optional and remains
+disabled until a visitor allows it. The site does not send names, email addresses, form contents,
+query strings, or full outbound URLs. Advertising storage, advertising personalization, and Google
+Signals are disabled.
+
+Meaningful aggregate events include GitHub resource clicks, pilot-email clicks, token-calculator
+use, developer-example tabs, and code-example copies. Treat these as website awareness or
+evaluation signals, not verified product adoption.
