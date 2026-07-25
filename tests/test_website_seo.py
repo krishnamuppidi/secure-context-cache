@@ -113,14 +113,21 @@ def test_sitemap_matches_public_pages_and_robots_advertises_it() -> None:
     root = ET.parse(sitemap_path).getroot()
     namespace = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
     sitemap_urls = {item.text for item in root.findall("s:url/s:loc", namespace)}
+    text_sitemap_urls = {
+        line.strip()
+        for line in (SITE / "sitemap.txt").read_text().splitlines()
+        if line.strip()
+    }
 
     assert sitemap_urls == set(SEO_PAGES.values())
+    assert text_sitemap_urls == set(SEO_PAGES.values())
     assert all(url.startswith(BASE_URL) for url in sitemap_urls)
 
     robots = (SITE / "robots.txt").read_text()
     assert "User-agent: *" in robots
     assert "Allow: /" in robots
     assert f"Sitemap: {BASE_URL}sitemap.xml" in robots
+    assert f"Sitemap: {BASE_URL}sitemap.txt" in robots
 
 
 def test_homepage_links_to_every_topic_page() -> None:
