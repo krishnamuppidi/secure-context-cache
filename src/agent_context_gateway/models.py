@@ -102,6 +102,11 @@ class TaskRequest:
     environment: str = "unknown"
     approval_state: str = "none"
     request_id: str = ""
+    context_id: str = "default"
+    provider: str = "generic"
+    model: str = ""
+    tokenizer: str = "word"
+    token_budget: int | None = None
 
     def normalized_request_id(self) -> str:
         if self.request_id:
@@ -170,6 +175,11 @@ class GatewayMetrics:
     token_reduction_percent: float
     released_slice_count: int
     denied_slice_count: int
+    tokenizer: str = "word"
+    measurement_source: str = "deterministic_word_proxy"
+    reusable_prefix_tokens: int = 0
+    token_budget: int | None = None
+    token_budget_status: str = "not_set"
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)

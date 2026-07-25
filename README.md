@@ -1,6 +1,6 @@
 # Secure Context Cache
 
-**Secure token optimization for enterprise AI agents**
+**The secure, open-source token optimization framework for AI applications and agents**
 
 **Product website:** https://krishnamuppidi.github.io/secure-context-cache/
 
@@ -8,16 +8,16 @@
 
 ![Secure Context Cache flow](site/assets/secure-context-cache-demo.gif)
 
-Secure Context Cache is a research-backed framework that reduces recurring AI input tokens without
-removing the facts an agent needs to succeed. It converts approved enterprise knowledge into
-reusable context slices, then assembles the smallest policy-approved capsule for each task before
-the model is called.
+Secure Context Cache is a research-backed token optimization framework that combines measurement,
+task-aware context selection, compiled-context reuse, provider prompt caching, optional
+compression, gateway/model-routing adapters, and quality verification. It reduces recurring AI
+input tokens without removing the facts an application or agent needs to succeed.
 
-The result is one optimization layer for both economics and control: fewer tokens sent to the
-model, less sensitive context exposed, preserved provenance, and an audit record for every release
-or denial. The repository includes the deployable **Agent Context Gateway (ACG)** API and AWS
-control plane while preserving the stable `acg` CLI, API, and environment-variable integration
-surface.
+The result is one optimization layer for economics, performance, and control: fewer tokens sent to
+the model, reuse of stable prefixes and compiled context, optional long-context compression, less
+sensitive context exposed, preserved provenance, and an audit record for every release or denial.
+The repository includes the deployable **Agent Context Gateway (ACG)** API and AWS control plane
+while preserving the stable `acg` CLI, API, and environment-variable integration surface.
 
 SecureReviewAgent is the first proof point: it uses a governed context capsule to review Terraform
 and Kubernetes changes with relevant IAM, network, policy, ownership, and environment facts while
@@ -25,9 +25,18 @@ unrelated enterprise topology remains outside the prompt.
 
 ## The Selling Point
 
-**Optimize context before paying a model to process it.**
+**Measure, select, reuse, compress, route, and verify before paying a model to process unnecessary
+tokens.**
 
-- **Lower token cost:** reuse approved context slices and send only task-relevant facts.
+- **Measure accurately:** use deterministic fixtures, optional model tokenizers, and normalized
+  provider-reported usage.
+- **Select less:** release only task-relevant facts within identity, sensitivity, and freshness
+  policy.
+- **Reuse more:** reuse compiled source slices and provider-cacheable stable prompt prefixes.
+- **Compress when justified:** optionally run LLMLingua-2 after authorization for long capsules,
+  with protected terms and safe fallback.
+- **Route anywhere:** integrate after SCC with OpenAI, Anthropic, Amazon Bedrock, LiteLLM, Portkey,
+  RouteLLM, vLLM, or an internal gateway.
 - **Preserve outcome quality:** count savings only when required facts, task success, and reviewer
   acceptance meet a defined threshold.
 - **Reduce exposure:** keep unrelated or disallowed enterprise context outside the model prompt.
@@ -55,6 +64,27 @@ separate post-conference evidence.
 
 See [Secure Context Cache Framework](docs/SECURE_CONTEXT_CACHE_FRAMEWORK.md) for the product-family
 architecture and research-to-implementation map.
+
+See [Token Optimization Framework](docs/TOKEN_OPTIMIZATION_FRAMEWORK.md) for the complete
+Measure → Select → Reuse → Compress → Route → Verify pipeline.
+
+## Run the optimizer
+
+```bash
+pip install -e ".[dev]"
+acg optimize \
+  --repo examples/sample_repo \
+  --task-type iac_security \
+  --path terraform/prod/payments/lambda.tf \
+  --prompt "Review security and blast-radius risk" \
+  --provider openai \
+  --token-budget 100 \
+  --out build/optimization.json
+```
+
+The result contains a governed context capsule, tokenizer-labeled metrics, token-budget status,
+stable provider-cacheable context, a security-scoped cache namespace, and an explicit optimization
+plan. `POST /v1/optimize` exposes the same workflow over the API; `/v1/capsules` remains compatible.
 
 ## Documentation and machine-readable discovery
 
@@ -312,6 +342,8 @@ See [SECURITY.md](SECURITY.md) for trust boundaries.
 ## Documentation
 
 - [Secure Context Cache Framework](docs/SECURE_CONTEXT_CACHE_FRAMEWORK.md)
+- [Token Optimization Framework](docs/TOKEN_OPTIMIZATION_FRAMEWORK.md)
+- [Ecosystem Integrations](docs/ECOSYSTEM_INTEGRATIONS.md)
 - [Getting Started](docs/GETTING_STARTED.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Agent Integration](docs/AGENT_INTEGRATION.md)

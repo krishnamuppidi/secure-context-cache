@@ -6,5 +6,6 @@
 *.py[cod]
 *.egg-info/
 build/
+dist/
 deploy/aws/.acg-deployment.env
 deploy/aws/terraform/.terraform/

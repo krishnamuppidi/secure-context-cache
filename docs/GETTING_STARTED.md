@@ -48,6 +48,8 @@ A successful run prints a capsule fact count, denial count, cache state, and aud
 - `context-insights.json`: deterministic observations about the released capsule;
 - `audit-record.json`: decision and provenance record; and
 - `metrics.json`: estimated full-context and released-capsule token counts.
+- `optimization-plan.json`: stable model context, provider-cache namespace, token budget, and
+  optimization-lever status.
 
 Inspect the decision:
 
@@ -117,7 +119,7 @@ root.
 ## Run with Docker
 
 ```bash
-docker build -t secure-context-cache:0.6.0 .
+docker build -t secure-context-cache:0.7.0 .
 export ACG_LOCAL_API_KEY="$(openssl rand -hex 32)"
 docker run --rm -p 8080:8080 \
   -e ACG_LOCAL_AGENT_ID=local-agent \
@@ -125,7 +127,7 @@ docker run --rm -p 8080:8080 \
   -e ACG_LOCAL_ALLOWED_TASK_TYPES=code_review,iac_security,architecture_qa \
   -e ACG_ALLOWED_REPO_ROOT=/contexts/repo \
   -v /absolute/path/to/repository:/contexts/repo:ro \
-  secure-context-cache:0.6.0
+  secure-context-cache:0.7.0
 ```
 
 Call `http://127.0.0.1:8080/v1/capsules` with `agent_id` set to `local-agent`, the API key header,

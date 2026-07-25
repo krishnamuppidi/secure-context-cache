@@ -18,6 +18,24 @@ from .models import (
 from .policy import DEFAULT_POLICY, decide_slice
 
 
+def capsule_hash_for(
+    request_id: str,
+    released: list[ReleasedFact],
+    denied: list,
+    policy_version: str,
+) -> str:
+    raw = json.dumps(
+        {
+            "request_id": request_id,
+            "facts": [item.__dict__ for item in released],
+            "denied": [item.__dict__ for item in denied],
+            "policy": policy_version,
+        },
+        sort_keys=True,
+    )
+    return stable_hash(raw)
+
+
 def _freshness_warning(slice_: ContextSlice, *, max_age_days: int = 30) -> str:
     if not slice_.freshness_timestamp:
         return f"slice {slice_.id} has no freshness timestamp"
@@ -80,15 +98,6 @@ def build_capsule(
         )
     request_id = task.normalized_request_id()
     audit_id = stable_id("audit", request_id, identity.agent_id, uuid4().hex)
-    raw = json.dumps(
-        {
-            "request_id": request_id,
-            "facts": [item.__dict__ for item in released],
-            "denied": [item.__dict__ for item in denied],
-            "policy": active_policy["version"],
-        },
-        sort_keys=True,
-    )
     return ContextCapsule(
         request_id=request_id,
         task=task.__dict__,
@@ -98,7 +107,12 @@ def build_capsule(
         expires_at=utc_in(active_policy.get("ttl_minutes", 30)),
         cache_hit=cache_hit,
         audit_id=audit_id,
-        capsule_hash=stable_hash(raw),
+        capsule_hash=capsule_hash_for(
+            request_id,
+            released,
+            denied,
+            active_policy["version"],
+        ),
         generated_at=utc_now(),
         source_manifest=source_manifest,
         freshness_warnings=freshness_warnings,

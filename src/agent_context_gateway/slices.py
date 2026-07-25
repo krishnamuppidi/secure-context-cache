@@ -1,13 +1,18 @@
 from __future__ import annotations
 
 from .models import ContextGraph, ContextSlice, stable_id
+from .tokenization import TokenCounter, WordTokenCounter, count_facts
 
 
-def estimate_tokens(facts: list[str]) -> int:
-    return max(1, sum(len(fact.split()) for fact in facts))
+def estimate_tokens(facts: list[str], counter: TokenCounter | None = None) -> int:
+    return count_facts(counter or WordTokenCounter(), facts)
 
 
-def build_slices(graph: ContextGraph) -> list[ContextSlice]:
+def build_slices(
+    graph: ContextGraph,
+    *,
+    counter: TokenCounter | None = None,
+) -> list[ContextSlice]:
     slices: list[ContextSlice] = []
     for node in graph.nodes:
         if node.kind == "repository":
@@ -31,7 +36,7 @@ def build_slices(graph: ContextGraph) -> list[ContextSlice]:
                 sensitivity=node.sensitivity,
                 refs=[node.path],
                 version=graph.generated_at,
-                token_estimate=estimate_tokens(facts),
+                token_estimate=estimate_tokens(facts, counter),
                 owner=node.owner,
                 environment=node.environment,
                 allowed_task_profiles=[],

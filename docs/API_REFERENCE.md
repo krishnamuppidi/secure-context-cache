@@ -26,6 +26,42 @@ AWS returns `"runtime":"aws"`.
 
 Returns a policy-scoped capsule and token metrics.
 
+This backward-compatible endpoint also returns an `optimization` object containing stable
+model-visible context, a provider-cache namespace, and the status of each optimization lever.
+
+## `POST /v1/optimize`
+
+Primary token-optimization endpoint. It accepts the capsule fields plus:
+
+- `provider`: `openai`, `anthropic`, `bedrock`, or `generic`;
+- `model`: optional model identifier used for tokenizer selection and telemetry;
+- `tokenizer`: `word`, `tiktoken`, or `tiktoken:<encoding>`;
+- `token_budget`: optional maximum capsule-token budget.
+
+It returns the same governed capsule as `/v1/capsules`, plus tokenizer-labeled metrics and:
+
+```json
+{
+  "optimization": {
+    "framework": "Secure Context Cache",
+    "strategy": "measure-select-reuse-compress-route-verify",
+    "stable_context": "<secure-context-cache>...</secure-context-cache>",
+    "stable_prefix_hash": "...",
+    "cache_namespace": "...",
+    "provider": "openai",
+    "levers": [
+      {"name": "policy_selection", "status": "applied"},
+      {"name": "provider_prefix_cache", "status": "ready"},
+      {"name": "optional_compression", "status": "skipped"},
+      {"name": "quality_gate", "status": "required"}
+    ]
+  }
+}
+```
+
+The stable context deliberately excludes `request_id`, expiry, and audit IDs. Send it before
+request-specific task text to make exact provider prompt caching possible.
+
 ### Request
 
 | Field | Type | Required | Default | Behavior |

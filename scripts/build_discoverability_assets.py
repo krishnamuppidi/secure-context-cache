@@ -6,14 +6,12 @@ from __future__ import annotations
 import hashlib
 import html
 import json
-import textwrap
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
 from xml.sax.saxutils import escape
 
 from PIL import Image, ImageDraw, ImageFont
-
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "site"
@@ -47,6 +45,63 @@ class Page:
 
 
 PAGES = (
+    Page(
+        slug="ai-token-optimization-framework",
+        title="Open-Source AI Token Optimization Framework",
+        kicker="Complete optimization pipeline",
+        description="Open-source AI token optimization with measurement, secure context selection, reuse, prompt caching, optional compression, routing adapters, and quality gates.",
+        keywords=(
+            "AI token optimization framework",
+            "best LLM token optimization framework",
+            "open source token optimization",
+            "LLM cost optimization framework",
+        ),
+        summary="Use one measurable pipeline to reduce unnecessary LLM tokens while preserving task quality, provider portability, provenance, and least-privilege context controls.",
+        intent="Choose and deploy a token optimization framework",
+        sections=(
+            Section(
+                "Token optimization is a pipeline, not one trick",
+                (
+                    "Prompt compression, semantic caching, provider prefix caching, smaller-model routing, and inference KV caching solve different parts of the cost problem. Secure Context Cache combines the useful boundaries without pretending that one algorithm works for every prompt, provider, or workload.",
+                    "The framework measures the baseline, selects the smallest authorized context, reuses compiled slices and stable prefixes, compresses only long authorized capsules, integrates with downstream routers, and verifies quality before counting savings.",
+                ),
+                (
+                    "Measure with model tokenizers and provider-reported usage.",
+                    "Select source-backed facts by task, identity, sensitivity, and freshness.",
+                    "Reuse compiled context and native provider prompt caches.",
+                    "Compress and route only behind explicit workload quality gates.",
+                ),
+                "acg optimize --repo examples/sample_repo \\\n  --task-type iac_security \\\n  --path terraform/prod/payments/lambda.tf \\\n  --prompt \"Review security risk\" \\\n  --provider openai --token-budget 800",
+            ),
+            Section(
+                "Bring the best techniques together safely",
+                (
+                    "SCC supports optional LLMLingua-2 compression after authorization, native cache boundaries for OpenAI, Anthropic, and Amazon Bedrock, provider-usage normalization, and clean downstream integration with LiteLLM, Portkey, RouteLLM, vLLM, or internal gateways.",
+                    "Security is the add-on generic optimizers usually lack. A cache namespace binds authorization scope and source state; denied data never enters the model or compressor; stable context retains citations; and every release has policy, provenance, expiry, and audit evidence.",
+                ),
+                (
+                    "No heavyweight compressor in the default runtime or Lambda package.",
+                    "No semantic response caching across untrusted tenants or system policies.",
+                    "No savings claim without accepted-result and prohibited-release evidence.",
+                    "No provider lock-in: the capsule and optimization plan are model neutral.",
+                ),
+            ),
+            Section(
+                "What to compare in a real evaluation",
+                (
+                    "The best framework is the one that lowers cost per accepted result on your task set. Compare full approved context, retrieval-only context, provider caching, compression, routing, and SCC policy-scoped capsules with the same models and quality rubric.",
+                    "Report input, cached-input, cache-write, and output tokens; latency; pricing date; recall; reviewer acceptance; stale-context use; and prohibited-context release. Publish failures as well as averages.",
+                ),
+                (
+                    "Start with one repeated, read-only workload.",
+                    "Define must-find facts and an authorization threshold before tuning.",
+                    "Use provider usage as authoritative and estimates as planning data.",
+                    "Expand only after both quality and isolation thresholds pass.",
+                ),
+            ),
+        ),
+        related=("llm-token-optimization", "reduce-llm-token-cost", "prompt-caching-vs-context-caching"),
+    ),
     Page(
         slug="docs",
         title="Secure Context Cache Documentation",
@@ -532,7 +587,10 @@ PAGES = (
 
 
 EXISTING_PAGES = {
-    "": ("Secure Context Cache", "Secure token optimization for enterprise AI agents."),
+    "": (
+        "Secure Context Cache",
+        "Open-source AI token optimization framework with secure context controls.",
+    ),
     "llm-token-optimization": (
         "LLM Token Optimization for Enterprise AI Agents",
         "Reduce recurring input-token cost while preserving accepted-result quality.",
@@ -606,10 +664,10 @@ def render_markdown(page: Page) -> str:
 def render_existing_markdown(slug: str, title: str, description: str) -> str:
     focus = {
         "": (
-            "Secure Context Cache compiles approved enterprise knowledge into reusable protected "
-            "slices. Agent Context Gateway authenticates each workload, evaluates task-scoped "
-            "policy, and releases a short-lived capsule containing only the facts allowed for "
-            "that request."
+            "Secure Context Cache combines token measurement, task-aware selection, compiled "
+            "context reuse, provider prompt caching, optional compression, routing adapters, and "
+            "quality gates. Its secure context layer authenticates each workload and releases "
+            "only source-backed facts allowed for the task."
         ),
         "llm-token-optimization": (
             "Token optimization starts with repeated input, not with a cheaper model alone. "
@@ -653,14 +711,17 @@ def render_existing_markdown(slug: str, title: str, description: str) -> str:
             "",
             focus,
             "",
-            "The public deterministic fixture reports a 32-to-16 word-count proxy. It shows the "
-            "measurement path; it is not provider-billed production savings. Production "
-            "evaluation requires provider usage data, labeled tasks, authorization tests, and an "
-            "agreed acceptance threshold.",
+            (
+                "The public deterministic fixture reports a 32-to-16 word-count proxy. It shows "
+                "the measurement path; it is not provider-billed production savings. Production "
+                "evaluation requires provider usage data, labeled tasks, authorization tests, "
+                "and an agreed acceptance threshold."
+            ),
             "",
             "## Continue",
             "",
             f"- [Documentation]({BASE_URL}docs/index.md)",
+            f"- [Token optimization framework]({BASE_URL}ai-token-optimization-framework/index.md)",
             f"- [Benchmark method]({BASE_URL}secure-context-cache-benchmark/index.md)",
             f"- [Prompt caching vs. context caching]({BASE_URL}prompt-caching-vs-context-caching/index.md)",
             f"- [RAG vs. Secure Context Cache]({BASE_URL}rag-vs-secure-context-cache/index.md)",
@@ -856,8 +917,8 @@ def make_visual_assets() -> None:
         draw.line((0, y, 1200, y), fill="#0d211c", width=1)
     draw.rounded_rectangle((58, 58, 1142, 572), 32, fill="#091815", outline="#1e4d3d", width=3)
     draw.text((98, 96), "SECURE CONTEXT CACHE", font=font_mid, fill="#58e6a9")
-    draw.multiline_text((98, 160), "Cut AI token cost.\nKeep the context that matters.", font=font_big, fill="#f4fbf8", spacing=10)
-    draw.text((100, 340), "Policy-scoped context capsules for enterprise AI agents", font=font_small, fill="#a9bdb6")
+    draw.multiline_text((98, 160), "Optimize every token.\nProtect context quality.", font=font_big, fill="#f4fbf8", spacing=10)
+    draw.text((100, 340), "Measure · Select · Reuse · Compress · Route · Verify", font=font_small, fill="#a9bdb6")
     labels = ("APPROVED SOURCES", "PROTECTED SLICES", "POLICY GATE", "AGENT CAPSULE")
     positions = (100, 365, 635, 900)
     for index, (label, x) in enumerate(zip(labels, positions)):
@@ -939,15 +1000,16 @@ def write_machine_files() -> None:
     curated = [
         "# Secure Context Cache",
         "",
-        "> Secure Context Cache is an open-source secure token-optimization framework for enterprise AI agents. It compiles approved knowledge into reusable protected slices and releases the smallest policy-approved context capsule for one authenticated task.",
+        "> Secure Context Cache is an open-source AI token-optimization framework combining measurement, selection, compiled-context reuse, provider prompt caching, optional compression, routing adapters, and quality gates. Secure relevant-context release is its differentiating control layer.",
         "",
-        "Canonical terminology: Secure Context Cache is the framework and public product; Agent Context Gateway is the deployable API/runtime control plane; SecureReviewAgent is the flagship Infrastructure-as-Code security workflow.",
+        "Canonical terminology: Secure Context Cache is the token-optimization framework and public product; secure context release is the differentiating add-on; Agent Context Gateway is the deployable API/runtime control plane; SecureReviewAgent is the flagship Infrastructure-as-Code workflow.",
         "",
         "Claim boundary: the public 32-to-16 result is a deterministic word-count fixture, not provider-billed production savings. The 75.3% research result is a controlled prototype benchmark, not independent adoption evidence.",
         "",
         "## Start here",
         "",
         f"- [Product website]({BASE_URL}): Product, architecture, economics, research, security, and deployment overview.",
+        f"- [Token optimization framework]({BASE_URL}ai-token-optimization-framework/index.md): Measure, select, reuse, compress, route, and verify through one framework.",
         f"- [Documentation]({BASE_URL}docs/index.md): Machine-readable documentation hub.",
         f"- [GitHub repository]({REPOSITORY}): Canonical source, tests, deployment, and examples.",
         f"- [Benchmark method]({BASE_URL}secure-context-cache-benchmark/index.md): Reproducible fixture and production evaluation design.",

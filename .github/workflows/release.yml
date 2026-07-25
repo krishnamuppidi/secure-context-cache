@@ -24,8 +24,18 @@ jobs:
       - name: Verify built package
         run: |
           python -m venv /tmp/scc-release-check
-          /tmp/scc-release-check/bin/pip install dist/*.whl
+          wheel=$(ls dist/*.whl)
+          /tmp/scc-release-check/bin/pip install "${wheel}[tokenizers]"
           /tmp/scc-release-check/bin/acg --help
+          /tmp/scc-release-check/bin/acg optimize \
+            --repo examples/sample_repo \
+            --task-type iac_security \
+            --path terraform/prod/payments/lambda.tf \
+            --prompt "Review security risk" \
+            --provider openai \
+            --tokenizer tiktoken:o200k_base \
+            --token-budget 100 \
+            --out /tmp/scc-release-check/optimization.json
       - name: Attach package files to the GitHub release
         uses: softprops/action-gh-release@v2
         with:

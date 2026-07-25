@@ -11,6 +11,7 @@ from .insights import generate_context_insights
 from .io import read_json, write_json
 from .metrics import compute_metrics
 from .models import ContextGraph, ContextNode, ContextSlice, DeniedSlice, ReleasedFact, TaskRequest
+from .optimization import build_optimization_plan
 from .slices import build_slices
 
 
@@ -61,6 +62,24 @@ def main() -> None:
     demo.add_argument("--repo", type=Path, default=Path("examples/sample_repo"))
     demo.add_argument("--out", type=Path, default=Path("build/demo"))
 
+    optimize = sub.add_parser(
+        "optimize",
+        help="Build a secure token-optimization plan and stable provider-cacheable context",
+    )
+    optimize.add_argument("--repo", type=Path, default=Path("examples/sample_repo"))
+    optimize.add_argument("--task-type", default="iac_security")
+    optimize.add_argument("--path", required=True)
+    optimize.add_argument("--prompt", required=True)
+    optimize.add_argument("--agent-id", default="secreviewagent")
+    optimize.add_argument("--api-key", default="demo-secreviewagent-key")
+    optimize.add_argument("--environment", default="unknown")
+    optimize.add_argument("--context-id", default="default")
+    optimize.add_argument("--provider", default="generic")
+    optimize.add_argument("--model", default="")
+    optimize.add_argument("--tokenizer", default="word")
+    optimize.add_argument("--token-budget", type=int)
+    optimize.add_argument("--out", type=Path, default=Path("build/optimization.json"))
+
     args = parser.parse_args()
     if args.command == "ingest":
         graph = scan_repo(args.repo)
@@ -109,6 +128,36 @@ def main() -> None:
         print(
             f"capsule_facts={len(result.capsule.facts)} denied={len(result.capsule.denied)} "
             f"cache_hit={result.capsule.cache_hit} audit_id={result.capsule.audit_id}"
+        )
+    elif args.command == "optimize":
+        gateway = AgentContextGateway()
+        _graph, slices = gateway.load_context(args.repo, context_id=args.context_id)
+        task = TaskRequest(
+            task_type=args.task_type,
+            path=args.path,
+            prompt=args.prompt,
+            agent_id=args.agent_id,
+            environment=args.environment,
+            context_id=args.context_id,
+            provider=args.provider,
+            model=args.model,
+            tokenizer=args.tokenizer,
+            token_budget=args.token_budget,
+        )
+        capsule, metrics = gateway.request_capsule(task, slices, api_key=args.api_key)
+        plan = build_optimization_plan(capsule, metrics, task)
+        write_json(
+            args.out,
+            {
+                "capsule": capsule.to_dict(),
+                "metrics": metrics.to_dict(),
+                "optimization": plan.to_dict(),
+            },
+        )
+        print(
+            f"full={metrics.full_context_tokens} capsule={metrics.capsule_tokens} "
+            f"reduction={metrics.token_reduction_percent}% "
+            f"budget={metrics.token_budget_status} out={args.out}"
         )
 
 

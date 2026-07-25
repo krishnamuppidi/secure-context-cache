@@ -1,10 +1,11 @@
 from __future__ import annotations
 
+import json
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
 from .cache import ContextSliceCache
-from .capsule import build_capsule
+from .capsule import build_capsule, capsule_hash_for
 from .identity import AgentRegistry
 from .ingest import scan_repo
 from .insights import generate_context_insights
@@ -18,7 +19,9 @@ from .models import (
     ContextSlice,
     GatewayMetrics,
     TaskRequest,
+    stable_hash,
 )
+from .optimization import OptimizationPlan, build_optimization_plan
 from .policy import load_policy
 from .slices import build_slices
 
@@ -30,6 +33,7 @@ class GatewayResult:
     capsule: ContextCapsule
     insights: list[ContextInsight]
     metrics: GatewayMetrics
+    optimization: OptimizationPlan
     audit_record: dict
 
 
@@ -49,11 +53,21 @@ class AgentContextGateway:
         self.audit_store = audit_store
         self.slice_store = slice_store
 
-    def load_context(self, repo: Path) -> tuple[ContextGraph, list[ContextSlice]]:
+    def load_context(
+        self,
+        repo: Path,
+        *,
+        context_id: str = "default",
+        manifest_hash: str = "",
+    ) -> tuple[ContextGraph, list[ContextSlice]]:
         graph = scan_repo(repo)
         slices = build_slices(graph)
         if self.slice_store is not None:
-            self.slice_store.put_many(slices)
+            self.slice_store.put_many(
+                slices,
+                context_id=context_id,
+                manifest_hash=manifest_hash,
+            )
         return graph, slices
 
     def request_capsule(
@@ -72,21 +86,82 @@ class AgentContextGateway:
         slices: list[ContextSlice],
         identity: AgentIdentity,
     ) -> tuple[ContextCapsule, GatewayMetrics]:
-        cache_entry = self.cache.get(task)
+        policy_version = str(self.policy.get("version", "unknown"))
+        policy_fingerprint = stable_hash(json.dumps(self.policy, sort_keys=True))
+        source_manifest_hash = stable_hash(
+            json.dumps(
+                [
+                    {
+                        "id": item.id,
+                        "source_hash": item.source_hash,
+                        "facts": item.facts,
+                        "refs": item.refs,
+                        "sensitivity": item.sensitivity,
+                        "environment": item.environment,
+                    }
+                    for item in sorted(slices, key=lambda value: value.id)
+                ],
+                sort_keys=True,
+            )
+        )
+        cache_entry = self.cache.get(
+            task,
+            identity=identity,
+            policy_version=f"{policy_version}:{policy_fingerprint}",
+            source_manifest_hash=source_manifest_hash,
+        )
         cache_hit = cache_entry is not None
-        # Policy is authoritative on every request. Cached selection IDs provide
-        # repeat-task telemetry but never bypass newer or stricter deny rules.
+        candidate_slices = slices
+        if cache_entry is not None:
+            cached_ids = set(cache_entry.slice_ids)
+            # A cached plan narrows the expensive capsule-building path. Every cached
+            # slice is still re-authorized below, and the key binds identity, policy,
+            # task scope, approval state, context ID, and the source manifest.
+            candidate_slices = [item for item in slices if item.id in cached_ids]
         capsule = build_capsule(
             task,
             identity,
-            slices,
+            candidate_slices,
             cache_hit=cache_hit,
             policy=self.policy,
         )
+        if cache_entry is not None:
+            # Preserve an explicit audit reason for slices excluded by the cached plan.
+            from .models import DeniedSlice
+
+            selected_or_denied = {item.slice_id for item in capsule.facts}
+            selected_or_denied.update(item.slice_id for item in capsule.denied)
+            capsule.denied.extend(
+                DeniedSlice(
+                    slice_id=item.id,
+                    sensitivity=item.sensitivity,
+                    reason="not selected by cached policy-scoped plan",
+                )
+                for item in slices
+                if item.id not in selected_or_denied
+            )
+            capsule.capsule_hash = capsule_hash_for(
+                capsule.request_id,
+                capsule.facts,
+                capsule.denied,
+                capsule.policy_version,
+            )
         if not cache_hit:
             released_ids = {item.slice_id for item in capsule.facts}
-            self.cache.put(task, [item for item in slices if item.id in released_ids])
-        metrics = compute_metrics(capsule, slices)
+            self.cache.put(
+                task,
+                [item for item in slices if item.id in released_ids],
+                identity=identity,
+                policy_version=f"{policy_version}:{policy_fingerprint}",
+                source_manifest_hash=source_manifest_hash,
+            )
+        metrics = compute_metrics(
+            capsule,
+            slices,
+            tokenizer=task.tokenizer,
+            model=task.model,
+            token_budget=task.token_budget,
+        )
         if self.audit_store is not None:
             self.audit_store.put(self.build_audit_record(capsule, metrics))
         return capsule, metrics
@@ -130,6 +205,7 @@ class AgentContextGateway:
         )
         graph, slices = self.load_context(repo)
         capsule, metrics = self.request_capsule(task, slices, api_key="demo-secreviewagent-key")
+        optimization = build_optimization_plan(capsule, metrics, task)
         insights = self.generate_insights(capsule)
         audit = self.build_audit_record(capsule, metrics)
         write_json(out_dir / "context-graph.json", graph.to_dict())
@@ -138,4 +214,5 @@ class AgentContextGateway:
         write_json(out_dir / "context-insights.json", [item.to_dict() for item in insights])
         write_json(out_dir / "audit-record.json", audit)
         write_json(out_dir / "metrics.json", metrics.to_dict())
-        return GatewayResult(graph, slices, capsule, insights, metrics, audit)
+        write_json(out_dir / "optimization-plan.json", optimization.to_dict())
+        return GatewayResult(graph, slices, capsule, insights, metrics, optimization, audit)

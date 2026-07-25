@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.7.0 - 2026-07-25
+
+- Repositioned Secure Context Cache as a complete token-optimization framework while preserving
+  the product name, secure-context architecture, `acg` CLI, and capsule API.
+- Added the Measure → Select → Reuse → Compress → Route → Verify framework and `/v1/optimize`.
+- Added dependency-free and optional model-tokenizer accounting, token budgets, and
+  provider-usage normalization for OpenAI, Anthropic, and Amazon Bedrock.
+- Added stable provider-cacheable context, scoped cache namespaces, and native provider caching
+  patterns in the client examples.
+- Corrected selection-plan keys so request IDs do not defeat reuse and bound cache entries to
+  identity, task, policy, context, and source state.
+- Added S3 manifest fingerprints and DynamoDB compiled-slice reuse for unchanged AWS contexts.
+- Added an optional LLMLingua-2 post-authorization compressor with protected-term checks and safe
+  fallback.
+- Expanded tests for optimization plans, token budgets, source invalidation, stable prefixes, and
+  provider usage.
+
 ## 0.6.0 - 2026-07-25
 
 - Added 13 crawlable documentation, comparison, integration, benchmark, case-study, research, and

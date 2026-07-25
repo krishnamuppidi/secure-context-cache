@@ -1,8 +1,14 @@
 # Client Examples
 
 These examples show the intended integration boundary: an application authenticates to the
-gateway, requests task-scoped facts, and passes only the released capsule to a model. Never pass the
-Cognito client secret, access token, or local API key to a model.
+gateway, requests a task-scoped optimization plan, and passes only the released capsule to a model.
+The stable context precedes volatile task text so native provider prompt caching can reuse the
+exact prefix. Never pass the Cognito client secret, access token, or local API key to a model.
+
+- OpenAI uses `prompt_cache_key`.
+- Anthropic places an ephemeral cache breakpoint after the stable context.
+- Amazon Bedrock adds a cache checkpoint between stable context and the task.
+- All three surface provider usage so it can be normalized separately from SCC estimates.
 
 ## Python
 
@@ -28,6 +34,8 @@ Additional optional examples preserve the same boundary:
 - `anthropic_messages.py` uses the Anthropic Messages API after fetching a capsule.
 - `langchain_context.py` supplies the bounded context block to a LangChain chat model.
 - `mcp_server.py` exposes a narrow `request_context_capsule` MCP tool rather than raw source access.
+- `litellm_completion.py` keeps SCC as the context boundary and uses LiteLLM for downstream routing.
+- `vllm_prefix_cache.py` passes an SCC trust-scoped cache salt to a self-hosted vLLM endpoint.
 
 Install only the SDKs used by the consuming application. These examples intentionally remain
 outside the core package dependencies.

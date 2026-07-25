@@ -85,7 +85,44 @@ def test_repeated_task_uses_cache() -> None:
         slices,
         api_key="demo-secreviewagent-key",
     )
-    assert third.cache_hit is False
+    # Equivalent wording reuses the same policy-scoped selection plan. Request IDs
+    # are audit correlation values, not cache-busting inputs.
+    assert third.cache_hit is True
+
+
+def test_cache_is_invalidated_when_source_manifest_changes() -> None:
+    gateway = AgentContextGateway()
+    _graph, slices = gateway.load_context(SAMPLE_REPO)
+    task = TaskRequest(
+        task_type="iac_security",
+        path="terraform/prod/payments/lambda.tf",
+        prompt="review prod change",
+        agent_id="secreviewagent",
+        environment="prod",
+        context_id="payments",
+    )
+    first, _ = gateway.request_capsule(task, slices, api_key="demo-secreviewagent-key")
+    slices[0].source_hash = "changed-source"
+    second, _ = gateway.request_capsule(task, slices, api_key="demo-secreviewagent-key")
+    assert first.cache_hit is False
+    assert second.cache_hit is False
+
+
+def test_cache_is_invalidated_when_policy_changes_without_version_bump() -> None:
+    gateway = AgentContextGateway()
+    _graph, slices = gateway.load_context(SAMPLE_REPO)
+    task = TaskRequest(
+        task_type="iac_security",
+        path="terraform/prod/payments/lambda.tf",
+        prompt="review prod change",
+        agent_id="secreviewagent",
+        environment="prod",
+    )
+    first, _ = gateway.request_capsule(task, slices, api_key="demo-secreviewagent-key")
+    gateway.policy["max_slice_age_days"] = 7
+    second, _ = gateway.request_capsule(task, slices, api_key="demo-secreviewagent-key")
+    assert first.cache_hit is False
+    assert second.cache_hit is False
 
 
 def test_restricted_context_requires_explicit_approval() -> None:

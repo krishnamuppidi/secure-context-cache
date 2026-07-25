@@ -27,6 +27,30 @@ def test_local_api_requires_key_and_returns_capsule() -> None:
     assert response.json()["capsule"]["facts"]
     assert response.json()["capsule"]["request_id"] == "api-test-request"
     assert response.json()["capsule"]["task"]["user"] == "api-test-user"
+    assert response.json()["optimization"]["framework"] == "Secure Context Cache"
+    assert response.json()["optimization"]["stable_context"]
+
+
+def test_optimize_endpoint_returns_budget_and_cache_plan() -> None:
+    client = TestClient(app)
+    response = client.post(
+        "/v1/optimize",
+        json={
+            "task_type": "iac_security",
+            "path": "terraform/prod/payments/lambda.tf",
+            "prompt": "review this change",
+            "agent_id": "secreviewagent",
+            "environment": "prod",
+            "provider": "openai",
+            "token_budget": 100,
+        },
+        headers={"x-agent-api-key": "demo-secreviewagent-key"},
+    )
+    assert response.status_code == 200
+    body = response.json()
+    assert body["metrics"]["token_budget_status"] == "within_budget"
+    assert body["optimization"]["provider"] == "openai"
+    assert body["optimization"]["cache_namespace"]
 
 
 def test_cognito_claims_map_to_agent_identity(monkeypatch) -> None:

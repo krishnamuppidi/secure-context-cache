@@ -19,17 +19,20 @@ def main() -> None:
     parser.add_argument("--environment", default="unknown")
     args = parser.parse_args()
 
+    model_id = os.environ.get("BEDROCK_MODEL_ID")
+    if not model_id:
+        raise RuntimeError("Set BEDROCK_MODEL_ID to a model that supports the Converse API")
     gateway_response = GatewayClient.from_env().request(
         task_type=args.task_type,
         path=args.path,
         prompt=args.prompt,
         context_id=args.context_id,
         environment=args.environment,
+        optimize=True,
+        provider="bedrock",
+        model=model_id,
     )
     context_block = build_context_block(gateway_response)
-    model_id = os.environ.get("BEDROCK_MODEL_ID")
-    if not model_id:
-        raise RuntimeError("Set BEDROCK_MODEL_ID to a model that supports the Converse API")
 
     response = boto3.client("bedrock-runtime").converse(
         modelId=model_id,
@@ -44,11 +47,16 @@ def main() -> None:
         messages=[
             {
                 "role": "user",
-                "content": [{"text": f"{context_block}\n\nUser task:\n{args.prompt}"}],
+                "content": [
+                    {"text": context_block},
+                    {"cachePoint": {"type": "default"}},
+                    {"text": f"User task:\n{args.prompt}"},
+                ],
             }
         ],
     )
     print(response["output"]["message"]["content"][0]["text"])
+    print(f"provider_usage={response.get('usage', {})}")
 
 
 if __name__ == "__main__":

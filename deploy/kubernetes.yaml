@@ -39,7 +39,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: gateway
-          image: secure-context-cache:0.6.0
+          image: secure-context-cache:0.7.0
           imagePullPolicy: IfNotPresent
           ports:
             - name: http

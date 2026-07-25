@@ -1,13 +1,13 @@
 # Secure Context Cache - Agent Context Gateway Architecture
 
-Secure Context Cache defines the framework: one canonical context graph, protected reusable slices,
-and task-scoped capsules for multiple enterprise agents. Agent Context Gateway is the deployable
-policy boundary in that framework. Its job is to identify task-relevant context, release a bounded
-derived capsule, and record the decision. SecureReviewAgent is the flagship application that uses
-those capsules for Infrastructure-as-Code security review.
+Secure Context Cache defines a complete token-optimization framework: measure, select, reuse,
+optionally compress, route, and verify. Its original canonical graph, protected reusable slices,
+and task-scoped capsules provide the secure-context add-on that differentiates it from generic
+compression and model-routing tools. Agent Context Gateway is the deployable API and policy
+boundary. SecureReviewAgent is the flagship application.
 
-The gateway is not a model router, vector database, secret manager, or authorization system for
-cloud actions.
+The gateway is not a vector database, secret manager, or authorization system for cloud actions.
+It interoperates with model routers rather than duplicating them.
 
 ## Core Flow
 
@@ -90,12 +90,16 @@ source manifest, policy version, expiry time, cache status, audit ID, and capsul
 Metrics compare the estimated tokens in all generated slices with the estimated tokens in released
 slices. They are framework estimates, not a cloud-provider bill and not measured model input usage.
 
-## Cache Semantics
+## Optimization and Cache Semantics
 
-The cache records slice IDs selected for a normalized task and reports repeat-task hits. Policy is
-re-evaluated on every request, so a cache hit never bypasses a newer deny decision. In the current
-implementation, source material is still scanned and slices are rebuilt on every request; the cache
-does not yet eliminate S3 downloads or parsing work.
+AWS fingerprints the S3 object manifest. An unchanged fingerprint loads compiled slices from
+DynamoDB, avoiding repeat object downloads and parsing. A selection-plan cache binds context,
+authorization scope, task, path, environment, approval state, policy version, and source manifest.
+Cached released slices are re-authorized on every request.
+
+The stable model context contains only reusable source-backed facts and instructions. Volatile
+request, expiry, and audit metadata stay outside that prefix, enabling provider prompt caching.
+Optional compression runs only after authorization and is not installed in the core Lambda package.
 
 ## Trust Boundaries
 
@@ -113,7 +117,7 @@ does not yet eliminate S3 downloads or parsing work.
 - Supported parsing is file-level and deterministic; there is no semantic chunking or vector search.
 - Facts describe file scope, environment, sensitivity, and operational relevance; raw source content
   is not returned.
-- The AWS runtime downloads the selected context prefix and scans it for each request.
+- The AWS runtime still lists the selected S3 prefix to compute an object-manifest fingerprint.
 - API Gateway and Lambda constrain long-running requests; large repositories need preprocessing or
   a future asynchronous ingestion path.
 - The current Terraform stack creates one shared evaluation Cognito client.

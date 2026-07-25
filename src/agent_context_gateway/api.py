@@ -5,7 +5,7 @@ from pathlib import Path
 
 try:
     from fastapi import FastAPI, Header, HTTPException, Request
-    from pydantic import BaseModel
+    from pydantic import BaseModel, Field
 except ImportError:  # pragma: no cover
     FastAPI = None
     BaseModel = object
@@ -19,6 +19,7 @@ from .aws_runtime import (
 from .gateway import AgentContextGateway
 from .identity import AgentRegistry
 from .models import AgentIdentity, TaskRequest
+from .optimization import build_optimization_plan
 from .policy import DEFAULT_POLICY
 
 if FastAPI is None:  # pragma: no cover
@@ -39,7 +40,7 @@ def _build_gateway() -> AgentContextGateway:
     )
 
 
-app = FastAPI(title="Secure Context Cache - Agent Context Gateway", version="0.6.0")
+app = FastAPI(title="Secure Context Cache - Token Optimization API", version="0.7.0")
 gateway = _build_gateway()
 context_store = S3ContextStore.from_env() if _runtime_mode() == "aws" else None
 
@@ -54,6 +55,10 @@ class CapsuleRequest(BaseModel):
     user: str = "developer"
     environment: str = "unknown"
     request_id: str = ""
+    provider: str = "generic"
+    model: str = ""
+    tokenizer: str = "word"
+    token_budget: int | None = Field(default=None, gt=0, le=10_000_000)
 
 
 def _claims_from_request(request: Request) -> dict[str, str]:
@@ -101,6 +106,11 @@ def _task(payload: CapsuleRequest, identity: AgentIdentity, user: str) -> TaskRe
         user=user,
         environment=payload.environment,
         request_id=payload.request_id,
+        context_id=payload.context_id,
+        provider=payload.provider,
+        model=payload.model,
+        tokenizer=payload.tokenizer,
+        token_budget=payload.token_budget,
     )
 
 
@@ -109,8 +119,17 @@ def _response(payload: CapsuleRequest, request: Request, api_key: str | None) ->
         if _runtime_mode() == "aws":
             identity = _aws_identity(request)
             assert context_store is not None
-            with context_store.materialize(payload.context_id) as repo:
-                _graph, slices = gateway.load_context(repo)
+            manifest_hash = context_store.manifest_hash(payload.context_id)
+            slices = None
+            if gateway.slice_store is not None:
+                slices = gateway.slice_store.get_many(payload.context_id, manifest_hash)
+            if slices is None:
+                with context_store.materialize(payload.context_id) as repo:
+                    _graph, slices = gateway.load_context(
+                        repo,
+                        context_id=payload.context_id,
+                        manifest_hash=manifest_hash,
+                    )
             claims = _claims_from_request(request)
             task = _task(payload, identity, claims.get("sub", identity.agent_id))
             capsule, metrics = gateway.request_capsule_for_identity(task, slices, identity)
@@ -126,6 +145,11 @@ def _response(payload: CapsuleRequest, request: Request, api_key: str | None) ->
                 user=payload.user,
                 environment=payload.environment,
                 request_id=payload.request_id,
+                context_id=payload.context_id,
+                provider=payload.provider,
+                model=payload.model,
+                tokenizer=payload.tokenizer,
+                token_budget=payload.token_budget,
             )
             capsule, metrics = gateway.request_capsule(task, slices, api_key=api_key)
     except HTTPException:
@@ -136,7 +160,12 @@ def _response(payload: CapsuleRequest, request: Request, api_key: str | None) ->
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
-    return {"capsule": capsule.to_dict(), "metrics": metrics.to_dict()}
+    optimization = build_optimization_plan(capsule, metrics, task)
+    return {
+        "capsule": capsule.to_dict(),
+        "metrics": metrics.to_dict(),
+        "optimization": optimization.to_dict(),
+    }
 
 
 @app.get("/health")
@@ -150,6 +179,16 @@ def create_capsule(
     request: Request,
     x_agent_api_key: str | None = Header(default=None),
 ) -> dict:
+    return _response(payload, request, x_agent_api_key)
+
+
+@app.post("/v1/optimize")
+def optimize_context(
+    payload: CapsuleRequest,
+    request: Request,
+    x_agent_api_key: str | None = Header(default=None),
+) -> dict:
+    """Primary token-optimization endpoint; capsules remains backward compatible."""
     return _response(payload, request, x_agent_api_key)
 
 
