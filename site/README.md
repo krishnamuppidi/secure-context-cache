@@ -40,15 +40,34 @@ evaluation signals, not verified product adoption.
 
 ## Search visibility
 
-The homepage and five topic guides are crawlable static pages with unique titles, descriptions,
-canonical URLs, Open Graph/Twitter metadata, and Schema.org JSON-LD:
+The homepage, technical guides, documentation, comparisons, integrations, benchmark, case study,
+research page, and project-identity page are crawlable static pages with unique titles,
+descriptions, canonical URLs, social metadata, and Schema.org JSON-LD.
 
 - `llm-token-optimization/`
 - `secure-context-caching/`
 - `least-privilege-ai-context/`
 - `ai-agent-context-gateway/`
 - `iac-ai-security-review/`
+- `docs/`
+- `reduce-llm-token-cost/`
+- `prompt-caching-vs-context-caching/`
+- `rag-vs-secure-context-cache/`
+- `ai-context-engineering/`
+- `enterprise-ai-agent-memory-security/`
+- `mcp-context-optimization/`
+- `openai-token-optimization/`
+- `aws-bedrock-token-optimization/`
+- `secure-context-cache-benchmark/`
+- `securereviewagent-case-study/`
+- `about/`
+- `research/secure-context-cache-paper/`
 
-`robots.txt` permits crawling and points to `sitemap.xml`. The sitemap lists every public page.
-When a page is added or renamed, update the sitemap, homepage learning cards, related-page links,
-and `tests/test_website_seo.py` together.
+`robots.txt` explicitly permits major search and answer-engine crawlers and points to XML and text
+sitemaps. `llms.txt` is the concise machine-readable index; `llms-full.txt` consolidates public
+technical explanations; `feed.xml` advertises updates; and `indexnow-urls.json` supports
+post-deployment IndexNow notifications.
+
+Generated discovery pages and machine-readable assets come from
+`scripts/build_discoverability_assets.py`. When its page catalog changes, run the script and update
+the homepage learning cards when a new resource should be featured.

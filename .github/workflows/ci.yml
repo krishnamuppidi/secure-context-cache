@@ -19,8 +19,8 @@ jobs:
           cache: pip
       - run: pip install -e ".[dev,api]"
       - run: pytest -q
-      - run: python -m compileall src tests
-      - run: ruff check src tests
+      - run: python -m compileall src tests examples
+      - run: ruff check src tests examples
 
   terraform:
     runs-on: ubuntu-latest

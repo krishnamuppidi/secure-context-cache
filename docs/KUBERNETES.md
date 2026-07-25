@@ -10,14 +10,14 @@ for cluster-local integration testing.
 ## Build and Publish the Image
 
 ```bash
-docker build -t registry.example.com/platform/secure-context-cache:0.5.0 .
-docker push registry.example.com/platform/secure-context-cache:0.5.0
+docker build -t registry.example.com/platform/secure-context-cache:0.6.0 .
+docker push registry.example.com/platform/secure-context-cache:0.6.0
 ```
 
 Create a deployment copy with the registry image:
 
 ```bash
-sed 's|image: secure-context-cache:0.5.0|image: registry.example.com/platform/secure-context-cache:0.5.0|' \
+sed 's|image: secure-context-cache:0.6.0|image: registry.example.com/platform/secure-context-cache:0.6.0|' \
   deploy/kubernetes.yaml > /tmp/acg-kubernetes.yaml
 ```
 

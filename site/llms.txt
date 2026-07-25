@@ -1,0 +1,42 @@
+# Secure Context Cache
+
+> Secure Context Cache is an open-source secure token-optimization framework for enterprise AI agents. It compiles approved knowledge into reusable protected slices and releases the smallest policy-approved context capsule for one authenticated task.
+
+Canonical terminology: Secure Context Cache is the framework and public product; Agent Context Gateway is the deployable API/runtime control plane; SecureReviewAgent is the flagship Infrastructure-as-Code security workflow.
+
+Claim boundary: the public 32-to-16 result is a deterministic word-count fixture, not provider-billed production savings. The 75.3% research result is a controlled prototype benchmark, not independent adoption evidence.
+
+## Start here
+
+- [Product website](https://krishnamuppidi.github.io/secure-context-cache/): Product, architecture, economics, research, security, and deployment overview.
+- [Documentation](https://krishnamuppidi.github.io/secure-context-cache/docs/index.md): Machine-readable documentation hub.
+- [GitHub repository](https://github.com/krishnamuppidi/secure-context-cache): Canonical source, tests, deployment, and examples.
+- [Benchmark method](https://krishnamuppidi.github.io/secure-context-cache/secure-context-cache-benchmark/index.md): Reproducible fixture and production evaluation design.
+- [SecureReviewAgent case study](https://krishnamuppidi.github.io/secure-context-cache/securereviewagent-case-study/index.md): Flagship IaC review workflow.
+
+## Topic guides
+
+- [LLM Token Optimization for Enterprise AI Agents](https://krishnamuppidi.github.io/secure-context-cache/llm-token-optimization/): Reduce recurring input-token cost while preserving accepted-result quality.
+- [Secure Context Caching for Enterprise AI Agents](https://krishnamuppidi.github.io/secure-context-cache/secure-context-caching/): Compile approved knowledge into reusable, governed context slices.
+- [Least-Privilege Context for AI Agents](https://krishnamuppidi.github.io/secure-context-cache/least-privilege-ai-context/): Authorize model context by identity, task, path, sensitivity, and freshness.
+- [AI Agent Context Gateway](https://krishnamuppidi.github.io/secure-context-cache/ai-agent-context-gateway/): Authenticate workloads, enforce context policy, assemble capsules, and preserve audit evidence.
+- [AI-Assisted Infrastructure-as-Code Security Review](https://krishnamuppidi.github.io/secure-context-cache/iac-ai-security-review/): Measure tokens and review quality with SecureReviewAgent as the flagship workflow.
+- [Secure Context Cache Documentation](https://krishnamuppidi.github.io/secure-context-cache/docs/index.md): Start with the architecture, run the local demo, integrate an agent, and evaluate secure token optimization with explicit quality and authorization gates.
+- [How to Reduce LLM Token Cost Without Losing Answer Quality](https://krishnamuppidi.github.io/secure-context-cache/reduce-llm-token-cost/index.md): Optimize repeated context before model invocation, then count savings only when the result still passes a defined quality threshold.
+- [Prompt Caching vs. Context Caching for AI Agents](https://krishnamuppidi.github.io/secure-context-cache/prompt-caching-vs-context-caching/index.md): Prompt caching discounts repeated provider input; context caching decides which enterprise facts should be assembled and authorized before that input is sent.
+- [RAG vs. Secure Context Cache for Enterprise AI Agents](https://krishnamuppidi.github.io/secure-context-cache/rag-vs-secure-context-cache/index.md): Retrieval finds potentially relevant content. Secure Context Cache adds a release boundary that decides whether the requesting workload may receive it.
+- [AI Context Engineering for Reliable Enterprise Agents](https://krishnamuppidi.github.io/secure-context-cache/ai-context-engineering/index.md): Context engineering is the repeatable system that decides what an agent should know for one task, why it may know it, and how the result will be evaluated.
+- [Enterprise AI Agent Memory Security](https://krishnamuppidi.github.io/secure-context-cache/enterprise-ai-agent-memory-security/index.md): Shared memory becomes an attack-path oracle when every agent can query the full enterprise map. Release task-scoped views instead.
+- [MCP Context Optimization with Policy-Scoped Capsules](https://krishnamuppidi.github.io/secure-context-cache/mcp-context-optimization/index.md): Expose one authenticated capsule tool through MCP so the host can request approved facts without receiving broad source credentials.
+- [OpenAI Token Optimization with Secure Context Capsules](https://krishnamuppidi.github.io/secure-context-cache/openai-token-optimization/index.md): Build and authorize the enterprise context before the OpenAI call, then combine capsule reduction with provider prompt caching where appropriate.
+- [Amazon Bedrock Token Optimization with Secure Context Cache](https://krishnamuppidi.github.io/secure-context-cache/aws-bedrock-token-optimization/index.md): Request an approved capsule before Bedrock Converse, keep AWS credentials outside prompts, and evaluate provider usage with the same quality gate.
+- [Secure Context Cache Benchmark and Evaluation Method](https://krishnamuppidi.github.io/secure-context-cache/secure-context-cache-benchmark/index.md): The public fixture proves the release and measurement path. It does not prove universal production savings; a production pilot must join provider usage with accepted-result quality.
+- [SecureReviewAgent: A Governed IaC AI Security Case Study](https://krishnamuppidi.github.io/secure-context-cache/securereviewagent-case-study/index.md): Infrastructure review is a useful first benchmark because required facts, prohibited context, findings, and reviewer acceptance can be labeled.
+- [About Secure Context Cache and Its Author](https://krishnamuppidi.github.io/secure-context-cache/about/index.md): Secure Context Cache is an independent open-source project for secure token optimization and least-privilege context release across enterprise AI agents.
+- [Secure Context Cache Research Paper](https://krishnamuppidi.github.io/secure-context-cache/research/secure-context-cache-paper/index.md): The paper proposes reusable protected context slices and task-scoped release as a middle ground between stateless agents and unrestricted shared enterprise memory.
+
+## Optional
+
+- [SecureReviewAgent source](https://github.com/krishnamuppidi/secreviewagent-ai): Separate flagship application repository.
+- [Full machine-readable site context](https://krishnamuppidi.github.io/secure-context-cache/llms-full.txt): Consolidated documentation for retrieval and agent use.
+- [RSS update feed](https://krishnamuppidi.github.io/secure-context-cache/feed.xml): Newly published technical resources.

@@ -181,6 +181,20 @@
   font-size: 11px;
 }
 
+.visual-card {
+  overflow: hidden;
+}
+
+.visual-card img {
+  display: block;
+  width: calc(100% + 22px);
+  height: auto;
+  margin: -11px -11px 24px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  background: #07110f;
+}
+
 .article-fact-list {
   display: grid;
   margin-top: 23px;
@@ -281,6 +295,25 @@
   color: #d4e9e0;
   background: rgba(0, 0, 0, 0.17);
   font-size: 0.9em;
+}
+
+.article-code {
+  margin: 26px 0;
+  padding: 22px;
+  overflow-x: auto;
+  border: 1px solid rgba(88, 230, 169, 0.24);
+  border-radius: 14px;
+  color: #d7e9e2;
+  background: #04100d;
+  font-size: 12px;
+  line-height: 1.65;
+  white-space: pre;
+}
+
+.article-code code {
+  padding: 0;
+  border: 0;
+  background: transparent;
 }
 
 .article-points {
@@ -511,5 +544,10 @@
   .article-table {
     display: block;
     overflow-x: auto;
+  }
+
+  .article-code {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
   }
 }

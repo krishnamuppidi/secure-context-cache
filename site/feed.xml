@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Secure Context Cache Updates</title>
+    <link>https://krishnamuppidi.github.io/secure-context-cache/</link>
+    <description>Technical guides, benchmarks, integrations, and release notes for secure AI-agent token optimization.</description>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 25 Jul 2026 15:00:00 GMT</lastBuildDate>
+    <item>
+      <title>Secure Context Cache Research Paper</title>
+      <link>https://krishnamuppidi.github.io/secure-context-cache/research/secure-context-cache-paper/</link>
+      <guid isPermaLink="true">https://krishnamuppidi.github.io/secure-context-cache/research/secure-context-cache-paper/</guid>
+      <pubDate>Sat, 25 Jul 2026 15:00:00 GMT</pubDate>
+      <description>Research status and contribution summary for Secure Context Cache: Token-Efficient and Least-Privilege Shared Memory for Enterprise Developer Agents.</description>
+    </item>
+    <item>
+      <title>About Secure Context Cache and Its Author</title>
+      <link>https://krishnamuppidi.github.io/secure-context-cache/about/</link>
+      <guid isPermaLink="true">https://krishnamuppidi.github.io/secure-context-cache/about/</guid>
+      <pubDate>Sat, 25 Jul 2026 15:00:00 GMT</pubDate>
+      <description>About Secure Context Cache, Agent Context Gateway, SecureReviewAgent, and independent researcher Naga Krishna Reddy Muppidi.</description>
+    </item>
+    <item>
+      <title>SecureReviewAgent: A Governed IaC AI Security Case Study</title>
+      <link>https://krishnamuppidi.github.io/secure-context-cache/securereviewagent-case-study/</link>
+      <guid isPermaLink="true">https://krishnamuppidi.github.io/secure-context-cache/securereviewagent-case-study/</guid>
+      <pubDate>Sat, 25 Jul 2026 15:00:00 GMT</pubDate>
+      <description>See how SecureReviewAgent uses task-scoped Secure Context Cache capsules to review Terraform and Kubernetes changes with measurable quality and exposure.</description>
+    </item>
+    <item>
+      <title>Secure Context Cache Benchmark and Evaluation Method</title>
+      <link>https://krishnamuppidi.github.io/secure-context-cache/secure-context-cache-benchmark/</link>
+      <guid isPermaLink="true">https://krishnamuppidi.github.io/secure-context-cache/secure-context-cache-benchmark/</guid>
+      <pubDate>Sat, 25 Jul 2026 15:00:00 GMT</pubDate>
+      <description>Reproduce the Secure Context Cache fixture and design a provider-measured benchmark for tokens, cost, quality, latency, exposure, and policy compliance.</description>
+    </item>
+    <item>
+      <title>Amazon Bedrock Token Optimization with Secure Context Cache</title>
+      <link>https://krishnamuppidi.github.io/secure-context-cache/aws-bedrock-token-optimization/</link>
+      <guid isPermaLink="true">https://krishnamuppidi.github.io/secure-context-cache/aws-bedrock-token-optimization/</guid>
+      <pubDate>Sat, 25 Jul 2026 15:00:00 GMT</pubDate>
+      <description>Use Secure Context Cache before Amazon Bedrock Converse calls to reduce repeated input context while preserving policy, provenance, and quality evidence.</description>
+    </item>
+    <item>
+      <title>OpenAI Token Optimization with Secure Context Capsules</title>
+      <link>https://krishnamuppidi.github.io/secure-context-cache/openai-token-optimization/</link>
+      <guid isPermaLink="true">https://krishnamuppidi.github.io/secure-context-cache/openai-token-optimization/</guid>
+      <pubDate>Sat, 25 Jul 2026 15:00:00 GMT</pubDate>
+      <description>Reduce repeated OpenAI input tokens by requesting a policy-scoped Secure Context Cache capsule before the model call and measuring accepted-result quality.</description>
+    </item>
+    <item>
+      <title>MCP Context Optimization with Policy-Scoped Capsules</title>
+      <link>https://krishnamuppidi.github.io/secure-context-cache/mcp-context-optimization/</link>
+      <guid isPermaLink="true">https://krishnamuppidi.github.io/secure-context-cache/mcp-context-optimization/</guid>
+      <pubDate>Sat, 25 Jul 2026 15:00:00 GMT</pubDate>
+      <description>Use MCP with Secure Context Cache to expose a narrow context tool instead of giving agents unrestricted repository or enterprise-memory access.</description>
+    </item>
+    <item>
+      <title>Enterprise AI Agent Memory Security</title>
+      <link>https://krishnamuppidi.github.io/secure-context-cache/enterprise-ai-agent-memory-security/</link>
+      <guid isPermaLink="true">https://krishnamuppidi.github.io/secure-context-cache/enterprise-ai-agent-memory-security/</guid>
+      <pubDate>Sat, 25 Jul 2026 15:00:00 GMT</pubDate>
+      <description>Secure enterprise AI-agent memory with scoped sources, sensitivity labels, expiring capsules, provenance, denials, and separate action authorization.</description>
+    </item>
+  </channel>
+</rss>

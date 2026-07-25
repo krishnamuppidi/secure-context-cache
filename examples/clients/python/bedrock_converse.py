@@ -7,7 +7,6 @@ import argparse
 import os
 
 import boto3
-
 from acg_client import GatewayClient, build_context_block
 
 

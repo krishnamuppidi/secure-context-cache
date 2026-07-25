@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.6.0 - 2026-07-25
+
+- Added 13 crawlable documentation, comparison, integration, benchmark, case-study, research, and
+  project-identity pages with Markdown mirrors.
+- Added `llms.txt`, `llms-full.txt`, explicit search/AI crawler policy, RSS, expanded sitemaps, and
+  automated IndexNow notification data.
+- Added reusable social-preview and animated architecture assets.
+- Added OpenAI, Anthropic, LangChain, MCP, and generic REST client examples alongside Bedrock.
+- Added citation, contribution, conduct, support, roadmap, issue, pull-request, and release assets.
+- Added a tag-triggered GitHub Container Registry workflow.
+
 ## 0.5.0 - 2026-07-24
 
 - Renamed the public product and repository to Secure Context Cache.

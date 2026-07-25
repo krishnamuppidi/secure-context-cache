@@ -1,0 +1,569 @@
+# Secure Context Cache — Full Machine-Readable Context
+
+This file consolidates the project's public technical explanations. Prefer the canonical URLs and repository for exact commands and current implementation behavior.
+
+## Core project facts
+
+- Product: Secure Context Cache
+- Runtime/API: Agent Context Gateway (`acg` CLI and `/v1/capsules` API)
+- Flagship application: SecureReviewAgent
+- License: MIT
+- Repository: https://github.com/krishnamuppidi/secure-context-cache
+- Website: https://krishnamuppidi.github.io/secure-context-cache/
+- Core thesis: one canonical context graph, many policy-scoped agent capsules.
+- Production claim rule: count token savings only when the optimized result passes a predefined quality and authorization threshold.
+
+# Secure Context Cache Documentation
+
+> Start with the architecture, run the local demo, integrate an agent, and evaluate secure token optimization with explicit quality and authorization gates.
+
+Canonical URL: https://krishnamuppidi.github.io/secure-context-cache/docs/
+Source code: https://github.com/krishnamuppidi/secure-context-cache
+
+## Choose the shortest path to a working capsule
+
+Secure Context Cache compiles approved repository, policy, runbook, and service facts into reusable slices. Agent Context Gateway authenticates a workload, applies task and sensitivity policy, and returns a short-lived capsule containing only the facts allowed for that request.
+
+New evaluators should run the deterministic local fixture before deploying infrastructure. The fixture makes the release and denial boundary visible without requiring a cloud account or model-provider credential.
+
+- Run the local quick start and inspect the capsule, audit record, and metrics JSON.
+- Read the architecture and policy guides before uploading organization-owned material.
+- Use one client example to place the capsule before the model invocation.
+- Compare the optimized path with a generous approved baseline using the same tasks and quality rubric.
+
+```text
+python -m venv .venv
+. .venv/bin/activate
+pip install -e ".[dev]"
+acg demo --repo examples/sample_repo --out build/demo
+pytest -q
+```
+
+## Documentation map
+
+The repository remains the source of truth for exact commands, APIs, environment variables, and security limitations. This website provides crawlable explanations and routes agents and engineers to the canonical files.
+
+Production adoption requires organization-specific source governance, identity, policy review, monitoring, retention, adversarial testing, and an acceptance threshold for answer quality.
+
+- Getting Started, API Reference, Architecture, and Agent Integration
+- Policy Guide, Context Sources, Security, and Production Readiness
+- AWS, Kubernetes, operations, troubleshooting, and deployer IAM
+- Benchmark method, comparisons, provider integration patterns, and SecureReviewAgent case study
+
+## Related resources
+
+- [Secure Context Cache Benchmark and Evaluation Method](https://krishnamuppidi.github.io/secure-context-cache/secure-context-cache-benchmark/)
+- [AI Context Engineering for Reliable Enterprise Agents](https://krishnamuppidi.github.io/secure-context-cache/ai-context-engineering/)
+- [SecureReviewAgent: A Governed IaC AI Security Case Study](https://krishnamuppidi.github.io/secure-context-cache/securereviewagent-case-study/)
+
+## Evidence boundary
+
+Prototype and fixture results are not universal production claims. A production pilot must use provider-reported usage, a labeled task set, and an agreed quality threshold.
+
+
+---
+
+# How to Reduce LLM Token Cost Without Losing Answer Quality
+
+> Optimize repeated context before model invocation, then count savings only when the result still passes a defined quality threshold.
+
+Canonical URL: https://krishnamuppidi.github.io/secure-context-cache/reduce-llm-token-cost/
+Source code: https://github.com/krishnamuppidi/secure-context-cache
+
+## Find the repeated input before changing the model
+
+Enterprise AI cost often grows because the same repository summaries, policies, service maps, and runbooks are attached to every request. Model routing and smaller models can help, but they do not remove duplicated context or reduce the exposure created by oversized prompts.
+
+Measure the current path first. Record provider-reported input, cached-input, and output tokens; latency; price assumptions; and whether the result was accepted. Group input by source so the team can see which material repeats and which facts actually influence the task.
+
+- Separate stable enterprise context from the task-specific diff or question.
+- Precompute source-backed facts that can be reused safely.
+- Select facts by identity, task, path, environment, sensitivity, and freshness.
+- Retain a generous approved baseline for quality comparison.
+
+## Use quality-gated savings, not token reduction alone
+
+A cheaper answer that misses a required IAM dependency or operational constraint is not an optimization. Define must-find cases and reviewer acceptance before measuring savings. Replay the same tasks through the baseline and capsule paths with the same model settings.
+
+The repository fixture reports a deterministic 32-to-16 word-count proxy. It demonstrates the measurement flow, not a production cost guarantee. Provider invoices and production quality evidence are required for production claims.
+
+- Track recall, precision, reviewer agreement, and overrides.
+- Track prohibited-context release and stale-context use.
+- Report cost per accepted, correct, policy-compliant result.
+- Expand the capsule when savings reduce quality below the agreed floor.
+
+## Related resources
+
+- [LLM Token Optimization for Enterprise AI Agents](https://krishnamuppidi.github.io/secure-context-cache/llm-token-optimization/)
+- [Secure Context Cache Benchmark and Evaluation Method](https://krishnamuppidi.github.io/secure-context-cache/secure-context-cache-benchmark/)
+- [Prompt Caching vs. Context Caching for AI Agents](https://krishnamuppidi.github.io/secure-context-cache/prompt-caching-vs-context-caching/)
+
+## Evidence boundary
+
+Prototype and fixture results are not universal production claims. A production pilot must use provider-reported usage, a labeled task set, and an agreed quality threshold.
+
+
+---
+
+# Prompt Caching vs. Context Caching for AI Agents
+
+> Prompt caching discounts repeated provider input; context caching decides which enterprise facts should be assembled and authorized before that input is sent.
+
+Canonical URL: https://krishnamuppidi.github.io/secure-context-cache/prompt-caching-vs-context-caching/
+Source code: https://github.com/krishnamuppidi/secure-context-cache
+
+## The two caches solve different problems
+
+Provider prompt caching can reduce the price or processing overhead of repeated input prefixes. It is valuable when a stable prompt segment is sent repeatedly to the same provider under compatible cache rules.
+
+Secure context caching operates earlier. It ingests approved sources, normalizes facts, tracks versions and sensitivity, and assembles a task-scoped capsule. It can reduce the input that reaches any model while preserving the reason each fact was released.
+
+- Prompt caching optimizes repeated provider input.
+- Context caching optimizes enterprise knowledge preparation and selection.
+- Prompt caching does not by itself authorize sensitive context.
+- Context caching does not replace provider cache accounting.
+
+## Use both when the workload supports both
+
+A strong design can build a small policy-approved capsule, place stable instructions and schemas in a provider-cacheable prefix, and keep volatile task facts outside that prefix. Each context release still needs a current authorization decision even when the underlying slice was previously cached.
+
+Measure provider cache reads and writes separately from capsule reduction. Also record freshness, source hashes, policy version, quality, and denied context so a lower bill cannot hide a broader exposure or stale answer.
+
+- Invalidate or version source-backed slices when approved sources change.
+- Reevaluate authorization for every task and identity.
+- Keep credentials and action authority outside both caches.
+- Fail closed when no approved context is available.
+
+## Related resources
+
+- [Secure Context Caching for Enterprise AI Agents](https://krishnamuppidi.github.io/secure-context-cache/secure-context-caching/)
+- [OpenAI Token Optimization with Secure Context Capsules](https://krishnamuppidi.github.io/secure-context-cache/openai-token-optimization/)
+- [Amazon Bedrock Token Optimization with Secure Context Cache](https://krishnamuppidi.github.io/secure-context-cache/aws-bedrock-token-optimization/)
+
+## Evidence boundary
+
+Prototype and fixture results are not universal production claims. A production pilot must use provider-reported usage, a labeled task set, and an agreed quality threshold.
+
+
+---
+
+# RAG vs. Secure Context Cache for Enterprise AI Agents
+
+> Retrieval finds potentially relevant content. Secure Context Cache adds a release boundary that decides whether the requesting workload may receive it.
+
+Canonical URL: https://krishnamuppidi.github.io/secure-context-cache/rag-vs-secure-context-cache/
+Source code: https://github.com/krishnamuppidi/secure-context-cache
+
+## Relevance is necessary but not sufficient
+
+RAG systems search an index for chunks related to a query. That improves grounding, but similarity does not establish that an agent is authorized to see a document, environment, tenant, incident, or secret-adjacent runbook.
+
+Secure Context Cache treats retrieval output as candidates. Identity, task type, repository path, environment, sensitivity, freshness, and approval state determine which candidates become capsule facts. Denied items remain visible to the audit layer without crossing the model boundary.
+
+- Use retrieval to improve recall across large approved corpora.
+- Use policy to constrain release across identities and tasks.
+- Preserve source hashes, references, and policy decisions.
+- Test prompt injection and cross-context access independently of relevance.
+
+## A practical combined pipeline
+
+Ingest approved sources and attach ownership, sensitivity, environment, and version metadata. Retrieve candidates for the task, run deterministic policy checks, derive or redact facts, and create an expiring capsule. The model receives the capsule and citations, not direct index credentials.
+
+Evaluate changed-files-only, relevance-only RAG, full approved context, and policy-scoped capsules against the same labeled tasks. This exposes the tradeoff among recall, input tokens, false positives, and prohibited-context release.
+
+- Never fall back from an empty authorized result to unrestricted retrieval.
+- Do not let model output override a deny decision.
+- Keep action authorization separate from context authorization.
+- Treat retrieval indexes as sensitive enterprise data stores.
+
+## Related resources
+
+- [Least-Privilege Context for AI Agents](https://krishnamuppidi.github.io/secure-context-cache/least-privilege-ai-context/)
+- [Enterprise AI Agent Memory Security](https://krishnamuppidi.github.io/secure-context-cache/enterprise-ai-agent-memory-security/)
+- [AI Context Engineering for Reliable Enterprise Agents](https://krishnamuppidi.github.io/secure-context-cache/ai-context-engineering/)
+
+## Evidence boundary
+
+Prototype and fixture results are not universal production claims. A production pilot must use provider-reported usage, a labeled task set, and an agreed quality threshold.
+
+
+---
+
+# AI Context Engineering for Reliable Enterprise Agents
+
+> Context engineering is the repeatable system that decides what an agent should know for one task, why it may know it, and how the result will be evaluated.
+
+Canonical URL: https://krishnamuppidi.github.io/secure-context-cache/ai-context-engineering/
+Source code: https://github.com/krishnamuppidi/secure-context-cache
+
+## Treat context as a compiled product
+
+A prompt is only the final serialization. The durable system begins with approved sources, parsers, metadata, reusable facts, policy, task contracts, and evaluation. This makes context reproducible across models and prevents every agent team from rebuilding enterprise memory independently.
+
+Define context types such as repository path, dependency, service ownership, environment, policy, incident, and runbook. Attach source version, freshness, sensitivity, and allowed task types. A task contract states the facts that must be found and the facts that must never be released.
+
+- Compile stable knowledge once and version the output.
+- Keep volatile task input separate from reusable facts.
+- Use explicit context budgets and deny-by-default policy.
+- Record selection, denial, redaction, expiry, and source lineage.
+
+## Optimize around accepted results
+
+Context quality is evaluated at the task boundary. For code review, measure required issue recall and false positives. For incident assistance, measure diagnostic completeness and unsafe actions. For architecture Q&A, measure citation support and stale facts.
+
+Token count is one dimension. A production scorecard also needs cost, latency, acceptance, sensitivity exposure, policy violations, and audit replay. Model choice can change while the context contract remains stable.
+
+- Create a labeled task set before changing context selection.
+- Run paired baselines with the same model and settings.
+- Review failures to expand or correct the graph and policy.
+- Promote only after quality and authorization thresholds pass.
+
+## Related resources
+
+- [Secure Context Cache Documentation](https://krishnamuppidi.github.io/secure-context-cache/docs/)
+- [Secure Context Caching for Enterprise AI Agents](https://krishnamuppidi.github.io/secure-context-cache/secure-context-caching/)
+- [Secure Context Cache Benchmark and Evaluation Method](https://krishnamuppidi.github.io/secure-context-cache/secure-context-cache-benchmark/)
+
+## Evidence boundary
+
+Prototype and fixture results are not universal production claims. A production pilot must use provider-reported usage, a labeled task set, and an agreed quality threshold.
+
+
+---
+
+# Enterprise AI Agent Memory Security
+
+> Shared memory becomes an attack-path oracle when every agent can query the full enterprise map. Release task-scoped views instead.
+
+Canonical URL: https://krishnamuppidi.github.io/secure-context-cache/enterprise-ai-agent-memory-security/
+Source code: https://github.com/krishnamuppidi/secure-context-cache
+
+## The memory layer is part of the trust boundary
+
+Persistent agent memory may contain service topology, privileged paths, owners, incident procedures, data stores, and policy exceptions. Compromise of one agent or one retrieval credential can turn that memory into a broad map of the enterprise.
+
+Secure Context Cache separates canonical storage from task-scoped release. Slices carry sensitivity and scope; an authenticated workload requests a defined task; policy releases derived facts or citations; and the capsule expires. The model never receives source-store credentials.
+
+- Authenticate each workload rather than trusting a self-asserted agent name.
+- Bind context to task, path, environment, sensitivity, and approval.
+- Redact secrets and prefer derived facts over raw source.
+- Log denials and approval-required items without exposing their contents.
+
+## Keep knowledge separate from authority
+
+Knowing that a production role exists does not grant permission to assume it. Cloud credentials, deployment tokens, and write authority belong in a separate action-control path with their own identity, policy, and approvals.
+
+Red-team the context layer for prompt injection in source documents, stale evidence replay, cross-tenant retrieval, path traversal, approval spoofing, and empty-capsule fallback. Fail closed when context cannot be authorized.
+
+- Rotate workload credentials and isolate audit storage.
+- Verify source hashes and freshness before release.
+- Test negative cases alongside successful tasks.
+- Do not treat an audit record as proof that a model conclusion is correct.
+
+## Related resources
+
+- [Least-Privilege Context for AI Agents](https://krishnamuppidi.github.io/secure-context-cache/least-privilege-ai-context/)
+- [RAG vs. Secure Context Cache for Enterprise AI Agents](https://krishnamuppidi.github.io/secure-context-cache/rag-vs-secure-context-cache/)
+- [SecureReviewAgent: A Governed IaC AI Security Case Study](https://krishnamuppidi.github.io/secure-context-cache/securereviewagent-case-study/)
+
+## Evidence boundary
+
+Prototype and fixture results are not universal production claims. A production pilot must use provider-reported usage, a labeled task set, and an agreed quality threshold.
+
+
+---
+
+# MCP Context Optimization with Policy-Scoped Capsules
+
+> Expose one authenticated capsule tool through MCP so the host can request approved facts without receiving broad source credentials.
+
+Canonical URL: https://krishnamuppidi.github.io/secure-context-cache/mcp-context-optimization/
+Source code: https://github.com/krishnamuppidi/secure-context-cache
+
+## Put policy behind the MCP tool
+
+MCP makes tools and resources available to AI hosts, but tool availability is not the same as authorization to every enterprise fact. A broad repository resource can still create excessive token use and cross-context exposure.
+
+A Secure Context Cache MCP server accepts a task type, path, environment, and prompt; authenticates to Agent Context Gateway outside the model; and returns only the capsule facts, references, expiry, and audit ID. Secrets remain in the server process or host credential store.
+
+- Expose a narrow request_capsule tool instead of a raw source browser.
+- Validate task and path inputs before calling the gateway.
+- Return denials as metadata without revealing denied content.
+- Do not expose bearer tokens, API keys, or cloud credentials in tool results.
+
+```text
+result = request_capsule(
+    task_type="iac_security",
+    path="terraform/prod/payments/lambda.tf",
+    environment="prod",
+)
+return {"facts": result["facts"], "audit_id": result["audit_id"]}
+```
+
+## Evaluate MCP context as a security boundary
+
+Measure tokens and quality with and without the capsule tool, but also test unauthorized paths, malformed arguments, prompt injection, stale sources, and repeated calls. The MCP host should not convert a denied capsule into a broader fallback.
+
+Use one workload identity per host or agent in production, short token lifetimes, rate limits, and audit correlation between the MCP invocation and the gateway decision.
+
+## Related resources
+
+- [Secure Context Cache Documentation](https://krishnamuppidi.github.io/secure-context-cache/docs/)
+- [Enterprise AI Agent Memory Security](https://krishnamuppidi.github.io/secure-context-cache/enterprise-ai-agent-memory-security/)
+- [AI Agent Context Gateway](https://krishnamuppidi.github.io/secure-context-cache/ai-agent-context-gateway/)
+
+## Evidence boundary
+
+Prototype and fixture results are not universal production claims. A production pilot must use provider-reported usage, a labeled task set, and an agreed quality threshold.
+
+
+---
+
+# OpenAI Token Optimization with Secure Context Capsules
+
+> Build and authorize the enterprise context before the OpenAI call, then combine capsule reduction with provider prompt caching where appropriate.
+
+Canonical URL: https://krishnamuppidi.github.io/secure-context-cache/openai-token-optimization/
+Source code: https://github.com/krishnamuppidi/secure-context-cache
+
+## Fetch the capsule before calling the model
+
+The application—not the model—authenticates to Agent Context Gateway. It requests context for a defined task and receives facts, references, denials, source hashes, expiry, policy version, and an audit ID. Only released facts are serialized into the OpenAI request.
+
+Stable system instructions and schemas may be eligible for provider prompt caching, while volatile task input and the approved capsule remain task-specific. Record provider-reported usage rather than estimating production savings from words or characters.
+
+- Keep the gateway credential outside model-visible messages.
+- Use a structured context block with source references and expiry.
+- Reject empty capsules instead of attaching the full repository.
+- Store the audit ID beside the model request and reviewer outcome.
+
+## Measure the OpenAI path with a paired benchmark
+
+Replay the same labeled tasks through full approved context and Secure Context Cache. Hold model, temperature, tools, and acceptance rubric constant. Compare input tokens, cached input where reported, output tokens, latency, cost, recall, precision, and reviewer acceptance.
+
+The repository includes an integration example that demonstrates the boundary without embedding credentials. Production teams should add retries, rate limits, redaction review, model-output validation, and organization-specific data controls.
+
+## Related resources
+
+- [How to Reduce LLM Token Cost Without Losing Answer Quality](https://krishnamuppidi.github.io/secure-context-cache/reduce-llm-token-cost/)
+- [Prompt Caching vs. Context Caching for AI Agents](https://krishnamuppidi.github.io/secure-context-cache/prompt-caching-vs-context-caching/)
+- [Secure Context Cache Benchmark and Evaluation Method](https://krishnamuppidi.github.io/secure-context-cache/secure-context-cache-benchmark/)
+
+## Evidence boundary
+
+Prototype and fixture results are not universal production claims. A production pilot must use provider-reported usage, a labeled task set, and an agreed quality threshold.
+
+
+---
+
+# Amazon Bedrock Token Optimization with Secure Context Cache
+
+> Request an approved capsule before Bedrock Converse, keep AWS credentials outside prompts, and evaluate provider usage with the same quality gate.
+
+Canonical URL: https://krishnamuppidi.github.io/secure-context-cache/aws-bedrock-token-optimization/
+Source code: https://github.com/krishnamuppidi/secure-context-cache
+
+## Separate AWS authority from model context
+
+A Bedrock client can obtain an Agent Context Gateway capsule using its workload identity, then pass the released facts to the selected model. The model does not receive AWS credentials, Cognito secrets, gateway bearer tokens, or direct S3 access.
+
+Secure Context Cache reduces and governs enterprise context. Bedrock model selection, inference profiles, provider caching features, quotas, and pricing remain separate controls. The repository's Converse example demonstrates the intended boundary.
+
+- Use IAM roles or short-lived workload credentials.
+- Store approved source material in a separately governed location.
+- Attach audit IDs and source references to review records.
+- Use CloudWatch and provider usage fields for production measurement.
+
+## Benchmark cost and quality together
+
+Compare a full approved baseline with the capsule path across the same tasks and model configuration. Record input and output usage, latency, price assumptions, required-fact recall, false positives, and unauthorized release.
+
+If a capsule saves tokens but misses a dependency or control, expand the graph or selection policy. Do not weaken the acceptance threshold to preserve a savings percentage.
+
+- Version model identifiers, policy, source hashes, and task sets.
+- Separate on-demand, cached, and provisioned cost assumptions.
+- Retain raw provider usage for reproducibility.
+- Label prototype, pilot, and production evidence accurately.
+
+## Related resources
+
+- [Secure Context Cache Documentation](https://krishnamuppidi.github.io/secure-context-cache/docs/)
+- [Prompt Caching vs. Context Caching for AI Agents](https://krishnamuppidi.github.io/secure-context-cache/prompt-caching-vs-context-caching/)
+- [Secure Context Cache Benchmark and Evaluation Method](https://krishnamuppidi.github.io/secure-context-cache/secure-context-cache-benchmark/)
+
+## Evidence boundary
+
+Prototype and fixture results are not universal production claims. A production pilot must use provider-reported usage, a labeled task set, and an agreed quality threshold.
+
+
+---
+
+# Secure Context Cache Benchmark and Evaluation Method
+
+> The public fixture proves the release and measurement path. It does not prove universal production savings; a production pilot must join provider usage with accepted-result quality.
+
+Canonical URL: https://krishnamuppidi.github.io/secure-context-cache/secure-context-cache-benchmark/
+Source code: https://github.com/krishnamuppidi/secure-context-cache
+
+## What the public fixture demonstrates
+
+The local sample repository produces two file-level context slices. For an Infrastructure-as-Code security task, one slice is released and one unrelated slice is denied. Derived facts across both slices total a deterministic estimate of 32 whitespace-separated words; the capsule contains 16, producing a displayed 50% reduction.
+
+The field names use tokens, but the fixture estimator is a word-count proxy. It is not a provider tokenizer, invoice measurement, or production-quality benchmark. Its purpose is to make the selection, denial, capsule, audit, and metrics artifacts reproducible.
+
+- One released slice and one denied slice.
+- Source hash, freshness, policy version, expiry, and audit ID.
+- Deterministic 32-to-16 estimate for the included fixture.
+- No claim of 50% production cost or quality-equivalent savings.
+
+```text
+acg demo --repo examples/sample_repo --out build/demo
+python -m json.tool build/demo/context-capsule.json
+python -m json.tool build/demo/audit-record.json
+python -m json.tool build/demo/metrics.json
+```
+
+## Design the production benchmark
+
+Use a labeled task set and compare changed-files-only, full approved context, relevance-only retrieval, and policy-scoped capsules. Hold model and settings constant. Capture raw provider usage, pricing timestamp, latency, must-find recall, false positives, reviewer agreement, overrides, stale-context rate, and prohibited-context release.
+
+The separate 24-task deterministic research prototype reported a 75.3% average context-size reduction, 95.8% task success, and 98.6% required-fact coverage. These are prototype measurements, not independent field evidence. Production claims should be based on provider and reviewer records from an organization-controlled pilot.
+
+- Publish task and dataset versions or a privacy-preserving manifest.
+- Store raw JSON/CSV results and the exact evaluation commit.
+- Predefine acceptance and zero-unauthorized-release thresholds.
+- Report failures and confidence intervals, not only averages.
+
+## Related resources
+
+- [How to Reduce LLM Token Cost Without Losing Answer Quality](https://krishnamuppidi.github.io/secure-context-cache/reduce-llm-token-cost/)
+- [SecureReviewAgent: A Governed IaC AI Security Case Study](https://krishnamuppidi.github.io/secure-context-cache/securereviewagent-case-study/)
+- [Secure Context Cache Documentation](https://krishnamuppidi.github.io/secure-context-cache/docs/)
+
+## Evidence boundary
+
+Prototype and fixture results are not universal production claims. A production pilot must use provider-reported usage, a labeled task set, and an agreed quality threshold.
+
+
+---
+
+# SecureReviewAgent: A Governed IaC AI Security Case Study
+
+> Infrastructure review is a useful first benchmark because required facts, prohibited context, findings, and reviewer acceptance can be labeled.
+
+Canonical URL: https://krishnamuppidi.github.io/secure-context-cache/securereviewagent-case-study/
+Source code: https://github.com/krishnamuppidi/secure-context-cache
+
+## Why IaC review needs more than a diff
+
+A Terraform change may depend on IAM relationships, network boundaries, environment, ownership, data classification, deployment controls, and prior exceptions. Sending the entire enterprise map is expensive and creates unnecessary exposure; sending only the changed file can miss required dependencies.
+
+SecureReviewAgent requests a capsule for the changed path and task. Agent Context Gateway authenticates the workload, selects approved facts, denies unrelated slices, and returns provenance and an audit ID. The model reviews the change using that capsule.
+
+- Changed resources and local dependencies.
+- Relevant IAM, network, policy, ownership, and environment facts.
+- Denied unrelated topology and secret-adjacent material.
+- Review findings tied to sources and a capsule audit record.
+
+## Make the review measurable
+
+Create pull requests with labeled must-find issues and benign controls. Compare changed-files-only, full approved context, retrieval-only, and policy-scoped capsule paths. Record provider usage, security issue recall, false positives, reviewer acceptance, and prohibited-context release.
+
+The current public fixture validates the boundary and artifacts but does not establish a production savings percentage or equal review quality. The next evidence milestone is a provider-measured, human-reviewed replay set.
+
+- Fail closed when no context is approved.
+- Keep deployment authority outside the review model.
+- Require human approval for high-risk actions.
+- Use the case study to improve policy and context coverage.
+
+## Related resources
+
+- [AI-Assisted Infrastructure-as-Code Security Review](https://krishnamuppidi.github.io/secure-context-cache/iac-ai-security-review/)
+- [Secure Context Cache Benchmark and Evaluation Method](https://krishnamuppidi.github.io/secure-context-cache/secure-context-cache-benchmark/)
+- [Enterprise AI Agent Memory Security](https://krishnamuppidi.github.io/secure-context-cache/enterprise-ai-agent-memory-security/)
+
+## Evidence boundary
+
+Prototype and fixture results are not universal production claims. A production pilot must use provider-reported usage, a labeled task set, and an agreed quality threshold.
+
+
+---
+
+# About Secure Context Cache and Its Author
+
+> Secure Context Cache is an independent open-source project for secure token optimization and least-privilege context release across enterprise AI agents.
+
+Canonical URL: https://krishnamuppidi.github.io/secure-context-cache/about/
+Source code: https://github.com/krishnamuppidi/secure-context-cache
+
+## One framework, one runtime, one measurable application
+
+Secure Context Cache is the research-backed framework and public product. Agent Context Gateway is the deployable API and AWS control plane that authenticates workloads, applies policy, assembles capsules, and records evidence. SecureReviewAgent is the flagship Infrastructure-as-Code security workflow.
+
+The project is authored and maintained by Naga Krishna Reddy Muppidi, an independent researcher and senior platform engineering practitioner focused on cloud platforms, DevSecOps, FinOps, and governed enterprise AI.
+
+- Open-source under the MIT License.
+- Public source, reproducible fixture, and documented limitations.
+- Accepted Secure Context Cache research paper with publication/indexing status kept separate.
+- Independent project; not an AWS, OpenAI, Anthropic, or Google service.
+
+## How to evaluate the project
+
+Start with the source repository and local demo. Review the architecture, security model, policy guide, benchmark method, and production-readiness checklist. Treat prototype results as evaluation evidence rather than universal savings claims.
+
+For pilot discussions, use one read-only workflow with a labeled task set, approved sources, provider-reported usage, human review, and explicit authorization tests.
+
+## Related resources
+
+- [Secure Context Cache Documentation](https://krishnamuppidi.github.io/secure-context-cache/docs/)
+- [Secure Context Cache Research Paper](https://krishnamuppidi.github.io/secure-context-cache/research/secure-context-cache-paper/)
+- [Secure Context Cache Benchmark and Evaluation Method](https://krishnamuppidi.github.io/secure-context-cache/secure-context-cache-benchmark/)
+
+## Evidence boundary
+
+Prototype and fixture results are not universal production claims. A production pilot must use provider-reported usage, a labeled task set, and an agreed quality threshold.
+
+
+---
+
+# Secure Context Cache Research Paper
+
+> The paper proposes reusable protected context slices and task-scoped release as a middle ground between stateless agents and unrestricted shared enterprise memory.
+
+Canonical URL: https://krishnamuppidi.github.io/secure-context-cache/research/secure-context-cache-paper/
+Source code: https://github.com/krishnamuppidi/secure-context-cache
+
+## Research contribution
+
+The paper is titled “Secure Context Cache: Token-Efficient and Least-Privilege Shared Memory for Enterprise Developer Agents.” It proposes precomputing reusable context from approved sources, splitting it into protected path, resource, environment, and task slices, and releasing only derived facts authorized for one task.
+
+The design targets two connected risks: repeated enterprise context increases input-token cost, while unrestricted shared memory can expose sensitive topology and attack paths. The framework combines token reduction, sensitivity exposure, provenance, expiry, and audit evidence.
+
+- Canonical source-backed context graph.
+- Protected reusable slices with sensitivity and scope.
+- Identity- and task-scoped expiring capsules.
+- Quality, token, exposure, and reconstructability evaluation.
+
+## Publication status and evidence boundary
+
+The paper was accepted for presentation and publication at the 2026 5th International Conference on Engineering and Research Application (ICERA). Final proceedings publication and indexing are separate post-conference evidence and are not claimed here until independently confirmed.
+
+The deterministic research prototype covered 24 tasks and 32 reusable slices. Reported prototype results include a 75.3% average context-size reduction, 95.8% task success, 98.6% required-fact coverage, and 92.3% lower high-sensitivity slice exposure compared with full-context release. These are controlled prototype measurements, not independent production results.
+
+- Use accepted-for-presentation/publication wording until proceedings evidence exists.
+- Do not describe the prototype as a customer deployment.
+- Reproduce the public implementation separately from the research benchmark.
+- Add a formal citation and proceedings link after publication is verified.
+
+## Related resources
+
+- [About Secure Context Cache and Its Author](https://krishnamuppidi.github.io/secure-context-cache/about/)
+- [Secure Context Cache Benchmark and Evaluation Method](https://krishnamuppidi.github.io/secure-context-cache/secure-context-cache-benchmark/)
+- [AI Context Engineering for Reliable Enterprise Agents](https://krishnamuppidi.github.io/secure-context-cache/ai-context-engineering/)
+
+## Evidence boundary
+
+Prototype and fixture results are not universal production claims. A production pilot must use provider-reported usage, a labeled task set, and an agreed quality threshold.
+
+
+---

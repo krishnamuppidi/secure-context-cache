@@ -1,0 +1,36 @@
+name: Bug report
+description: Report a reproducible Secure Context Cache defect
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: Do not include credentials, private source content, or security vulnerabilities.
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: v0.6.0 or commit SHA
+    validations:
+      required: true
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Deployment mode
+      options: [Local CLI, Local API, Docker, Kubernetes, AWS, Client example, Website/docs]
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Include sanitized commands, inputs, expected behavior, and observed behavior.
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: I removed credentials, tokens, private repository content, and organization data.
+          required: true

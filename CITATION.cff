@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use Secure Context Cache in research or an evaluation, please cite this software."
+title: "Secure Context Cache"
+type: software
+version: 0.6.0
+date-released: 2026-07-25
+authors:
+  - family-names: Muppidi
+    given-names: Naga Krishna Reddy
+    orcid: "https://orcid.org/0009-0001-4342-540X"
+url: "https://krishnamuppidi.github.io/secure-context-cache/"
+repository-code: "https://github.com/krishnamuppidi/secure-context-cache"
+license: MIT
+keywords:
+  - AI agents
+  - context engineering
+  - token optimization
+  - least privilege
+  - agent security
+abstract: >-
+  Secure Context Cache is an open-source framework that compiles approved enterprise knowledge
+  into reusable protected slices and releases policy-scoped, expiring context capsules to
+  authenticated AI-agent workloads.

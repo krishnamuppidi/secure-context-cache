@@ -37,7 +37,7 @@ def get_oauth_token(
     client_secret: str,
     scope: str,
 ) -> str:
-    basic = base64.b64encode(f"{client_id}:{client_secret}".encode("utf-8")).decode("ascii")
+    basic = base64.b64encode(f"{client_id}:{client_secret}".encode()).decode("ascii")
     form = urllib.parse.urlencode(
         {"grant_type": "client_credentials", "scope": scope}
     ).encode("utf-8")
@@ -66,7 +66,7 @@ class GatewayClient:
     api_key: str | None = None
 
     @classmethod
-    def from_env(cls) -> "GatewayClient":
+    def from_env(cls) -> GatewayClient:
         api_url = os.environ.get("ACG_API_URL", "http://127.0.0.1:8000")
         api_key = os.environ.get("ACG_LOCAL_API_KEY")
         bearer_token = os.environ.get("ACG_BEARER_TOKEN")

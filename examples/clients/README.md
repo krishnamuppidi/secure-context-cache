@@ -22,6 +22,16 @@ For AWS, source `deploy/aws/.acg-deployment.env` first. For local API mode, set
 `bedrock_converse.py` adds `boto3` and requires `BEDROCK_MODEL_ID`. It demonstrates fetching a
 capsule before calling the Amazon Bedrock Converse API.
 
+Additional optional examples preserve the same boundary:
+
+- `openai_responses.py` uses the OpenAI Responses API after fetching a capsule.
+- `anthropic_messages.py` uses the Anthropic Messages API after fetching a capsule.
+- `langchain_context.py` supplies the bounded context block to a LangChain chat model.
+- `mcp_server.py` exposes a narrow `request_context_capsule` MCP tool rather than raw source access.
+
+Install only the SDKs used by the consuming application. These examples intentionally remain
+outside the core package dependencies.
+
 ## TypeScript
 
 `typescript/acg-client.ts` uses the Node.js 18+ built-in `fetch` implementation. Import
@@ -30,3 +40,8 @@ with the consuming application's TypeScript configuration; it intentionally has 
 dependency.
 
 See [Agent Integration](../../docs/AGENT_INTEGRATION.md) for complete flows and security guidance.
+
+## Generic REST
+
+`curl/request-capsule.sh` demonstrates a direct bearer-authenticated call. It reads credentials
+from environment variables and never prints or sends them to a model.

@@ -1,9 +1,13 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "secure-context-cache"
-version = "0.5.0"
+version = "0.6.0"
 description = "Secure token-optimization framework with a deployable Agent Context Gateway for enterprise AI agents."
 readme = "README.md"
-license = {text = "MIT"}
+license = "MIT"
 requires-python = ">=3.11"
 authors = [{ name = "Naga Krishna Reddy Muppidi" }]
 dependencies = []

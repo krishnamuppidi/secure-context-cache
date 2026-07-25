@@ -6,6 +6,8 @@
 
 **Flagship application:** [SecureReviewAgent](https://github.com/krishnamuppidi/secreviewagent-ai)
 
+![Secure Context Cache flow](site/assets/secure-context-cache-demo.gif)
+
 Secure Context Cache is a research-backed framework that reduces recurring AI input tokens without
 removing the facts an agent needs to succeed. It converts approved enterprise knowledge into
 reusable context slices, then assembles the smallest policy-approved capsule for each task before
@@ -53,6 +55,19 @@ separate post-conference evidence.
 
 See [Secure Context Cache Framework](docs/SECURE_CONTEXT_CACHE_FRAMEWORK.md) for the product-family
 architecture and research-to-implementation map.
+
+## Documentation and machine-readable discovery
+
+- **Documentation hub:** https://krishnamuppidi.github.io/secure-context-cache/docs/
+- **Benchmark method:** https://krishnamuppidi.github.io/secure-context-cache/secure-context-cache-benchmark/
+- **Prompt caching vs. context caching:** https://krishnamuppidi.github.io/secure-context-cache/prompt-caching-vs-context-caching/
+- **RAG vs. Secure Context Cache:** https://krishnamuppidi.github.io/secure-context-cache/rag-vs-secure-context-cache/
+- **MCP context optimization:** https://krishnamuppidi.github.io/secure-context-cache/mcp-context-optimization/
+- **LLM discovery index:** https://krishnamuppidi.github.io/secure-context-cache/llms.txt
+- **Full machine-readable context:** https://krishnamuppidi.github.io/secure-context-cache/llms-full.txt
+
+The machine-readable files complement the canonical HTML pages, sitemaps, and repository. They are
+not ranking guarantees and do not replace normal crawling, useful content, or independent links.
 
 ## What You Can Run
 
@@ -310,6 +325,10 @@ See [SECURITY.md](SECURITY.md) for trust boundaries.
 - [Troubleshooting](docs/TROUBLESHOOTING.md)
 - [Production Readiness](docs/PRODUCTION_READINESS.md)
 - [Client Examples](examples/clients/README.md)
+- [Roadmap](ROADMAP.md)
+- [Contributing](CONTRIBUTING.md)
+- [Support](SUPPORT.md)
+- [Citation](CITATION.cff)
 - [Changelog](CHANGELOG.md)
 
 ## Remove the AWS Deployment

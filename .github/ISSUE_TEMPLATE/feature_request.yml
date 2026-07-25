@@ -1,0 +1,26 @@
+name: Feature request
+description: Propose a bounded feature or integration
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What task or control gap should this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: boundary
+    attributes:
+      label: Authorization and safety boundary
+      description: Explain how identity, task, sensitivity, provenance, and empty-capsule behavior should work.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Verification
+      description: Which tests or measurable outcomes would prove the feature works?
+    validations:
+      required: true

@@ -37,3 +37,16 @@ jobs:
       - name: Deploy website
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Notify IndexNow
+        continue-on-error: true
+        run: |
+          for attempt in 1 2 3; do
+            if curl --fail-with-body --silent --show-error \
+              --request POST "https://api.indexnow.org/indexnow" \
+              --header "content-type: application/json; charset=utf-8" \
+              --data @site/indexnow-urls.json; then
+              exit 0
+            fi
+            sleep $((attempt * 10))
+          done
+          exit 1
